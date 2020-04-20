@@ -1,0 +1,31 @@
+Small github summary
+
+1) For first ever pull - 
+	
+	Step 1 - Create a folder somewhere on your machine named anything
+	Step 2 - right click open git bash in that foler and type following command
+
+	git clone https://github.com/br0han/FlightDynamicsSVV.git
+
+	Another file 'FLightDynamicsSVV' will be created. Do everything else in that 'FLightDynamicsSVV' file, also access gitbash through this new 'FLightDynamicsSVV' file.
+
+2) Switching branches
+
+	git checkout "branch name" (no inverted commas)
+
+
+3) Pulling 
+
+	Always do this before starting to make changes to make sure you have the most up to date version. Type the following command into gitbash
+
+	git pull
+
+4) Pushing changes
+	
+	NOTE: MAKE SURE YOU'RE IN THE RIGHT BRANCH!!!!
+	
+	Step 1 - git add.
+	Step 2 - git commit -m "short message about change" (this one has the inverted commas)
+	Step 3 - git push
+
+	
