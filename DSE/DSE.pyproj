@@ -22,6 +22,22 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DSE.py" />
+    <Compile Include="module1.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="New folder\module1.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="New folder\module2.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="New folder %282%29\module3.py">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="New folder %282%29\" />
+    <Folder Include="New folder\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
