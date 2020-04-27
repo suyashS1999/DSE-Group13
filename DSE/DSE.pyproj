@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>1724d448-8474-4c49-a822-e26bef80c2d1</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>DSE.py</StartupFile>
+    <StartupFile>Aerodynamics\module1.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -25,10 +25,10 @@
     <Compile Include="module1.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="New folder\module1.py">
+    <Compile Include="Aerodynamics\module1.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="New folder\module2.py">
+    <Compile Include="Aerodynamics\module2.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="New folder %282%29\module3.py">
@@ -37,7 +37,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="New folder %282%29\" />
-    <Folder Include="New folder\" />
+    <Folder Include="Aerodynamics\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Aerodynamics\Polars.txt" />
+    <Content Include="Aerodynamics\Polars2.txt" />
+    <Content Include="Aerodynamics\x_col.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
