@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>1724d448-8474-4c49-a822-e26bef80c2d1</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Aerodynamics\module1.py</StartupFile>
+    <StartupFile>Aerodynamics\Aerodynamics_module.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -21,22 +21,44 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Aerodynamics\Aerodynamics_module2.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DSE.py" />
-    <Compile Include="module1.py">
+    <Compile Include="GenericGlobal_module.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Aerodynamics\module1.py">
+    <Compile Include="Aerodynamics\Aerodynamics_module.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Aerodynamics\module2.py">
+    <Compile Include="Aerodynamics\Aerodynamics_module1.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="New folder %282%29\module3.py">
+    <Compile Include="GenericGlobal_module1.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Propulsion\Propulsion_module.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Propulsion\Propulsion_module1.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Propulsion\Propulsion_module2.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structures\Structures_module.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structures\Structures_module1.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structures\Structures_module2.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="New folder %282%29\" />
+    <Folder Include="Structures\" />
+    <Folder Include="Propulsion\" />
     <Folder Include="Aerodynamics\" />
   </ItemGroup>
   <ItemGroup>
