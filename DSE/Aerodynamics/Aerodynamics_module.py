@@ -1,6 +1,7 @@
 from numpy import*
 from matplotlib import pyplot as plt
 
+
 def XFLR5PolarDataextraction(path_polars, path_X):
 	polars = array(open(f_Polars).read().splitlines());
 	unwantedtxt = [polars[0], polars[1], polars[2], polars[3], polars[4], polars[6], polars[7]];
