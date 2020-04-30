@@ -113,7 +113,6 @@ def PayloadRangeDiagram_JET(MTOW, OEW, Payload_max, reserve_fuel_frac, Max_Fuel_
 	return 0;
 
 #%% ------------------------ MAIN -----------------------
-
 T, p, rho, a = ISA_trop(h);
 R = RangeJet(g, M, a, cj, L_D, Weight_frac);
 PayloadRangeDiagram_JET(MTOW, OEW, Payload_max, 0.1, Max_Fuel_cap, (g, M, a, cj, L_D));
