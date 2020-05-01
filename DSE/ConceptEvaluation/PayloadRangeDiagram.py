@@ -42,7 +42,6 @@ def ISA_trop(h):
 	p = 101325*(T/288.15)**(-g/(-0.0065*287));
 	rho = 1.225*(T/288.15)**(-g/(-0.0065*287) - 1);
 	a = sqrt(1.4*287*T);
-	
 	return T, p, rho, a;
 
 def RangeJet(g, M, a, cj, L_D, Weight_frac):
