@@ -81,34 +81,69 @@ def PayloadRangeDiagram_JET(MTOW, OEW, Payload_max, reserve_fuel_frac, Max_Fuel_
 	fuel_arr = linspace(0, MTOW - MZFW_inc_res_fuel, 100);
 	R_Harmonic = RangeJet(*Range_func_args, (MZFW_inc_res_fuel + fuel_arr)/MZFW_inc_res_fuel)/1000;
 	
-	plt.plot(R_Harmonic, MZFW*ones_like(R_Harmonic), '--', label = "MZFW");
-	plt.plot(R_Harmonic, MZFW_inc_res_fuel*ones_like(R_Harmonic), '--', label = "Reserve Fuel");
+	plt.plot(R_Harmonic, MZFW*ones_like(R_Harmonic));
+	plt.plot(R_Harmonic, MZFW_inc_res_fuel*ones_like(R_Harmonic), ":");
+	plt.annotate("MZFW", xy = (R_Harmonic[int(len(R_Harmonic)/2)], MZFW), xytext = (R_Harmonic[int(len(R_Harmonic)/2)], MZFW*(0.9)), 
+			  ha = "center", arrowprops = dict(facecolor = "black", arrowstyle = "->"));
 	plt.plot(R_Harmonic, MZFW_inc_res_fuel + fuel_arr);
+	plt.annotate("Reserve Fuel", xy = (R_Harmonic[int(len(R_Harmonic)/2) + 20], MZFW_inc_res_fuel), 
+			xytext = (R_Harmonic[int(len(R_Harmonic)/2) + 20], MZFW*(0.99)), 
+			ha = "center", arrowprops = dict(facecolor = "black", arrowstyle = "<->"));
+	plt.plot([R_Harmonic[-1], R_Harmonic[-1]], [OEW, MTOW], color = "r", label = "Harmonic Range");
+	plt.fill_between(R_Harmonic, MZFW*ones_like(R_Harmonic), OEW, facecolor = "orange", color = "blue", alpha = 0.2, label = "Payload");
+
 	# Design Range
 	payload_arr = linspace(MZFW_inc_res_fuel, (MTOW - Max_Fuel_cap + Reserve_fuel), 100);
 	R_Design = RangeJet(*Range_func_args, MTOW/payload_arr)/1000;
 
-	plt.plot(R_Design, payload_arr, '--');
-	plt.plot(R_Design, payload_arr - Reserve_fuel, '--');
+	plt.plot(R_Design, payload_arr, ":");
+	plt.plot(R_Design, MTOW*ones_like(R_Design));
+	plt.plot(R_Design, payload_arr - Reserve_fuel);
+	idx = int(len(R_Design)/2) - 15;
+	plt.annotate("Trip Fuel", xy = (R_Design[idx], payload_arr[idx]), 
+		xytext = (R_Design[idx], (MTOW - payload_arr[idx])/2 + payload_arr[idx]), 
+		ha = "center", arrowprops = dict(facecolor = "black", arrowstyle = "->"));
+	plt.annotate("", xy = (R_Design[idx], MTOW), 
+		xytext = (R_Design[idx], (MTOW - payload_arr[idx])/2 + payload_arr[idx]*(1.01)), 
+		ha = "center", arrowprops = dict(facecolor = "black", arrowstyle = "->"));
+	idx += 15;
+	plt.annotate("Total Fuel", xy = (R_Design[idx], payload_arr[idx] - Reserve_fuel), 
+		xytext = (R_Design[idx], (MTOW - payload_arr[idx])/2 + payload_arr[idx]), 
+		ha = "center", arrowprops = dict(facecolor = "black", arrowstyle = "->"));
+	plt.annotate("", xy = (R_Design[idx], MTOW), 
+		xytext = (R_Design[idx], (MTOW - payload_arr[idx])/2 + payload_arr[idx]*(1.01)), 
+		ha = "center", arrowprops = dict(facecolor = "black", arrowstyle = "->"));
+	plt.plot([R_Design[-1], R_Design[-1]], [OEW, MTOW], color = "c", label = "Max Design Range");
+	plt.fill_between(R_Design, payload_arr - Reserve_fuel, OEW, facecolor = "orange", color = "blue", alpha = 0.2);
+
 	# Ferry Range
 	payload_ferry_arr = linspace(MTOW - Max_Fuel_cap + Reserve_fuel, OEW + Reserve_fuel, 100);
 	TOW = (MTOW - (payload_ferry_arr[0] - payload_ferry_arr));
 	R_Ferry = RangeJet(*Range_func_args, TOW/(payload_ferry_arr))/1000;
 
 	plt.plot(R_Ferry, TOW);
-	plt.plot(R_Ferry, payload_ferry_arr);
+	plt.plot(R_Ferry, payload_ferry_arr, ":");
 	plt.plot(R_Ferry, payload_ferry_arr - Reserve_fuel);
+	plt.fill_between(R_Ferry, payload_ferry_arr - Reserve_fuel, OEW, facecolor = "orange", color = "blue", alpha = 0.2);
+	idx = int(len(R_Ferry)/2);
+	plt.annotate("Maximum Fuel Capacity", xy = (R_Ferry[idx], payload_ferry_arr[idx] - Reserve_fuel), 
+		xytext = (R_Ferry[idx], (TOW[idx] - payload_ferry_arr[idx])/2 + payload_ferry_arr[idx]), 
+		ha = "center", arrowprops = dict(facecolor = "black", arrowstyle = "->"));
+	plt.annotate("", xy = (R_Ferry[idx], TOW[idx]), 
+		xytext = (R_Ferry[idx], (TOW[idx] - payload_ferry_arr[idx])/2 + payload_ferry_arr[idx]*(1.01)), 
+		ha = "center", arrowprops = dict(facecolor = "black", arrowstyle = "->"));
 
 	R = concatenate((R_Harmonic, R_Design, R_Ferry));
 	plt.plot(R, MTOW*ones_like(R), '--', label = "MTOW");
 	plt.plot(R, OEW*ones_like(R), '--', label = "OEW");
-	plt.plot([0, 0], [MTOW, OEW]);
-	plt.plot([R[-1], R[-1]], [TOW[-1], OEW]);
+	plt.plot([R[-1], R[-1]], [TOW[-1], OEW], "k-", label = "Ferry Range");
 
 	plt.xlabel("Range [km]");
 	plt.ylabel("Mass [kg]");
 	plt.grid(True);
-	plt.legend();
+	plt.legend(loc = 1);
+	plt.tight_layout();
+	plt.xlim(xmin = 0);
 	plt.show();
 	return 0;
 
