@@ -5,12 +5,12 @@ Small github summary
 	Step 1 - Create a folder somewhere on your machine named anything
 	Step 2 - right click open git bash in that foler and type following command
 
-	git clone https://github.com/br0han/FlightDynamicsSVV.git
+	git clone https://github.com/suyashS1999/DSE-Group13.git
 
-	Another file 'FLightDynamicsSVV' will be created. Do everything else in that 'FLightDynamicsSVV' file, also access gitbash through this new 'FLightDynamicsSVV' file.
+	Another file 'DSE-Group13' will be created. Do everything else in that 'DSE-Group13' file, also access gitbash through this new 'DSE-Group13' file.
 
 2) Switching branches
-
+	git branch "branch name"
 	git checkout "branch name" (no inverted commas)
 
 
@@ -24,7 +24,7 @@ Small github summary
 	
 	NOTE: MAKE SURE YOU'RE IN THE RIGHT BRANCH!!!!
 	
-	Step 1 - git add .
+	Step 1 - git add .		(full stop is nessasary!)
 	Step 2 - git commit -m "short message about change" (this one has the inverted commas)
 	Step 3 - git push
 
