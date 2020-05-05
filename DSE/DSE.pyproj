@@ -26,6 +26,9 @@
     </Compile>
     <Compile Include="ConceptEvaluation\WingandThrustLoadingDiagrams.py" />
     <Compile Include="ConceptEvaluation\PayloadRangeDiagram.py" />
+    <Compile Include="Controls\Controls_module.py" />
+    <Compile Include="Controls\Controls_module1.py" />
+    <Compile Include="Controls\Controls_module2.py" />
     <Compile Include="DSE.py" />
     <Compile Include="GenericGlobal_module.py">
       <SubType>Code</SubType>
@@ -39,6 +42,9 @@
     <Compile Include="GenericGlobal_module1.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Performance\Performance_module.py" />
+    <Compile Include="Performance\Performance_module1.py" />
+    <Compile Include="Performance\Performance_module2.py" />
     <Compile Include="Propulsion\Propulsion_module.py">
       <SubType>Code</SubType>
     </Compile>
@@ -60,6 +66,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ConceptEvaluation\" />
+    <Folder Include="Controls\" />
+    <Folder Include="Performance\" />
     <Folder Include="Structures\" />
     <Folder Include="Propulsion\" />
     <Folder Include="Aerodynamics\" />
