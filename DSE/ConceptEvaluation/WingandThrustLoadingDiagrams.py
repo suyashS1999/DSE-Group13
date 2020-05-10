@@ -5,7 +5,7 @@ input block are the ones we can vary for the assessment. Please be careful with 
 only work with non SI units. 
 """
 #%% ---------------------- Constants ----------------------
-g = 9.81;						# [m/s^2]
+g = 9.81;						# Gravitaional acceleration [m/s^2]
 rho0 = 1.225;					# Sea level air Density [kg/m^3]
 # ------------------------ INPUTS ------------------------
 MTOW = 77530.96818*g;			# Max Take off Weight [N]
@@ -33,7 +33,7 @@ def W_S_stall(v_stall, rho, Cl_max, fig):
 		v_stall = Stall speed (float) [m/s]
 		rho = air density (float) [kg/m^3]
 		Cl_max = Max Cl value (float or array) [-]
-		fig = Figure handel to plot to
+		fig = Figure handel to plot to (handel)
 	Output:
 		W_load_Stall = Wing Loading (float or array) [N/m^2]
 	"""
@@ -55,7 +55,7 @@ def W_S_takeoff(Cl_max, k, sigma, W_S_max, fig):
 		k = Take off parameter, directly read from "TakeoffPerformance.png" [retard units but already acounted for in this function]
 		sigma = Density ratio [-] (float)
 		W_S_max = maximum wing loading to be expected [N/m^2] (float)
-		fig = Figure handel to plot to
+		fig = Figure handel to plot to (handel)
 	Output:
 		x = Range of wing loading values [N/m^2] (array)
 		y = Range of thrust loading values [N/N] (array)
@@ -83,7 +83,7 @@ def W_S_cruise(A, CD0, rho_cruise, sigma, v_cruise, W_S_max, fig):
 		rho_cruise = air density at cruise altitude [kg/m^3] (float)
 		v_cruise = cruise speed [m/s] (float)
 		W_S_max = maximum wing loading to be expected [N/m^2] (float)
-		fig = Figure handel to plot to
+		fig = Figure handel to plot to (handel)
 	Output:
 		x = Range of wing loading values [N/m^2] (array)
 		y = Range of thrust loading values [N/N] (array)
@@ -113,7 +113,7 @@ def W_S_climb_grad(c_v, Cd0, A, e, W_S_max, fig):
 		A = Aspect ratio [-] (float or array)
 		e = Ozwald efficiency [-] (float)
 		W_S_max = maximum wing loading to be expected [N/m^2] (float)
-		fig = Figure handel to plot to
+		fig = Figure handel to plot to (handel)
 	Output:
 		y = Range of thrust loading values [N/N] (array)
 	"""
