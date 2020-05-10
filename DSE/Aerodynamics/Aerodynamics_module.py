@@ -1,7 +1,9 @@
 from numpy import*
 from matplotlib import pyplot as plt
-
-
+""" Code for airfoil analysis. Takes input from XFLR5 data and corrects for compressible
+flow and predicts Mach number over airfoil. Note, the code used linearized theory for 
+compressible flow thus this analysis is only valid for small pertubations ie. small AOA.
+"""
 def XFLR5PolarDataextraction(path_polars, path_X):
 	""" This function extracts the simulation data from 
 		the .txt files generated with XFLR5 software for 2D airfoil simulation
@@ -85,9 +87,9 @@ gamma = 1.4;			# ratio of specific heats
 polars, X, Cp_start_idx = XFLR5PolarDataextraction(f_Polars, f_X);
 data = vstack((polars)[Cp_start_idx - 1]);
 AOA = data[:, 0];
-Cl = data[:, 2];	Cl_comp = ApplyCompressibilityCorrection(M, Cl);
-Cd = data[:, 1];	Cd_comp = ApplyCompressibilityCorrection(M, Cd);
-Cm = data[:, 3];	Cm_comp = ApplyCompressibilityCorrection(M, Cm);
+Cl = data[:, 2];		Cl_comp = ApplyCompressibilityCorrection(M, Cl);
+Cd = data[:, 1];		Cd_comp = ApplyCompressibilityCorrection(M, Cd);
+Cm = data[:, 3];		Cm_comp = ApplyCompressibilityCorrection(M, Cm);
 
 CP_i = zeros((len(X), len(AOA)));
 CP_v = zeros((len(X), len(AOA)));
