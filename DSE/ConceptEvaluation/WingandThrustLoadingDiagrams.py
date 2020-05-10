@@ -33,6 +33,7 @@ def W_S_stall(v_stall, rho, Cl_max, fig):
 		v_stall = Stall speed (float) [m/s]
 		rho = air density (float) [kg/m^3]
 		Cl_max = Max Cl value (float or array) [-]
+		fig = Figure handel to plot to
 	Output:
 		W_load_Stall = Wing Loading (float or array) [N/m^2]
 	"""
