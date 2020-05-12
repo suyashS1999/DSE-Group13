@@ -5,26 +5,28 @@ input block are the ones we can vary for the assessment. Please be careful with 
 only work with non SI units. 
 """
 #%% ---------------------- Constants ----------------------
-g = 9.81;						# Gravitaional acceleration [m/s^2]
-rho0 = 1.225;					# Sea level air Density [kg/m^3]
-M = 0.78;						# Cruise mach number [-]
+g = 9.81;								# Gravitaional acceleration [m/s^2]
+rho0 = 1.225;							# Sea level air Density [kg/m^3]
+M = 0.78;								# Cruise mach number [-]
 # ------------------------ INPUTS ------------------------
-h = 10000;						# Cruise altitude [m]
-MTOW = 77530.96818*g;			# Max Take off Weight [N]
-S = 257.;						# Wing Area [m^2]
-e = 0.794;						# Ozwald efficiency [-]
-W_S_takeoffdis = 2100;			# Take off distance [ft]
-landdis = 1600;					# Landing distance [ft]
-Cd0 = 0.0156;					# Zero lift drag coefficient [-]
-k = 120;						# Take off parameter from "TakeOffPerformance.png" [retard units]
-v_stall = sqrt(landdis/0.5847);	# Stall speed calcuated emperically [m/s]
-rho_airport = 1.225;			# air density at runway altitude [kg/m^3]
-sigma = rho_airport/rho0;		# Density ratio [-]
-N_engines = 2;					# Number of engines [-]
-c_v = 0.023993;					# Climb gradient divied by velocity [s/m]
-Cl_max = array([1.7, 2.5]);		# Cl max values for assessment [-]
-A = array([6, 8.4, 9.5]);		# Aspect ratio [-]
-W_S_max = 5000;					# Max Wing Loading value, change this value if you want to change the range of wing loading values you want to assess [N/m^2]
+h = 10000;								# Cruise altitude [m]
+MTOW = 77530.96818*g;					# Max Take off Weight [N]
+S = 257.;								# Wing Area [m^2]
+e = 0.794;								# Ozwald efficiency [-]
+W_S_takeoffdis = 2100;					# Take off distance [ft]
+landdis = 1600;							# Landing distance [ft]
+Cd0 = 0.0156;							# Zero lift drag coefficient [-]
+k = 120;								# Take off parameter from "TakeOffPerformance.png" [retard units]
+v_stall = sqrt(landdis/0.5847);			# Stall speed calcuated emperically [m/s]
+rho_airport = 1.225;					# air density at runway altitude [kg/m^3]
+sigma = rho_airport/rho0;				# Density ratio [-]
+N_engines = 2;							# Number of engines [-]
+c_v = 0.023993;							# Climb gradient divied by velocity [s/m]
+Cl_max = array([1.7, 2.5]);				# Cl max values for assessment [-]
+Cl_max_take_off = array([1.5, 1.7]);	# Cl_max for take off [-]
+A = array([6, 8.4, 9.5]);				# Aspect ratio [-]
+W_S_max = 5000;							# Max Wing Loading value, change this value if you want to change the range of wing loading values you want to assess [N/m^2]
+n = 2.5;								# Maximum load factor [-]
 #%% ---------------------- Functions ----------------------
 def ISA_trop(h):
 	""" This function computes the atmospheric properties 
@@ -58,9 +60,9 @@ def W_S_stall(v_stall, rho, Cl_max, fig):
 	plt.figure(fig.number);
 	try:									# So that function can except both float and array values for Cl
 		for i in range(len(W_load_Stall)):
-			plt.plot([W_load_Stall[i], W_load_Stall[i]], [0, 1], label = "Cl land = "+ str(Cl_max[i]));
+			plt.plot([W_load_Stall[i], W_load_Stall[i]], [0, 1], label = "Cl land = " + str(Cl_max[i]));
 	except:
-		plt.plot([W_load_Stall, W_load_Stall], [0, 1], label = "Cl land = "+ str(Cl_max));
+		plt.plot([W_load_Stall, W_load_Stall], [0, 1], label = "Cl land = " + str(Cl_max));
 	return W_load_Stall;
 
 def W_S_takeoff(Cl_max, k, sigma, W_S_max, fig):
@@ -78,18 +80,17 @@ def W_S_takeoff(Cl_max, k, sigma, W_S_max, fig):
 		y = Range of thrust loading values [N/N] (array)
 	"""
 	k *= 47.880172;										# Convert from retard units to SI units (as a sane person whould do)
-	Cl_to = (Cl_max/1.21);								# Cl value for take off calculated imperically
-	coeff = 1/(Cl_to*k*sigma);
+	coeff = 1/(Cl_max*k*sigma);
 	x = linspace(1, W_S_max, 100);						# Thrust Loading, T/W [N/N]
 	# plot to fig
 	plt.figure(fig.number);
 	try:												# So that function can except both float and array values for Cl
 		y = x*coeff.reshape(len(coeff), 1);				# Wing Loading, W/S [N/m^2]
 		for i in range(len(coeff)):
-			plt.plot(x, y[i, :], label = "TOP = " + str(round_(k, 5)) + " , CL take off = " + str(round_(Cl_to[i], 2)));
+			plt.plot(x, y[i, :], label = "TOP = " + str(round_(k, 5)) + " , CL take off = " + str(round_(Cl_max[i], 2)));
 	except:
 		y = x*coeff;									# Wing Loading, W/S [N/m^2]
-		plt.plot(x, y, label = "TOP = " + str(round_(k, 5)) + " , CL take off = " + str(round_(Cl_to, 2)));
+		plt.plot(x, y, label = "TOP = " + str(round_(k, 5)) + " , CL take off = " + str(round_(Cl_max, 2)));
 	return x, y;
 
 def W_S_cruise(A, CD0, rho_cruise, sigma, v_cruise, W_S_max, fig):
@@ -135,24 +136,52 @@ def W_S_climb_grad(c_v, Cd0, A, e, W_S_max, N_engines, fig):
 	Output:
 		y = Range of thrust loading values [N/N] (array)
 	"""
-	y = N_engines/(N_engines - 1)*(c_v + 2*sqrt(Cd0/(pi*A*e)));
+	y = (c_v + 2*sqrt(Cd0/(pi*A*e)));
+	y_OEI = N_engines/(N_engines - 1)*(c_v + 2*sqrt(Cd0/(pi*A*e)));
 	plt.figure(fig.number);
 	try:
 		for i in range(len(y)):
-			plt.plot([0, W_S_max], [y[i], y[i]], label = "Aspect Ratio (one engine inoperative) = "+ str(A[i]));
+			plt.plot([0, W_S_max], [y[i], y[i]], label = "Aspect Ratio climb gradient = " + str(A[i]));
+			plt.plot([0, W_S_max], [y_OEI[i], y_OEI[i]], label = "Aspect Ratio (one engine inoperative) = " + str(A[i]));
 	except:
-		plt.plot([0, W_S_max], [y, y], label = "Aspect Ratio (one engine inoperative) = "+ str(A));
+		plt.plot([0, W_S_max], [y, y], label = "Aspect Ratio climb gradient = " + str(A[i]));
+		plt.plot([0, W_S_max], [y_OEI, y_OEI], label = "Aspect Ratio (one engine inoperative) = " + str(A[i]));
 	return y;
 
+def W_S_maneuvering(n, Cd0, rho, v, A, e, W_S_max, fig):
+	""" This function computes the Wing Loading to meet the maneuvering
+		requirment, given a max load factor of n
+	Input:
+		n = Max load factor [-] (float)
+		Cd0 = zero lift drag coefficient [-] (float)
+		v = Velocity [m/s] (float)
+		A = Aspect ratio [-] (float or array)
+		e = Ozwald efficiency [-] (float)
+		W_S_max = maximum wing loading to be expected [N/m^2] (float)
+		fig = Figure handel to plot to (handel)
+	Output:
+		y = Range of thrust loading values [N/N] (array)
+	"""
+	x = linspace(1, W_S_max, 1000);
+	plt.figure(fig.number);
+	try:
+		y = Cd0*0.5*rho*v**2/x + x*n**2/(pi*A.reshape(len(A), 1)*e*0.5*rho*v**2);
+		for i in range(len(y)):
+			plt.plot(x, y[i], label = "Aspect Ratio for maneuvering = " + str(A[i]));
+	except:
+		y = Cd0*0.5*rho*v**2/x + x*n**2/(pi*A*e*0.5*rho*v**2);
+		plt.plot(x, y, label = "Aspect Ratio for maneuvering = " + str(A));
+	return x, y;
 #%% ---------------------- Main ----------------------
 _, _, rho_cruise, a = ISA_trop(h);
 sigma_cruise = rho_cruise/rho0;			# Density ratio [-]
 v_cruise = M*a;							# Cruise speed [m/s]
 fig = plt.figure(figsize = (10, 8));
 _ = W_S_stall(v_stall, rho_airport, Cl_max, fig);
-_, _ = W_S_takeoff(Cl_max, k, sigma, W_S_max, fig);
+_, _ = W_S_takeoff(Cl_max_take_off, k, sigma, W_S_max, fig);
 _, _ = W_S_cruise(A, Cd0, rho_cruise, sigma_cruise, v_cruise, W_S_max, fig);
 _ = W_S_climb_grad(c_v, Cd0, A, e, W_S_max, N_engines, fig);
+_, _ = W_S_maneuvering(n, Cd0, rho_cruise, v_cruise, A, e, W_S_max, fig);
 
 plt.grid(True);
 plt.axis([0, W_S_max, 0, 1]);
