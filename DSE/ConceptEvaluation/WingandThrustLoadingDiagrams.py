@@ -21,6 +21,7 @@ rho_cruise = 0.33;				# air density at cruise altitude [kg/m^3]
 sigma = rho_airport/rho0;		# Density ratio [-]
 sigma_cruise = rho_cruise/rho0;	# Density ratio [-]
 v_cruise = 232.6;				# Cruise speed [m/s]
+N_engines = 2;					# Number of engines [-]
 c_v = 0.023993;					# Climb gradient divied by velocity [s/m]
 Cl_max = array([1.7, 2.5]);		# Cl max values for assessment [-]
 A = array([6, 8.4, 9.5]);		# Aspect ratio [-]
@@ -104,7 +105,7 @@ def W_S_cruise(A, CD0, rho_cruise, sigma, v_cruise, W_S_max, fig):
 		plt.plot(x, y, "--", label = "Aspect Ratio for cruise = " + str(A));
 	return x, y;
 
-def W_S_climb_grad(c_v, Cd0, A, e, W_S_max, fig):
+def W_S_climb_grad(c_v, Cd0, A, e, W_S_max, N_engines, fig):
 	""" This function computes the Wing Loading to meet the set climb gradient
 		requirment, c_v in a one engine inoerative case
 	Input:
@@ -113,11 +114,12 @@ def W_S_climb_grad(c_v, Cd0, A, e, W_S_max, fig):
 		A = Aspect ratio [-] (float or array)
 		e = Ozwald efficiency [-] (float)
 		W_S_max = maximum wing loading to be expected [N/m^2] (float)
+		N_engines = Number of engines
 		fig = Figure handel to plot to (handel)
 	Output:
 		y = Range of thrust loading values [N/N] (array)
 	"""
-	y = (c_v + 2*sqrt(Cd0/(pi*A*e)));
+	y = N_engines/(N_engines - 1)*(c_v + 2*sqrt(Cd0/(pi*A*e)));
 	plt.figure(fig.number);
 	try:
 		for i in range(len(y)):
@@ -131,7 +133,7 @@ fig = plt.figure(figsize = (10, 8));
 _ = W_S_stall(v_stall, rho_airport, Cl_max, fig);
 _, _ = W_S_takeoff(Cl_max, k, sigma, W_S_max, fig);
 _, _ = W_S_cruise(A, Cd0, rho_cruise, sigma_cruise, v_cruise, W_S_max, fig);
-_ = W_S_climb_grad(c_v, Cd0, A, e, W_S_max, fig);
+_ = W_S_climb_grad(c_v, Cd0, A, e, W_S_max, N_engines, fig);
 
 plt.grid(True);
 plt.axis([0, 5000, 0, 1]);
