@@ -11,20 +11,19 @@ Cost
 from numpy import*
 from matplotlib import pyplot as plt
 
-
-#%% ------------------------ INPUTS ------------------------
-MTOW = 77530.96818;				# [kg]
-OEW = 41945.09918;				# [kg]
-Payload_max = 20*1000;			# [kg]
-Max_Fuel_cap = 25*1000;			# [kg]
 # ---------------------- Constants ----------------------
 g = 9.81;						# [m/s^2]
 M = 0.78;						# [-]
+#%% ------------------------ INPUTS ------------------------
+MTOW = 76003.00497;				# [kg]
+OEW = 41195.17484;				# [kg]
+Payload_max = 20*1000;			# [kg]
+Max_Fuel_cap = 25*1000;			# [kg]
 # ---------------------- Variables ----------------------
-h = 10970;						# km = FL360
-cj = 1.132*10**(-5);				# [kg/Ns]
-L_D = 13;						# [-]
-Weight_frac = 1/0.8544;			# [-]
+h = 10000;						# [km]
+cj = 1.69895e-05;				# [kg/Ns]
+L_D = 20;						# [-]
+#Weight_frac = 1/0.857812138;			# [-]
 
 #%% ------------------------ Functions ------------------------
 def ISA_trop(h):
@@ -148,5 +147,5 @@ def PayloadRangeDiagram_JET(MTOW, OEW, Payload_max, reserve_fuel_frac, Max_Fuel_
 
 #%% ------------------------ MAIN -----------------------
 T, p, rho, a = ISA_trop(h);
-R = RangeJet(g, M, a, cj, L_D, Weight_frac);
+#R = RangeJet(g, M, a, cj, L_D, Weight_frac);
 PayloadRangeDiagram_JET(MTOW, OEW, Payload_max, 0.1, Max_Fuel_cap, (g, M, a, cj, L_D));
