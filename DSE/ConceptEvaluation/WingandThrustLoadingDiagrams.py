@@ -136,7 +136,7 @@ _, _ = W_S_cruise(A, Cd0, rho_cruise, sigma_cruise, v_cruise, W_S_max, fig);
 _ = W_S_climb_grad(c_v, Cd0, A, e, W_S_max, N_engines, fig);
 
 plt.grid(True);
-plt.axis([0, 5000, 0, 1]);
+plt.axis([0, W_S_max, 0, 1]);
 plt.legend();
 plt.xlabel("Wing Loading [N/m^2]");
 plt.ylabel("Thrust Loading [-]");
