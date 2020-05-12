@@ -144,8 +144,8 @@ def W_S_climb_grad(c_v, Cd0, A, e, W_S_max, N_engines, fig):
 			plt.plot([0, W_S_max], [y[i], y[i]], label = "Aspect Ratio climb gradient = " + str(A[i]));
 			plt.plot([0, W_S_max], [y_OEI[i], y_OEI[i]], label = "Aspect Ratio (one engine inoperative) = " + str(A[i]));
 	except:
-		plt.plot([0, W_S_max], [y, y], label = "Aspect Ratio climb gradient = " + str(A[i]));
-		plt.plot([0, W_S_max], [y_OEI, y_OEI], label = "Aspect Ratio (one engine inoperative) = " + str(A[i]));
+		plt.plot([0, W_S_max], [y, y], label = "Aspect Ratio climb gradient = " + str(A));
+		plt.plot([0, W_S_max], [y_OEI, y_OEI], label = "Aspect Ratio (one engine inoperative) = " + str(A));
 	return y;
 
 def W_S_maneuvering(n, Cd0, rho, v, A, e, W_S_max, fig):
