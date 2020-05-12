@@ -105,12 +105,12 @@ def PayloadRangeDiagram_JET(MTOW, OEW, Payload_max, reserve_fuel_frac, Max_Fuel_
 		xytext = (R_Design[idx], (MTOW - payload_arr[idx])/2 + payload_arr[idx]*(1.01)), 
 		ha = "center", arrowprops = dict(facecolor = "black", arrowstyle = "->"));
 	idx += 15;
-	plt.annotate("Total Fuel", xy = (R_Design[idx], payload_arr[idx] - Reserve_fuel), 
-		xytext = (R_Design[idx], (MTOW - payload_arr[idx])/2 + payload_arr[idx]), 
-		ha = "center", arrowprops = dict(facecolor = "black", arrowstyle = "->"));
-	plt.annotate("", xy = (R_Design[idx], MTOW), 
-		xytext = (R_Design[idx], (MTOW - payload_arr[idx])/2 + payload_arr[idx]*(1.01)), 
-		ha = "center", arrowprops = dict(facecolor = "black", arrowstyle = "->"));
+	#plt.annotate("Total Fuel", xy = (R_Design[idx], payload_arr[idx] - Reserve_fuel), 
+	#	xytext = (R_Design[idx], (MTOW - payload_arr[idx])/2 + payload_arr[idx]), 
+	#	ha = "center", arrowprops = dict(facecolor = "black", arrowstyle = "->"));
+	#plt.annotate("", xy = (R_Design[idx], MTOW), 
+	#	xytext = (R_Design[idx], (MTOW - payload_arr[idx])/2 + payload_arr[idx]*(1.01)), 
+	#	ha = "center", arrowprops = dict(facecolor = "black", arrowstyle = "->"));
 	plt.plot([R_Design[-1], R_Design[-1]], [OEW, MTOW], color = "c", label = "Max Design Range");
 	plt.fill_between(R_Design, payload_arr - Reserve_fuel, OEW, facecolor = "orange", color = "blue", alpha = 0.2);
 
