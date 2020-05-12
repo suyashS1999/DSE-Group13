@@ -7,7 +7,9 @@ only work with non SI units.
 #%% ---------------------- Constants ----------------------
 g = 9.81;						# Gravitaional acceleration [m/s^2]
 rho0 = 1.225;					# Sea level air Density [kg/m^3]
+M = 0.78;						# Cruise mach number [-]
 # ------------------------ INPUTS ------------------------
+h = 10000;						# Cruise altitude [m]
 MTOW = 77530.96818*g;			# Max Take off Weight [N]
 S = 257.;						# Wing Area [m^2]
 e = 0.794;						# Ozwald efficiency [-]
@@ -17,16 +19,30 @@ Cd0 = 0.0156;					# Zero lift drag coefficient [-]
 k = 120;						# Take off parameter from "TakeOffPerformance.png" [retard units]
 v_stall = sqrt(landdis/0.5847);	# Stall speed calcuated emperically [m/s]
 rho_airport = 1.225;			# air density at runway altitude [kg/m^3]
-rho_cruise = 0.33;				# air density at cruise altitude [kg/m^3]
 sigma = rho_airport/rho0;		# Density ratio [-]
-sigma_cruise = rho_cruise/rho0;	# Density ratio [-]
-v_cruise = 232.6;				# Cruise speed [m/s]
 N_engines = 2;					# Number of engines [-]
 c_v = 0.023993;					# Climb gradient divied by velocity [s/m]
 Cl_max = array([1.7, 2.5]);		# Cl max values for assessment [-]
 A = array([6, 8.4, 9.5]);		# Aspect ratio [-]
 W_S_max = 5000;					# Max Wing Loading value, change this value if you want to change the range of wing loading values you want to assess [N/m^2]
 #%% ---------------------- Functions ----------------------
+def ISA_trop(h):
+	""" This function computes the atmospheric properties 
+		within the troposphere
+	Input:
+		h = altitude [m]
+	Output:
+		T = Temperature [K]
+		p = Pressure [Pa]
+		rho = Densituy [kg/m^3]
+		a = spped of sound [m/s]
+	"""
+	T = 288.15 - 0.0065*h;
+	p = 101325*(T/288.15)**(-g/(-0.0065*287));
+	rho = 1.225*(T/288.15)**(-g/(-0.0065*287) - 1);
+	a = sqrt(1.4*287*T);
+	return T, p, rho, a;
+
 def W_S_stall(v_stall, rho, Cl_max, fig):
 	""" Function to compute the wing loading
 		for stall speeds
@@ -129,6 +145,9 @@ def W_S_climb_grad(c_v, Cd0, A, e, W_S_max, N_engines, fig):
 	return y;
 
 #%% ---------------------- Main ----------------------
+_, _, rho_cruise, a = ISA_trop(h);
+sigma_cruise = rho_cruise/rho0;			# Density ratio [-]
+v_cruise = M*a;							# Cruise speed [m/s]
 fig = plt.figure(figsize = (10, 8));
 _ = W_S_stall(v_stall, rho_airport, Cl_max, fig);
 _, _ = W_S_takeoff(Cl_max, k, sigma, W_S_max, fig);
