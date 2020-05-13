@@ -12,7 +12,7 @@ OEW = 41195.17484*g;							# Operational empty weight [N]
 Payload_max = 20*1000*g;						# Payload weight [N]
 Max_Fuel_cap = 25*1000*g;						# Max fuel weight [N]
 cj = 1.69895e-05;								# Specific fuel consumption [kg/Ns]
-L_D = 20;										# Lift to drag ratio [-]
+L_D = 16.7;										# Lift to drag ratio [-]
 h = 11000;										# Cruise altitude [m]
 e = 0.794;										# Ozwald efficiency [-]
 landdis = 1800;									# Landing distance [m]
@@ -39,7 +39,7 @@ _ = W_S_stall(v_stall_landing, Cl_max, MLW/MTOW, fig);
 _, _ = W_S_takeoff(Cl_max_takeoff, k, sigma, W_S_max, fig);
 _, _ = W_S_cruise(A, Cd0, rho_cruise, sigma_cruise, v_cruise, W_S_max, fig);
 _ = W_S_climb_grad(c_v, Cd0, A, e, W_S_max, N_engines, fig);
-_, _ = W_S_maneuvering(n, Cd0, rho0, v_stall_landing, A, e, W_S_max, fig);
+#_, _ = W_S_maneuvering(n, Cd0, rho0, v_stall_landing, A, e, W_S_max, fig);
 
 plt.grid(True);
 plt.axis([0, W_S_max, 0, 1]);
@@ -47,4 +47,3 @@ plt.legend();
 plt.xlabel("Wing Loading [N/m^2]");
 plt.ylabel("Thrust Loading [-]");
 plt.show();
-
