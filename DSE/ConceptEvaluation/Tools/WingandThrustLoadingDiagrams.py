@@ -17,12 +17,14 @@ landdis = 1800;							# Landing distance [m]
 Cd0 = 0.02139;							# Zero lift drag coefficient [-]
 k = 190;								# Take off parameter from Raymer and a/c database [retard units]
 v_stall_landing = sqrt(landdis/0.5847);			# Stall speed calcuated emperically [m/s]
+v_stall_clean = 2.0*v_stall_landing;			# Stall speed calcuated emperically [m/s]
 rho_airport = 1.225;					# air density at runway altitude [kg/m^3]
 sigma = rho_airport/rho0;				# Density ratio [-]
 N_engines = 2;							# Number of engines [-]
 c_v = 0.023993;							# Climb gradient divied by velocity [-]
 Cl_max = array([2.2, 2.4, 2.6]);				# Cl max values for assessment [-]
 Cl_max_takeoff = array([1.7, 1.9, 2.1]);	# Cl_max for take off [-]
+Cl_max_clean = array([1.3, 1.5, 1.7]);	# Cl_max in clean configuration [-]
 A = array([9, 10, 11]);					# Aspect ratio [-]
 W_S_max = 7000;							# Max Wing Loading value, change this value if you want to change the range of wing loading values you want to assess [N/m^2]
 n = 2.5;								# Maximum load factor [-]
@@ -44,7 +46,7 @@ def ISA_trop(h):
 	a = sqrt(1.4*287*T);
 	return T, p, rho, a;
 
-def W_S_stall(v_stall_landing, Cl_max_landing, MLW, fig):
+def W_S_stall(v_stall_landing, Cl_max_landing, MLW, v_stall_clean, Cl_max_clean, rho_cruise, fig):
 	""" Function to compute the wing loading
 		for stall speeds
 	Input:
@@ -56,12 +58,15 @@ def W_S_stall(v_stall_landing, Cl_max_landing, MLW, fig):
 		W_load_Stall = Wing Loading (float or array) [N/m^2]
 	"""
 	W_load_Stall = 0.5*1.225*(v_stall_landing)**2*Cl_max_landing / (MLW/MTOW);
+	W_load_Clean = 0.5*rho_cruise*(v_stall_clean)**2*Cl_max_clean / 0.9
 	plt.figure(fig.number);
 	try:									# So that function can except both float and array values for Cl
 		for i in range(len(W_load_Stall)):
-			plt.plot([W_load_Stall[i], W_load_Stall[i]], [0, 1], label = "Cl land = " + str(Cl_max[i]));
+			plt.plot([W_load_Stall[i], W_load_Stall[i]], [0, 1], label = "Cl_max_land = " + str(Cl_max[i]));
+			#plt.plot([W_load_Clean[i], W_load_Clean[i]], [0, 1], label = "Cl_max_clean = " + str(Cl_max_clean[i]));
 	except:
-		plt.plot([W_load_Stall, W_load_Stall], [0, 1], label = "Cl land = " + str(Cl_max));
+		plt.plot([W_load_Stall, W_load_Stall], [0, 1], label = "Cl_max_land = " + str(Cl_max));
+		#plt.plot([W_load_Clean, W_load_Clean], [0, 1], label = "Cl_max_clean = " + str(Cl_max_clean));
 	return W_load_Stall;
 
 def W_S_takeoff(Cl_max_takeoff, k, sigma, W_S_max, fig):
@@ -183,11 +188,11 @@ _, _, rho_cruise, a = ISA_trop(h);
 sigma_cruise = rho_cruise/rho0;			# Density ratio [-]
 v_cruise = M*a;							# Cruise speed [m/s]
 fig = plt.figure(figsize = (10, 8));
-_ = W_S_stall(v_stall_landing, Cl_max, MLW, fig);
+_ = W_S_stall(v_stall_landing, Cl_max, MLW, v_stall_clean, Cl_max_clean, rho_cruise, fig);
 _, _ = W_S_takeoff(Cl_max_takeoff, k, sigma, W_S_max, fig);
 _, _ = W_S_cruise(A, Cd0, rho_cruise, sigma_cruise, v_cruise, W_S_max, fig);
 _ = W_S_climb_grad(c_v, Cd0, A, e, W_S_max, N_engines, fig);
-_, _ = W_S_maneuvering(n, Cd0, rho0, v_stall_landing, A, e, W_S_max, fig);
+#_, _ = W_S_maneuvering(n, Cd0, rho0, v_stall_landing, A, e, W_S_max, fig);
 
 plt.grid(True);
 plt.axis([0, W_S_max, 0, 1]);
