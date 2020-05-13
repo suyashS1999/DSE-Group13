@@ -25,6 +25,7 @@ Cl_max_take_off = array([1.5, 1.7]);	# Cl_max for take off [-]
 A = array([6, 8.4, 9.5]);				# Aspect ratio [-]
 W_S_max = 5000;							# Max Wing Loading value, change this value if you want to change the range of wing loading values you want to assess [N/m^2]
 n = 2.5;								# Maximum load factor [-]
+MLW_MTOW = 0.86;						# Max landing weight divided by max take off weight [-]
 #%% ---------------------- Functions ----------------------
 def ISA_trop(h):
 	""" This function computes the atmospheric properties 
@@ -43,18 +44,19 @@ def ISA_trop(h):
 	a = sqrt(1.4*287*T);
 	return T, p, rho, a;
 
-def W_S_stall(v_stall, rho, Cl_max, fig):
+def W_S_stall(v_land, rho, Cl_max, MLW_MTOW, fig):
 	""" Function to compute the wing loading
 		for stall speeds
 	Input:
-		v_stall = Stall speed (float) [m/s]
+		v_land = 1.1*Stall speed (float) [m/s]
 		rho = air density (float) [kg/m^3]
 		Cl_max = Max Cl value (float or array) [-]
+		MLW_MTOW = Max landing weight divided by max take off weight [-]
 		fig = Figure handel to plot to (handel)
 	Output:
 		W_load_Stall = Wing Loading (float or array) [N/m^2]
 	"""
-	W_load_Stall = 0.5*rho*v_stall**2*Cl_max;
+	W_load_Stall = 0.5*rho*v_land**2*Cl_max/MLW_MTOW;
 	plt.figure(fig.number);
 	try:									# So that function can except both float and array values for Cl
 		for i in range(len(W_load_Stall)):
@@ -174,8 +176,9 @@ def W_S_maneuvering(n, Cd0, rho, v, A, e, W_S_max, fig):
 _, _, rho_cruise, a = ISA_trop(h);
 sigma_cruise = rho_cruise/rho0;			# Density ratio [-]
 v_cruise = M*a;							# Cruise speed [m/s]
+v_land = v_stall*1.1;					# landing speed [m/s]
 fig = plt.figure(figsize = (10, 8));
-_ = W_S_stall(v_stall, rho_airport, Cl_max, fig);
+_ = W_S_stall(v_land, rho_airport, Cl_max, MLW_MTOW, fig);
 _, _ = W_S_takeoff(Cl_max_take_off, k, sigma, W_S_max, fig);
 _, _ = W_S_cruise(A, Cd0, rho_cruise, sigma_cruise, v_cruise, W_S_max, fig);
 _ = W_S_climb_grad(c_v, Cd0, A, e, W_S_max, N_engines, fig);
