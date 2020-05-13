@@ -5,52 +5,35 @@ input block are the ones we can vary for the assessment. Please be careful with 
 only work with non SI units.
 """
 #%% ---------------------- Constants ----------------------
-g = 9.81;								# Gravitaional acceleration [m/s^2]
-rho0 = 1.225;							# Sea level air Density [kg/m^3]
-M = 0.78;								# Cruise mach number [-]
-# ------------------------ INPUTS ------------------------
-h = 11000;								# Cruise altitude [m]
-MTOW = 77530.96818*g;					# Max Take off Weight [N]
-MLW = 0.86*MTOW                         # Max Landing Weight [N]
-e = 0.794;								# Ozwald efficiency [-]
-landdis = 1800;							# Landing distance [m]
-Cd0 = 0.02139;							# Zero lift drag coefficient [-]
-k = 190;								# Take off parameter from Raymer and a/c database [retard units]
-v_stall_landing = sqrt(landdis/0.5847);			# Stall speed calcuated emperically [m/s]
-rho_airport = 1.225;					# air density at runway altitude [kg/m^3]
-sigma = rho_airport/rho0;				# Density ratio [-]
-N_engines = 2;							# Number of engines [-]
-c_v = 0.023993;							# Climb gradient divied by velocity [-]
-Cl_max = array([2.2, 2.4, 2.6]);				# Cl max values for assessment [-]
-Cl_max_takeoff = array([1.7, 1.9, 2.1]);	# Cl_max for take off [-]
-A = array([9, 10, 11]);					# Aspect ratio [-]
-W_S_max = 7000;							# Max Wing Loading value, change this value if you want to change the range of wing loading values you want to assess [N/m^2]
-n = 2.5;								# Maximum load factor [-]
+#g = 9.81;								# Gravitaional acceleration [m/s^2]
+#rho0 = 1.225;							# Sea level air Density [kg/m^3]
+#M = 0.78;								# Cruise mach number [-]
+## ------------------------ INPUTS ------------------------
+#h = 11000;								# Cruise altitude [m]
+#MTOW = 77530.96818*g;					# Max Take off Weight [N]
+#MLW = 0.86*MTOW                         # Max Landing Weight [N]
+#e = 0.794;								# Ozwald efficiency [-]
+#landdis = 1800;							# Landing distance [m]
+#Cd0 = 0.02139;							# Zero lift drag coefficient [-]
+#k = 190;								# Take off parameter from Raymer and a/c database [retard units]
+#v_stall_landing = sqrt(landdis/0.5847);			# Stall speed calcuated emperically [m/s]
+#rho_airport = 1.225;					# air density at runway altitude [kg/m^3]
+#sigma = rho_airport/rho0;				# Density ratio [-]
+#N_engines = 2;							# Number of engines [-]
+#c_v = 0.023993;							# Climb gradient divied by velocity [-]
+#Cl_max = array([2.2, 2.4, 2.6]);				# Cl max values for assessment [-]
+#Cl_max_takeoff = array([1.7, 1.9, 2.1]);	# Cl_max for take off [-]
+#A = array([9, 10, 11]);					# Aspect ratio [-]
+#W_S_max = 7000;							# Max Wing Loading value, change this value if you want to change the range of wing loading values you want to assess [N/m^2]
+#n = 2.5;								# Maximum load factor [-]
 #%% ---------------------- Functions ----------------------
-def ISA_trop(h):
-	""" This function computes the atmospheric properties
-		within the troposphere
-	Input:
-		h = altitude [m]
-	Output:
-		T = Temperature [K]
-		p = Pressure [Pa]
-		rho = Densituy [kg/m^3]
-		a = spped of sound [m/s]
-	"""
-	T = 288.15 - 0.0065*h;
-	p = 101325*(T/288.15)**(-g/(-0.0065*287));
-	rho = 1.225*(T/288.15)**(-g/(-0.0065*287) - 1);
-	a = sqrt(1.4*287*T);
-	return T, p, rho, a;
-
 def W_S_stall(v_stall_landing, Cl_max_landing, MLW_MTOW, fig):
 	""" Function to compute the wing loading
 		for stall speeds
 	Input:
 		v_stall_landing = Stall speed in landing configuration (float) [m/s]
 		Cl_max_landing = Max Cl value in landing configuration (float or array) [-]
-		MLW_MTOW = Max landing weight over MTOW (float) [-]
+		MLW_MTOW = Max landing weight divied by MTOW [-]
 		fig = Figure handel to plot to (handel)
 	Output:
 		W_load_Stall = Wing Loading (float or array) [N/m^2]
@@ -59,9 +42,9 @@ def W_S_stall(v_stall_landing, Cl_max_landing, MLW_MTOW, fig):
 	plt.figure(fig.number);
 	try:									# So that function can except both float and array values for Cl
 		for i in range(len(W_load_Stall)):
-			plt.plot([W_load_Stall[i], W_load_Stall[i]], [0, 1], label = "Cl land = " + str(Cl_max[i]));
+			plt.plot([W_load_Stall[i], W_load_Stall[i]], [0, 1], label = "Cl land = " + str(Cl_max_landing[i]));
 	except:
-		plt.plot([W_load_Stall, W_load_Stall], [0, 1], label = "Cl land = " + str(Cl_max));
+		plt.plot([W_load_Stall, W_load_Stall], [0, 1], label = "Cl land = " + str(Cl_max_landing));
 	return W_load_Stall;
 
 def W_S_takeoff(Cl_max_takeoff, k, sigma, W_S_max, fig):
@@ -179,19 +162,19 @@ def W_S_maneuvering(n, Cd0, rho, v_stall_landing, A, e, W_S_max, fig):
 		plt.plot(x, y, label = "Aspect Ratio for maneuvering = " + str(A));
 	return x, y;
 #%% ---------------------- Main ----------------------
-_, _, rho_cruise, a = ISA_trop(h);
-sigma_cruise = rho_cruise/rho0;			# Density ratio [-]
-v_cruise = M*a;							# Cruise speed [m/s]
-fig = plt.figure(figsize = (10, 8));
-_ = W_S_stall(v_stall_landing, Cl_max, MLW, fig);
-_, _ = W_S_takeoff(Cl_max_takeoff, k, sigma, W_S_max, fig);
-_, _ = W_S_cruise(A, Cd0, rho_cruise, sigma_cruise, v_cruise, W_S_max, fig);
-_ = W_S_climb_grad(c_v, Cd0, A, e, W_S_max, N_engines, fig);
-_, _ = W_S_maneuvering(n, Cd0, rho0, v_stall_landing, A, e, W_S_max, fig);
+#_, _, rho_cruise, a = ISA_trop(h);
+#sigma_cruise = rho_cruise/rho0;			# Density ratio [-]
+#v_cruise = M*a;							# Cruise speed [m/s]
+#fig = plt.figure(figsize = (10, 8));
+#_ = W_S_stall(v_stall_landing, Cl_max, MLW, fig);
+#_, _ = W_S_takeoff(Cl_max_takeoff, k, sigma, W_S_max, fig);
+#_, _ = W_S_cruise(A, Cd0, rho_cruise, sigma_cruise, v_cruise, W_S_max, fig);
+#_ = W_S_climb_grad(c_v, Cd0, A, e, W_S_max, N_engines, fig);
+#_, _ = W_S_maneuvering(n, Cd0, rho0, v_stall_landing, A, e, W_S_max, fig);
 
-plt.grid(True);
-plt.axis([0, W_S_max, 0, 1]);
-plt.legend();
-plt.xlabel("Wing Loading [N/m^2]");
-plt.ylabel("Thrust Loading [-]");
-plt.show();
+#plt.grid(True);
+#plt.axis([0, W_S_max, 0, 1]);
+#plt.legend();
+#plt.xlabel("Wing Loading [N/m^2]");
+#plt.ylabel("Thrust Loading [-]");
+#plt.show();

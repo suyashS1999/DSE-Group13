@@ -13,16 +13,16 @@ from matplotlib import pyplot as plt
 
 # ---------------------- Constants ----------------------
 g = 9.81;						# [m/s^2]
-M = 0.78;						# [-]
-#%% ------------------------ INPUTS ------------------------
-MTOW = 76003.00497;				# [kg]
-OEW = 41195.17484;				# [kg]
-Payload_max = 20*1000;			# [kg]
-Max_Fuel_cap = 25*1000;			# [kg]
-# ---------------------- Variables ----------------------
-h = 10000;						# [m]
-cj = 1.69895e-05;				# [kg/Ns]
-L_D = 20;						# [-]
+#M = 0.78;						# [-]
+##%% ------------------------ INPUTS ------------------------
+#MTOW = 76003.00497;				# [kg]
+#OEW = 41195.17484;				# [kg]
+#Payload_max = 20*1000;			# [kg]
+#Max_Fuel_cap = 25*1000;			# [kg]
+## ---------------------- Variables ----------------------
+#h = 10000;						# [m]
+#cj = 1.69895e-05;				# [kg/Ns]
+#L_D = 20;						# [-]
 #Weight_frac = 1/0.857812138;			# [-]
 
 #%% ------------------------ Functions ------------------------
@@ -142,10 +142,10 @@ def PayloadRangeDiagram_JET(MTOW, OEW, Payload_max, reserve_fuel_frac, Max_Fuel_
 	plt.legend(loc = 1);
 	plt.tight_layout();
 	plt.xlim(xmin = 0);
-	plt.show();
+	#plt.show();
 	return 0;
 
 #%% ------------------------ MAIN -----------------------
-T, p, rho, a = ISA_trop(h);
+#T, p, rho, a = ISA_trop(h);
 #R = RangeJet(g, M, a, cj, L_D, Weight_frac);
-PayloadRangeDiagram_JET(MTOW, OEW, Payload_max, 0.1, Max_Fuel_cap, (g, M, a, cj, L_D));
+#PayloadRangeDiagram_JET(MTOW, OEW, Payload_max, 0.1, Max_Fuel_cap, (g, M, a, cj, L_D));
