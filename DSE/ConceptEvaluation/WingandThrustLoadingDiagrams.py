@@ -9,7 +9,7 @@ g = 9.81;								# Gravitaional acceleration [m/s^2]
 rho0 = 1.225;							# Sea level air Density [kg/m^3]
 M = 0.78;								# Cruise mach number [-]
 # ------------------------ INPUTS ------------------------
-h = 10000;								# Cruise altitude [m]
+h = 11000;								# Cruise altitude [m]
 MTOW = 77530.96818*g;					# Max Take off Weight [N]
 MLW = 0.86*MTOW                         # Max Landing Weight [N]
 e = 0.794;								# Ozwald efficiency [-]
@@ -135,10 +135,10 @@ def W_S_climb_grad(c_v, Cd0, A, e, W_S_max, N_engines, fig):
 	Output:
 		y = Range of thrust loading values [N/N] (array)
 	"""
-	Cd0_goaround = Cd0 + 0.065 + 0.025 #source ADSEE 13 slide 13 (Roskam)
-	Cd0_OEI = Cd0 + 0.015
-	e_goaround = e + 0.1
-	e_OEI = e + 0.05
+	Cd0_goaround = Cd0 + 0.065 + 0.025;			 #source ADSEE 13 slide 13 (Roskam)
+	Cd0_OEI = Cd0 + 0.015;
+	e_goaround = e + 0.1;
+	e_OEI = e + 0.05;
 
 	y_goaround = (c_v + 2*sqrt(Cd0_goaround/(pi*A*e_goaround)));
 	y_OEI = N_engines/(N_engines - 1)*(c_v + 2*sqrt(Cd0_OEI/(pi*A*e_OEI)));
@@ -166,8 +166,8 @@ def W_S_maneuvering(n, Cd0, rho, v_stall_landing, A, e, W_S_max, fig):
 	Output:
 		y = Range of thrust loading values [N/N] (array)
 	"""
-	v_stall_clean = 1.2 * v_stall_landing #not correct, awaiting advice from course lecturer
-	v = v_stall_clean*sqrt(n) # this is the manouvre speed
+	v_stall_clean = 1.2 * v_stall_landing		# not correct, awaiting advice from course lecturer
+	v = v_stall_clean*sqrt(n);					# this is the manouvre speed
 	x = linspace(1, W_S_max, 1000);
 	plt.figure(fig.number);
 	try:
