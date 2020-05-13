@@ -62,9 +62,9 @@ def PayloadRangeDiagram_JET(MTOW, OEW, Payload_max, reserve_fuel_frac, fuel_asce
 	""" This function generates the payload range diagram 
 		for a given JET aircraft.
 	Input:
-		MTOW = Max Take Off Weight [kg]
-		OEW = Operational Empty Weight [kg]
-		Payload_max = Maximum Payload [kg]
+		MTOW = Max Take Off Weight [kg or N]
+		OEW = Operational Empty Weight [kg or N]
+		Payload_max = Maximum Payload [kg or N]
 		reserve_fuel_frac = Fraction of the total fuel that is reserve fuel [-]
 		fuel_ascent_descent_frac = Fuel fraction used during ascending and descending [-]
 		Max_Fuel_cap = Maximum fuel capacity [kg]
