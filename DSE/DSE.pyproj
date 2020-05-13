@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>1724d448-8474-4c49-a822-e26bef80c2d1</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>ConceptEvaluation\WingandThrustLoadingDiagrams.py</StartupFile>
+    <StartupFile>ConceptEvaluation\Tools\WingandThrustLoadingDiagrams.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -24,8 +24,14 @@
     <Compile Include="Aerodynamics\Aerodynamics_module2.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ConceptEvaluation\WingandThrustLoadingDiagrams.py" />
-    <Compile Include="ConceptEvaluation\PayloadRangeDiagram.py" />
+    <Compile Include="ConceptEvaluation\Concept1\PayloadRangeDiagram.py" />
+    <Compile Include="ConceptEvaluation\Concept1\WingandThrustLoadingDiagrams.py" />
+    <Compile Include="ConceptEvaluation\Concept2\PayloadRangeDiagram.py" />
+    <Compile Include="ConceptEvaluation\Concept2\WingandThrustLoadingDiagrams.py" />
+    <Compile Include="ConceptEvaluation\Concept3\PayloadRangeDiagram.py" />
+    <Compile Include="ConceptEvaluation\Concept3\WingandThrustLoadingDiagrams.py" />
+    <Compile Include="ConceptEvaluation\Tools\PayloadRangeDiagram.py" />
+    <Compile Include="ConceptEvaluation\Tools\WingandThrustLoadingDiagrams.py" />
     <Compile Include="Controls\Controls_module.py" />
     <Compile Include="Controls\Controls_module1.py" />
     <Compile Include="Controls\Controls_module2.py" />
@@ -66,6 +72,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ConceptEvaluation\" />
+    <Folder Include="ConceptEvaluation\Concept1\" />
+    <Folder Include="ConceptEvaluation\Concept2\" />
+    <Folder Include="ConceptEvaluation\Concept3\" />
+    <Folder Include="ConceptEvaluation\Tools\" />
     <Folder Include="Controls\" />
     <Folder Include="Performance\" />
     <Folder Include="Structures\" />
@@ -76,8 +86,14 @@
     <Content Include="Aerodynamics\Polars.txt" />
     <Content Include="Aerodynamics\Polars2.txt" />
     <Content Include="Aerodynamics\x_col.txt" />
-    <Content Include="ConceptEvaluation\Class I esitmation tool.xlsx" />
-    <Content Include="ConceptEvaluation\TakeOffPerformance.png" />
+    <Content Include="ConceptEvaluation\Concept1\Class I esitmation tool.xlsx" />
+    <Content Include="ConceptEvaluation\Concept1\TakeOffPerformance.png" />
+    <Content Include="ConceptEvaluation\Concept2\Class I esitmation tool.xlsx" />
+    <Content Include="ConceptEvaluation\Concept2\TakeOffPerformance.png" />
+    <Content Include="ConceptEvaluation\Concept3\Class I esitmation tool.xlsx" />
+    <Content Include="ConceptEvaluation\Concept3\TakeOffPerformance.png" />
+    <Content Include="ConceptEvaluation\Tools\Class I esitmation tool.xlsx" />
+    <Content Include="ConceptEvaluation\Tools\TakeOffPerformance.png" />
     <Content Include="git_tutorial.txt" />
     <Content Include="PreviewOfFolderOrganization.png" />
   </ItemGroup>

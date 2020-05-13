@@ -23,7 +23,7 @@ N_engines = 2;							# Number of engines [-]
 c_v = 0.023993;							# Climb gradient divied by velocity [-]
 Cl_max = array([2.2, 2.4, 2.6]);				# Cl max values for assessment [-]
 Cl_max_takeoff = array([1.7, 1.9, 2.1]);	# Cl_max for take off [-]
-A = array([9, 10, 11]);				# Aspect ratio [-]
+A = array([9, 10, 11]);					# Aspect ratio [-]
 W_S_max = 7000;							# Max Wing Loading value, change this value if you want to change the range of wing loading values you want to assess [N/m^2]
 n = 2.5;								# Maximum load factor [-]
 #%% ---------------------- Functions ----------------------
