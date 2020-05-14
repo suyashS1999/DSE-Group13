@@ -28,9 +28,9 @@ Cl_max_takeoff = array([1.7, 1.9, 2.1]);		# Cl_max for take off [-]
 A = array([16, 17, 18]);						# Aspect ratio [-]
 W_S_max = 7000;									# Max Wing Loading value, change this value if you want to change the range of wing loading values you want to assess [N/m^2]
 n = 2.5;										# Maximum load factor [-]
-reserve_fuel_frac = 0.1;						# Reserve fuel fraction [-]
-pre_cruise_fuel_frac = 0.15;					# Pre cruise fuel fraction [-]
-post_cruise_fuel_frac = 0.18;					# Post cruise fuel fraction [-]
+reserve_fuel_frac = 0.1260691568;						# Reserve fuel fraction [-]
+pre_cruise_fuel_frac = 0.2573925999;					# Pre cruise fuel fraction [-]
+post_cruise_fuel_frac = 0.08776121237;					# Post cruise fuel fraction [-]
 #%% ------------------------ Main ------------------------
 T, p, rho_cruise, a = ISA_trop(h);
 sigma_cruise = rho_cruise/rho0;			# Density ratio [-]
