@@ -58,14 +58,15 @@ def RangeJet(g, M, a, cj, L_D, Weight_frac):
 	R = (V/(cj*g))*L_D*log(Weight_frac);
 	return R;
 
-def PayloadRangeDiagram_JET(MTOW, OEW, Payload_max, reserve_fuel_frac, Max_Fuel_cap, Range_func_args):
+def PayloadRangeDiagram_JET(MTOW, OEW, Payload_max, reserve_fuel_frac, pre_cruise_frac, post_cruise_frac, Max_Fuel_cap, Range_func_args):
 	""" This function generates the payload range diagram 
 		for a given JET aircraft.
 	Input:
-		MTOW = Max Take Off Weight [kg]
-		OEW = Operational Empty Weight [kg]
-		Payload_max = Maximum Payload [kg]
+		MTOW = Max Take Off Weight [kg or N]
+		OEW = Operational Empty Weight [kg or N]
+		Payload_max = Maximum Payload [kg or N]
 		reserve_fuel_frac = Fraction of the total fuel that is reserve fuel [-]
+		fuel_ascent_descent_frac = Fuel fraction used during ascending and descending [-]
 		Max_Fuel_cap = Maximum fuel capacity [kg]
 		Range_func_args = Arguments to pass onto Range function
 	Output:
@@ -75,15 +76,19 @@ def PayloadRangeDiagram_JET(MTOW, OEW, Payload_max, reserve_fuel_frac, Max_Fuel_
 	# Harmonic Range
 	MZFW = OEW + Payload_max;
 	Fuel_Weight = MTOW - MZFW;	Reserve_fuel = reserve_fuel_frac*Fuel_Weight;	Trip_fuel = Fuel_Weight - Reserve_fuel;
+	Fuel_pre_cruise = pre_cruise_frac*Fuel_Weight;	Fuel_post_cruise = post_cruise_frac*Fuel_Weight;
 	MZFW_inc_res_fuel = MZFW + Reserve_fuel;
-	fuel_arr = linspace(0, MTOW - MZFW_inc_res_fuel, 100);
-	R_Harmonic = RangeJet(*Range_func_args, (MZFW_inc_res_fuel + fuel_arr)/MZFW_inc_res_fuel)/1000;
+	MZFW_inc_res_post_cruise_fuel = MZFW + Reserve_fuel + Fuel_post_cruise;
+	fuel_arr = linspace(0, MTOW - MZFW_inc_res_post_cruise_fuel - Fuel_pre_cruise, 100);
+	R_Harmonic = RangeJet(*Range_func_args, (MZFW_inc_res_post_cruise_fuel + fuel_arr)/MZFW_inc_res_post_cruise_fuel)/1000;
 	
 	plt.plot(R_Harmonic, MZFW*ones_like(R_Harmonic));
 	plt.plot(R_Harmonic, MZFW_inc_res_fuel*ones_like(R_Harmonic), ":");
+	plt.plot(R_Harmonic, MZFW_inc_res_post_cruise_fuel*ones_like(R_Harmonic), ":");
 	plt.annotate("MZFW", xy = (R_Harmonic[int(len(R_Harmonic)/2)], MZFW), xytext = (R_Harmonic[int(len(R_Harmonic)/2)], MZFW*(0.9)), 
 			  ha = "center", arrowprops = dict(facecolor = "black", arrowstyle = "->"));
-	plt.plot(R_Harmonic, MZFW_inc_res_fuel + fuel_arr);
+	plt.plot(R_Harmonic, MZFW_inc_res_post_cruise_fuel + fuel_arr, ":");
+	plt.plot(R_Harmonic, MZFW_inc_res_post_cruise_fuel + fuel_arr + Fuel_pre_cruise);
 	plt.annotate("Reserve Fuel", xy = (R_Harmonic[int(len(R_Harmonic)/2) + 20], MZFW_inc_res_fuel), 
 			xytext = (R_Harmonic[int(len(R_Harmonic)/2) + 20], MZFW*(0.99)), 
 			ha = "center", arrowprops = dict(facecolor = "black", arrowstyle = "<->"));
@@ -91,50 +96,60 @@ def PayloadRangeDiagram_JET(MTOW, OEW, Payload_max, reserve_fuel_frac, Max_Fuel_
 	plt.fill_between(R_Harmonic, MZFW*ones_like(R_Harmonic), OEW, facecolor = "orange", color = "blue", alpha = 0.2, label = "Payload");
 
 	# Design Range
-	payload_arr = linspace(MZFW_inc_res_fuel, (MTOW - Max_Fuel_cap + Reserve_fuel), 100);
-	R_Design = RangeJet(*Range_func_args, MTOW/payload_arr)/1000;
+	payload_arr = linspace(MZFW_inc_res_post_cruise_fuel, (MTOW - Max_Fuel_cap + Reserve_fuel + Fuel_post_cruise), 100);
+	R_Design = RangeJet(*Range_func_args, (MTOW - Fuel_pre_cruise)/payload_arr)/1000;
 
 	plt.plot(R_Design, payload_arr, ":");
-	plt.plot(R_Design, MTOW*ones_like(R_Design));
-	plt.plot(R_Design, payload_arr - Reserve_fuel);
+	plt.plot(R_Design, (MTOW - Fuel_pre_cruise)*ones_like(R_Design), ":");
+	plt.plot(R_Design, (MTOW)*ones_like(R_Design));
+	plt.plot(R_Design, payload_arr - Reserve_fuel - Fuel_post_cruise);
+	plt.plot(R_Design, payload_arr - Fuel_post_cruise, ":");
 	idx = int(len(R_Design)/2) - 15;
-	plt.annotate("Trip Fuel", xy = (R_Design[idx], payload_arr[idx]), 
+	plt.annotate("Trip Fuel", xy = (R_Design[idx], payload_arr[idx] - Fuel_post_cruise), 
 		xytext = (R_Design[idx], (MTOW - payload_arr[idx])/2 + payload_arr[idx]), 
 		ha = "center", arrowprops = dict(facecolor = "black", arrowstyle = "->"));
 	plt.annotate("", xy = (R_Design[idx], MTOW), 
 		xytext = (R_Design[idx], (MTOW - payload_arr[idx])/2 + payload_arr[idx]*(1.01)), 
 		ha = "center", arrowprops = dict(facecolor = "black", arrowstyle = "->"));
-	idx += 15;
-	#plt.annotate("Total Fuel", xy = (R_Design[idx], payload_arr[idx] - Reserve_fuel), 
-	#	xytext = (R_Design[idx], (MTOW - payload_arr[idx])/2 + payload_arr[idx]), 
-	#	ha = "center", arrowprops = dict(facecolor = "black", arrowstyle = "->"));
-	#plt.annotate("", xy = (R_Design[idx], MTOW), 
-	#	xytext = (R_Design[idx], (MTOW - payload_arr[idx])/2 + payload_arr[idx]*(1.01)), 
-	#	ha = "center", arrowprops = dict(facecolor = "black", arrowstyle = "->"));
+	idx += 20;
+	plt.annotate("Fuel descent", xy = (R_Design[idx], payload_arr[idx] - Fuel_post_cruise), 
+		xytext = (R_Design[idx], payload_arr[idx]), 
+		ha = "center", arrowprops = dict(facecolor = "black", arrowstyle = "->"));
+	plt.annotate("", xy = (R_Design[idx], payload_arr[idx]), 
+		xytext = (R_Design[idx], payload_arr[idx]*(0.99)), 
+		ha = "center", arrowprops = dict(facecolor = "black", arrowstyle = "->"));
+	plt.annotate("Fuel ascent", xy = (R_Design[idx], MTOW - Fuel_pre_cruise), 
+		xytext = (R_Design[idx], MTOW), 
+		ha = "center", arrowprops = dict(facecolor = "black", arrowstyle = "->"));
+	plt.annotate("", xy = (R_Design[idx], MTOW), 
+		xytext = (R_Design[idx], MTOW*(0.99)), 
+		ha = "center", arrowprops = dict(facecolor = "black", arrowstyle = "->"));
 	plt.plot([R_Design[-1], R_Design[-1]], [OEW, MTOW], color = "c", label = "Max Design Range");
-	plt.fill_between(R_Design, payload_arr - Reserve_fuel, OEW, facecolor = "orange", color = "blue", alpha = 0.2);
+	plt.fill_between(R_Design, payload_arr - Reserve_fuel - Fuel_post_cruise, OEW, facecolor = "orange", color = "blue", alpha = 0.2);
 
 	# Ferry Range
-	payload_ferry_arr = linspace(MTOW - Max_Fuel_cap + Reserve_fuel, OEW + Reserve_fuel, 100);
-	TOW = (MTOW - (payload_ferry_arr[0] - payload_ferry_arr));
-	R_Ferry = RangeJet(*Range_func_args, TOW/(payload_ferry_arr))/1000;
+	payload_ferry_arr = linspace(MTOW - Max_Fuel_cap + Reserve_fuel + Fuel_post_cruise, OEW + Reserve_fuel + Fuel_post_cruise, 100);
+	TOW = (MTOW - (payload_ferry_arr[0] - payload_ferry_arr) - Fuel_pre_cruise);
+	R_Ferry = RangeJet(*Range_func_args, (TOW)/(payload_ferry_arr))/1000;
 
-	plt.plot(R_Ferry, TOW);
+	plt.plot(R_Ferry, TOW, ":");
+	plt.plot(R_Ferry, TOW + Fuel_pre_cruise);
 	plt.plot(R_Ferry, payload_ferry_arr, ":");
-	plt.plot(R_Ferry, payload_ferry_arr - Reserve_fuel);
-	plt.fill_between(R_Ferry, payload_ferry_arr - Reserve_fuel, OEW, facecolor = "orange", color = "blue", alpha = 0.2);
+	plt.plot(R_Ferry, payload_ferry_arr - Reserve_fuel - Fuel_post_cruise);
+	plt.plot(R_Ferry, payload_ferry_arr - Fuel_post_cruise, ":");
+	plt.fill_between(R_Ferry, payload_ferry_arr - Reserve_fuel - Fuel_post_cruise, OEW, facecolor = "orange", color = "blue", alpha = 0.2);
 	idx = int(len(R_Ferry)/2);
-	plt.annotate("Maximum Fuel Capacity", xy = (R_Ferry[idx], payload_ferry_arr[idx] - Reserve_fuel), 
+	plt.annotate("Maximum Fuel Capacity", xy = (R_Ferry[idx], payload_ferry_arr[idx] - Reserve_fuel - Fuel_post_cruise), 
 		xytext = (R_Ferry[idx], (TOW[idx] - payload_ferry_arr[idx])/2 + payload_ferry_arr[idx]), 
 		ha = "center", arrowprops = dict(facecolor = "black", arrowstyle = "->"));
-	plt.annotate("", xy = (R_Ferry[idx], TOW[idx]), 
+	plt.annotate("", xy = (R_Ferry[idx], TOW[idx] + Fuel_pre_cruise), 
 		xytext = (R_Ferry[idx], (TOW[idx] - payload_ferry_arr[idx])/2 + payload_ferry_arr[idx]*(1.01)), 
 		ha = "center", arrowprops = dict(facecolor = "black", arrowstyle = "->"));
 
 	R = concatenate((R_Harmonic, R_Design, R_Ferry));
 	plt.plot(R, MTOW*ones_like(R), '--', label = "MTOW");
 	plt.plot(R, OEW*ones_like(R), '--', label = "OEW");
-	plt.plot([R[-1], R[-1]], [TOW[-1], OEW], "k-", label = "Ferry Range");
+	plt.plot([R[-1], R[-1]], [TOW[-1] + Fuel_pre_cruise, OEW], "k-", label = "Ferry Range");
 
 	plt.xlabel("Range [km]");
 	plt.ylabel("Weight [N]");
