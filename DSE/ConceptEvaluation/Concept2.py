@@ -1,31 +1,31 @@
 from PayloadRangeDiagram import*
 from WingandThrustLoadingDiagrams import*
+import numpy as np
 
 #%% ---------------------- Constants ----------------------
 g = 9.81;										# Gravitaional acceleration [m/s^2]
 rho0 = 1.225;									# Sea level air Density [kg/m^3]
 M = 0.78;										# Cruise mach number [-]
 #%% ------------------------ INPUTS ------------------------
-MTOW = 80128.7254*g;							# Max Take off Weight [N]
+MTOW = 85360*g;							# Max Take off Weight [N]
 MLW = 0.86*MTOW									# Max Landing Weight [N]
-OEW = 44537.86682*g;							# Operational empty weight [N]
+OEW = 45994*g;							# Operational empty weight [N]
 Payload_max = 20*1000*g;						# Payload weight [N]
-Max_Fuel_cap = 25*1000*g;						# Max fuel weight [N]
-cj = 0.00001330841545;							# Specific fuel consumption [kg/Ns]
-L_D = 16.7;										# Lift to drag ratio [-]
+Max_Fuel_cap = 23.2*1000*g;						# Max fuel weight [N]
+cj = 0.0000148;							# Specific fuel consumption [kg/Ns]
+L_D = 14.88;										# Lift to drag ratio [-]
 h = 11000;										# Cruise altitude [m]
-e = 0.794;										# Ozwald efficiency [-]
+e = 0.85;										# Ozwald efficiency [-]
 landdis = 1800;									# Landing distance [m]
-Cd0 = 0.02139;									# Zero lift drag coefficient [-]
+Cd0 = 0.02046;									# Zero lift drag coefficient [-]
 k = 190;										# Take off parameter from Raymer and a/c database [retard units]
 v_stall_landing = sqrt(landdis/0.5847);			# Stall speed calcuated emperically [m/s]
 rho_airport = 1.225;							# air density at runway altitude [kg/m^3]
 sigma = rho_airport/rho0;						# Density ratio [-]
 N_engines = 2;									# Number of engines [-]
-c_v = 0.023993;									# Climb gradient divied by velocity [-]
-Cl_max = 2.7;				# Cl max values for assessment [-]
-Cl_max_takeoff = 2.2;		# Cl_max for take off [-]
-A = 9;							# Aspect ratio [-]
+Cl_max = np.array([2.3,2.5,2.7]);				# Cl max values for assessment [-]
+Cl_max_takeoff = np.array([1.7,1.9,2.1]);		# Cl_max for take off [-]
+A = np.array([7,8,9]);							# Aspect ratio [-]
 W_S_max = 7000;									# Max Wing Loading value, change this value if you want to change the range of wing loading values you want to assess [N/m^2]
 n = 2.5;										# Maximum load factor [-]
 reserve_fuel_frac = 0.1326367406;						# Reserve fuel fraction [-]
@@ -41,7 +41,7 @@ fig = plt.figure(figsize = (10, 8));
 _ = W_S_stall(v_stall_landing, Cl_max, MLW/MTOW, fig);
 _, _ = W_S_takeoff(Cl_max_takeoff, k, sigma, W_S_max, fig);
 _, _ = W_S_cruise(A, Cd0, rho_cruise, sigma_cruise, v_cruise, W_S_max, fig);
-_ = W_S_climb_grad(c_v, Cd0, A, e, W_S_max, N_engines, fig);
+_ = W_S_climb_grad(Cd0, A, e, W_S_max, N_engines, fig);
 #_, _ = W_S_maneuvering(n, Cd0, rho0, v_stall_landing, A, e, W_S_max, fig);
 
 plt.grid(True);

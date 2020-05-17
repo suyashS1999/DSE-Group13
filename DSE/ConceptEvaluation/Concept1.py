@@ -22,7 +22,7 @@ v_stall_landing = sqrt(landdis/0.5847);			# Stall speed calcuated emperically [m
 rho_airport = 1.225;							# air density at runway altitude [kg/m^3]
 sigma = rho_airport/rho0;						# Density ratio [-]
 N_engines = 2;									# Number of engines [-]
-c_v = 0.012;									# Climb gradient divied by velocity [-]
+#c_v = 0.012 (gradient now specified inside function) # Climb gradient divied by velocity [-]
 Cl_max = array([2.3]);				# Cl max values for assessment [-]
 Cl_max_takeoff = array([1.9]);		# Cl_max for take off [-]
 A = array([17]);						# Aspect ratio [-]
@@ -41,7 +41,7 @@ fig = plt.figure(figsize = (10, 8));
 _ = W_S_stall(v_stall_landing, Cl_max, MLW/MTOW, fig);
 _, _ = W_S_takeoff(Cl_max_takeoff, k, sigma, W_S_max, fig);
 _, _ = W_S_cruise(A, Cd0, rho_cruise, sigma_cruise, v_cruise, W_S_max, fig);
-_ = W_S_climb_grad(c_v, Cd0, A, e, W_S_max, N_engines, fig);
+_ = W_S_climb_grad(Cd0, A, e, W_S_max, N_engines, fig);
 #_, _ = W_S_maneuvering(n, Cd0, rho0, v_stall_landing, A, e, W_S_max, fig);
 
 plt.grid(True);

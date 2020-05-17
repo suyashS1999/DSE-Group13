@@ -104,11 +104,10 @@ def W_S_cruise(A, CD0, rho_cruise, sigma, v_cruise, W_S_max, fig):
 		plt.plot(x, y, "--", label = "Aspect Ratio for cruise = " + str(A));
 	return x, y;
 
-def W_S_climb_grad(c_v, Cd0, A, e, W_S_max, N_engines, fig):
+def W_S_climb_grad(Cd0, A, e, W_S_max, N_engines, fig):
 	""" This function computes the Wing Loading to meet the set climb gradient
 		requirment, c_v in a one engine inoerative case
 	Input:
-		c_v = required climb gradent divied by velocity [rad*s/m] (float)
 		Cd0 = zero lift drag coefficient [-] (float)
 		A = Aspect ratio [-] (float or array)
 		e = Ozwald efficiency [-] (float)
@@ -123,16 +122,28 @@ def W_S_climb_grad(c_v, Cd0, A, e, W_S_max, N_engines, fig):
 	e_goaround = e + 0.1;
 	e_OEI = e + 0.05;
 
-	y_goaround = (c_v + 2*sqrt(Cd0_goaround/(pi*A*e_goaround)));
-	y_OEI = N_engines/(N_engines - 1)*(c_v + 2*sqrt(Cd0_OEI/(pi*A*e_OEI)));
+	if N_engines == 2:
+		c_v_OEI = 0.024; #CS25.121
+		c_v_goaround = 0.032 #CS25.121
+	elif N_engines == 3:
+		c_v_OEI = 0.027; #CS25.121
+		c_v_goaround = 0.032 #CS25.121
+	elif N_engines > 3:
+		c_v_OEI = 0.03 #CS25.121
+		c_v_goaround = 0.032 #CS25.121
+	else:
+		print("wrong definition of number of engines")
+
+	y_goaround = (c_v_goaround + 2*sqrt(Cd0_goaround/(pi*A*e_goaround)));
+	y_OEI = N_engines/(N_engines - 1)*(c_v_OEI + 2*sqrt(Cd0_OEI/(pi*A*e_OEI)));
 	plt.figure(fig.number);
 	try:
 		for i in range(len(y_goaround)):
-			plt.plot([0, W_S_max], [y_goaround[i], y_goaround[i]], label = "Aspect Ratio climb gradient = " + str(A[i]));
-			plt.plot([0, W_S_max], [y_OEI[i], y_OEI[i]], label = "Aspect Ratio (one engine inoperative) = " + str(A[i]));
+			plt.plot([0, W_S_max], [y_goaround[i], y_goaround[i]], label = "Aspect Ratio = " + str(A[i]));
+			plt.plot([0, W_S_max], [y_OEI[i], y_OEI[i]],label = "Aspect Ratio = " + str(A[i]));
 	except:
-		plt.plot([0, W_S_max], [y_goaround, y_goaround], label = "Aspect Ratio climb gradient = " + str(A));
-		plt.plot([0, W_S_max], [y_OEI, y_OEI], label = "Aspect Ratio (one engine inoperative) = " + str(A));
+		plt.plot([0, W_S_max], [y_goaround, y_goaround], label = "Aspect Ratio = " + str(A));
+		plt.plot([0, W_S_max], [y_OEI, y_OEI], label = "Aspect Ratio = " + str(A));
 	return y_goaround;
 
 def W_S_maneuvering(n, Cd0, rho, v_stall_landing, A, e, W_S_max, fig):
