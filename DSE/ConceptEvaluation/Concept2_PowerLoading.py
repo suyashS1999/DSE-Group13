@@ -11,13 +11,13 @@ rho0 = 1.225;							# Sea level air Density [kg/m^3]
 M = 0.78;								# Cruise mach number [-]
 ## ------------------------ INPUTS ------------------------
 h = 11000;								# Cruise altitude [m]
-MTOW = 80128*g;					# Max Take off Weight [N]
+MTOW = 82840*g;					# Max Take off Weight [N]
 MLW = 0.86*MTOW                         # Max Landing Weight [N]
-OEW = 44537*g;							# Operational empty weight [N]
+OEW = 45714*g;							# Operational empty weight [N]
 Payload_max = 20*1000*g;						# Payload weight [N]
 Max_Fuel_cap = 25*1000*g;
 cj = 1.69895e-05;								# Specific fuel consumption [kg/Ns]
-L_D = 16.7;										# Lift to drag ratio [-]
+L_D = 14.88;									# Lift to drag ratio [-]
 e = 0.794;								# Ozwald efficiency [-]
 landdis = 1800;							# Landing distance [m]
 Cd0 = 0.02139;							# Zero lift drag coefficient [-]
@@ -26,7 +26,7 @@ n_prop = 0.6                            # Propulsive efficiency (0.4-0.9)
 v_stall_landing = sqrt(landdis/0.5847);			# Stall speed calcuated emperically [m/s]
 rho_airport = 1.225;					# air density at runway altitude [kg/m^3]
 sigma = rho_airport/rho0;				# Density ratio [-]
-N_engines = 4;							# Number of engines [-]
+N_engines = 6;							# Number of engines [-]
 Cl_max = array([2.2, 2.4, 2.6]);				# Cl max values for assessment [-]
 Cl_max_takeoff = array([1.7, 1.9, 2.1]);	# Cl_max for take off [-]
 A = array([9, 10, 11]);					# Aspect ratio [-]
@@ -34,7 +34,7 @@ W_S_max = 7000;							# Max Wing Loading value, change this value if you want to
 n = 2.5;								# Maximum load factor [-]
 #%% ---------------------- Functions ----------------------
 
-def W_S_stall(v_stall_landing, Cl_max_landing, MLW_MTOW, fig):
+def W_S_stall(v_stall_landing, Cl_max_landing, MLW_MTOW, fig, font):
 	""" Function to compute the wing loading
 		for stall speeds
 	Input:
@@ -50,11 +50,13 @@ def W_S_stall(v_stall_landing, Cl_max_landing, MLW_MTOW, fig):
 	try:									# So that function can except both float and array values for Cl
 		for i in range(len(W_load_Stall)):
 			plt.plot([W_load_Stall[i], W_load_Stall[i]], [0, 1], label = "Cl land = " + str(Cl_max_landing[i]));
+		plt.text(5000, 0.35, 'Landing', fontdict=font)
 	except:
 		plt.plot([W_load_Stall, W_load_Stall], [0, 1], label = "Cl land = " + str(Cl_max_landing));
+		plt.text(5000, 0.35, 'Landing', fontdict=font)
 	return W_load_Stall;
 
-def W_S_takeoff(Cl_max_takeoff, k, sigma, W_S_max, fig):
+def W_S_takeoff(Cl_max_takeoff, k, sigma, W_S_max, fig, font):
 	""" Function assess take off performance
 	Ref Slide 26 Lecture 3 from ADSEE 1. Also refer to "TakeoffPerformance.png"
 	for the value of k.
@@ -77,12 +79,14 @@ def W_S_takeoff(Cl_max_takeoff, k, sigma, W_S_max, fig):
 		y = coeff.reshape(len(coeff), 1) / x;				# Wing Loading, W/S [N/m^2]
 		for i in range(len(coeff)):
 			plt.plot(x, y[i, :], label = "TOP = " + str(round_(k, 5)) + " , CL take off = " + str(round_(Cl_max_takeoff[i], 2)));
+		plt.text(550, 0.65, 'Take-off', fontdict=font)
 	except:
 		y = x*coeff;									# Wing Loading, W/S [N/m^2]
 		plt.plot(x, y, label = "TOP = " + str(round_(k, 5)) + " , CL take off = " + str(round_(Cl_max_takeoff, 2)));
+		plt.text(550, 0.65, 'Take-off', fontdict=font)
 	return x, y;
 
-def W_S_cruise(A, CD0, rho_cruise, sigma, v_cruise, n_prop, W_S_max, fig):
+def W_S_cruise(A, CD0, rho_cruise, sigma, v_cruise, n_prop, W_S_max, fig, font):
 	""" Function to assess Wing and Thrust loading during cruise
 	Input:
 		A = Aspect ratio [-] (float or array)
@@ -105,13 +109,15 @@ def W_S_cruise(A, CD0, rho_cruise, sigma, v_cruise, n_prop, W_S_max, fig):
 										((cru_weight*x)*1/(pi*A.reshape(len(A), 1)*e*0.5*rho_cruise*v_cruise)))**(-1);
 		for i in range(len(y)):
 			plt.plot(x, y[i, :], "--", label = "Aspect Ratio for cruise = " + str(A[i]));
+		plt.text(70, 0.04, 'Cruise Speed', fontdict=font)
 	except:
 		y = throttle/cru_weight*n_prop*rel_rho**(3/4)*((CD0*0.5*rho_cruise*v_cruise**3/(cru_weight*x)) +
 										((cru_weight*x)*1/(pi*A*e*0.5*rho_cruise*v_cruise)))**(-1);
 		plt.plot(x, y, "--", label = "Aspect Ratio for cruise = " + str(A));
+		plt.text(70, 0.04, 'Cruise Speed', fontdict=font)
 	return x, y;
 
-def W_S_climb_grad(Cl_max, Cl_max_takeoff, n_prop, Cd0, A, e, W_S_max, N_engines, fig):
+def W_S_climb_grad(Cl_max, Cl_max_takeoff, n_prop, Cd0, A, e, W_S_max, N_engines, fig, font):
 	""" This function computes the Wing Loading to meet the set climb gradient
 		requirment, c_v in a one engine inoerative case
 	Input:
@@ -139,7 +145,7 @@ def W_S_climb_grad(Cl_max, Cl_max_takeoff, n_prop, Cd0, A, e, W_S_max, N_engines
 	CL_OEI = Cl_max_takeoff/1.21
 	CL_OEI = CL_OEI.reshape(len(CL_OEI), 1)
 	CD_OEI = Cd0_OEI + CL_OEI**2/(pi*A.reshape(len(A), 1)*e_OEI)
-	CL_OEI = CD_OEI.reshape(len(CD_OEI), 1)
+	CD_OEI = CD_OEI.reshape(len(CD_OEI), 1)
 
 	if N_engines == 2:
 		c_v_OEI = 0.024; #CS25.121
@@ -157,24 +163,27 @@ def W_S_climb_grad(Cl_max, Cl_max_takeoff, n_prop, Cd0, A, e, W_S_max, N_engines
 	plt.figure(fig.number);
 
 
-
-
 	try:
 		y_goaround = n_prop/(sqrt(x)*(c_v_goaround+CD_goaround/CL_goaround)*sqrt(2/(1.225*CL_goaround)))
-		y_OEI = ((N_engines-1)/N_engines)*n_prop/(sqrt(x)*(c_v_OEI+CD_OEI/CL_OEI)*sqrt(2/(1.225*CL_OEI)))
+		y_OEI = (N_engines/(N_engines-1))*n_prop/(sqrt(x)*(c_v_OEI+CD_OEI/CL_OEI)*sqrt(2/(1.225*CL_OEI)))
 
 		for i in range(len(y_goaround)):
-			plt.plot(x, y_goaround[i, :], "--", label = "CL_max_land = " + str(Cl_max[i]));
-			plt.plot(x, y_OEI[i, :], "--", label = "CL_max_takeoff = " + str(Cl_max_takeoff[i]));
+			plt.plot(x, y_goaround[i, :], ":", label = "CL_max_land = " + str(Cl_max[i]));
+			plt.plot(x, y_OEI[i, :], "-.", label = "CL_max_takeoff = " + str(Cl_max_takeoff[i]));
+
+		plt.text(5400, 0.09, 'Climb Gradient OEI', fontdict=font)
+		plt.text(5200, 0.015, 'Climb Gradient Go-Around', fontdict=font)
 	except:
 		y_goaround = n_prop/(sqrt(x)*(c_v_goaround+CD_goaround/CL_goaround)*sqrt(2/(1.225*CL_goaround)))
-		y_OEI = ((N_engines-1)/N_engines)*n_prop/(sqrt(x)*(c_v_OEI+CD_OEI/CL_OEI)*sqrt(2/(1.225*CL_OEI)))
+		y_OEI = (N_engines/(N_engines-1))*n_prop/(sqrt(x)*(c_v_OEI+CD_OEI/CL_OEI)*sqrt(2/(1.225*CL_OEI)))
 
-		plt.plot(x, y_goaround[i, :], "--", label = "CL_max_land = " + str(Cl_max[i]));
-		plt.plot(x, y_OEI[i, :], "--", label = "CL_max_takeoff = " + str(Cl_max_takeoff[i]));
-	return y_goaround;
+		plt.plot(x, y_goaround[i, :], "-.", label = "CL_max_land = " + str(Cl_max[i]));
+		plt.plot(x, y_OEI[i, :], "-.", label = "CL_max_takeoff = " + str(Cl_max_takeoff[i]));
+		plt.text(5400, 0.03, 'Climb Gradient OEI', fontdict=font)
+		plt.text(5400, 0.01, 'Climb Gradient Go-Around', fontdict=font)
+	return y_goaround, CD_OEI, CD_goaround;
 
-def W_S_maneuvering(n, Cd0, rho, v_stall_landing, A, e, W_S_max, fig):
+def W_S_maneuvering(n, Cd0, rho, v_stall_landing, A, e, W_S_max, fig, font):
 	""" This function computes the Wing Loading to meet the maneuvering
 		requirment, given a max load factor of n
 	Input:
@@ -204,17 +213,20 @@ def W_S_maneuvering(n, Cd0, rho, v_stall_landing, A, e, W_S_max, fig):
 T, p, rho_cruise, a = ISA_trop(h);
 sigma_cruise = rho_cruise/rho0;			# Density ratio [-]
 v_cruise = M*a;							# Cruise speed [m/s]
-PayloadRangeDiagram_JET(MTOW, OEW, Payload_max, 0.1, Max_Fuel_cap, (g, M, a, cj, L_D));
-
-
+PayloadRangeDiagram_JET(MTOW, OEW, Payload_max, 0.1,0.99,0.6, Max_Fuel_cap, (g, M, a, cj, L_D));
 
 fig = plt.figure(figsize = (10, 8));
+font = {'family': 'serif',
+        'color':  'black',
+        'weight': 'bold',
+        'size': 9,
+        }
 MLW_MTOW = MLW / MTOW
-_ = W_S_stall(v_stall_landing, Cl_max, MLW_MTOW, fig);
-_, _ = W_S_takeoff(Cl_max_takeoff, k, sigma, W_S_max, fig);
-_, _ = W_S_cruise(A, Cd0, rho_cruise, sigma_cruise, v_cruise, n_prop, W_S_max, fig);
-_ = W_S_climb_grad(Cl_max, Cl_max_takeoff, n_prop, Cd0, A, e, W_S_max, N_engines, fig);
-#_, _ = W_S_maneuvering(n, Cd0, rho0, v_stall_landing, A, e, W_S_max, fig);
+_ = W_S_stall(v_stall_landing, Cl_max, MLW_MTOW, fig, font);
+_, _ = W_S_takeoff(Cl_max_takeoff, k, sigma, W_S_max, fig, font);
+_, _ = W_S_cruise(A, Cd0, rho_cruise, sigma_cruise, v_cruise, n_prop, W_S_max, fig, font);
+_,CD_to,CD_land = W_S_climb_grad(Cl_max, Cl_max_takeoff, n_prop, Cd0, A, e, W_S_max, N_engines, fig, font);
+#_, _ = W_S_maneuvering(n, Cd0, rho0, v_stall_landing, A, e, W_S_max, fig, font);
 
 plt.grid(True);
 plt.axis([0, W_S_max, 0, 1]);

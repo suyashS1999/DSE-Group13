@@ -31,10 +31,14 @@
     <Compile Include="ConceptEvaluation\Concept2.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ConceptEvaluation\Concept2_PowerLoading.py" />
     <Compile Include="ConceptEvaluation\Concept3.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ConceptEvaluation\PayloadRangeDiagram.py" />
+    <Compile Include="ConceptEvaluation\Verification.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ConceptEvaluation\WingandThrustLoadingDiagrams.py" />
     <Compile Include="Controls\Controls_module.py" />
     <Compile Include="Controls\Controls_module1.py" />
