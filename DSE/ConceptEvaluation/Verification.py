@@ -41,7 +41,7 @@ fig = plt.figure(figsize = (10, 8));
 _ = W_S_stall(v_stall_landing, Cl_max, MLW/MTOW, fig);
 _, _ = W_S_takeoff(Cl_max_takeoff, k, sigma, W_S_max, fig);
 _, _ = W_S_cruise(A, Cd0, rho_cruise, sigma_cruise, v_cruise, W_S_max, fig);
-_ = W_S_climb_grad(c_v, Cd0, A, e, W_S_max, N_engines, fig);
+_ = W_S_climb_grad(Cd0, A, e, W_S_max, N_engines, fig);
 #_, _ = W_S_maneuvering(n, Cd0, rho0, v_stall_landing, A, e, W_S_max, fig);
 
 plt.grid(True);
