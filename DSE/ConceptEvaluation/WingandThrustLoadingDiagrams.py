@@ -93,6 +93,7 @@ def W_S_cruise(A, CD0, rho_cruise, sigma, v_cruise, W_S_max, fig):
 	rel_rho = 1/sigma;
 	x = linspace(1, W_S_max, 1000);
 	plt.figure(fig.number);
+
 	try:
 		y = cru_weight/throttle*rel_rho**(3/4)*((CD0*0.5*rho_cruise*v_cruise**2/(cru_weight*x)) +
 										((cru_weight*x)*1/(pi*A.reshape(len(A), 1)*e*0.5*rho_cruise*v_cruise**2)));
@@ -137,13 +138,15 @@ def W_S_climb_grad(Cd0, A, e, W_S_max, N_engines, fig):
 	y_goaround = (c_v_goaround + 2*sqrt(Cd0_goaround/(pi*A*e_goaround)));
 	y_OEI = N_engines/(N_engines - 1)*(c_v_OEI + 2*sqrt(Cd0_OEI/(pi*A*e_OEI)));
 	plt.figure(fig.number);
+	AR_colours=['lightgray','silver','gray'];
+
 	try:
 		for i in range(len(y_goaround)):
-			plt.plot([0, W_S_max], [y_goaround[i], y_goaround[i]], label = "Aspect Ratio = " + str(A[i]));
-			plt.plot([0, W_S_max], [y_OEI[i], y_OEI[i]],label = "Aspect Ratio = " + str(A[i]));
+			plt.plot([0, W_S_max], [y_goaround[i], y_goaround[i]], AR_colours[i], label = "Aspect Ratio = " + str(A[i]));
+			plt.plot([0, W_S_max], [y_OEI[i], y_OEI[i]], AR_colours[i]);
 	except:
-		plt.plot([0, W_S_max], [y_goaround, y_goaround], label = "Aspect Ratio = " + str(A));
-		plt.plot([0, W_S_max], [y_OEI, y_OEI], label = "Aspect Ratio = " + str(A));
+		plt.plot([0, W_S_max], [y_goaround, y_goaround], AR_colours[i], label = "Aspect Ratio = " + str(A));
+		plt.plot([0, W_S_max], [y_OEI, y_OEI], AR_colours[i]);
 	return y_goaround;
 
 def W_S_maneuvering(n, Cd0, rho, v_stall_landing, A, e, W_S_max, fig):

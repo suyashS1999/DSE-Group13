@@ -45,8 +45,9 @@ _ = W_S_climb_grad(Cd0, A, e, W_S_max, N_engines, fig);
 #_, _ = W_S_maneuvering(n, Cd0, rho0, v_stall_landing, A, e, W_S_max, fig);
 
 plt.grid(True);
-plt.axis([0, W_S_max, 0, 1]);
-plt.legend();
+plt.title("Thrust Loading vs Wing Loading (Concept 2)");
+plt.axis([0, W_S_max, 0, 0.5]);
+plt.legend(bbox_to_anchor=(0, 1), loc='upper left');
 plt.xlabel("Wing Loading [N/m^2]");
 plt.ylabel("Thrust Loading [-]");
 plt.show();
