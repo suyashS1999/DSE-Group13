@@ -10,7 +10,7 @@ MTOW = 75439.70232*g;							# Max Take off Weight [N]
 MLW = 0.86*MTOW									# Max Landing Weight [N]
 OEW = 42502.8308*g;							# Operational empty weight [N]
 Payload_max = 20*1000*g;						# Payload weight [N]
-Max_Fuel_cap = 17*1000*g;						# Max fuel weight [N]
+Max_Fuel_cap = 18*1000*g;						# Max fuel weight [N]
 cj = 1.48e-05;									# Specific fuel consumption [kg/Ns]
 L_D = 22.19068977;										# Lift to drag ratio [-]
 h = 11000;										# Cruise altitude [m]
@@ -28,14 +28,14 @@ Cl_max_takeoff = array([1.7,1.9,2.1]);		# Cl_max for take off [-]
 A = array([16,17,18]);						# Aspect ratio [-]
 W_S_max = 7000;									# Max Wing Loading value, change this value if you want to change the range of wing loading values you want to assess [N/m^2]
 n = 2.5;										# Maximum load factor [-]
-reserve_fuel_frac = 0.1114487046;						# Reserve fuel fraction [-]
-pre_cruise_fuel_frac = 0.2632833407;					# Pre cruise fuel fraction [-]
-post_cruise_fuel_frac = 0.09018733815;					# Post cruise fuel fraction [-]
+reserve_fuel_frac = 0.1113123381;						# Reserve fuel fraction [-]
+pre_cruise_fuel_frac = 0.2583559351;					# Pre cruise fuel fraction [-]
+post_cruise_fuel_frac = 0.08815796594;					# Post cruise fuel fraction [-]
 #%% ------------------------ Main ------------------------
 T, p, rho_cruise, a = ISA_trop(h);
 sigma_cruise = rho_cruise/rho0;			# Density ratio [-]
 v_cruise = M*a;							# Cruise speed
-#PayloadRangeDiagram_JET(MTOW, OEW, Payload_max, reserve_fuel_frac, pre_cruise_fuel_frac, post_cruise_fuel_frac, Max_Fuel_cap, (g, M, a, cj, L_D));
+PayloadRangeDiagram_JET(MTOW, OEW, Payload_max, reserve_fuel_frac, pre_cruise_fuel_frac, post_cruise_fuel_frac, Max_Fuel_cap, (g, M, a, cj, L_D));
 
 fig = plt.figure(figsize = (10, 8));
 _ = W_S_stall(v_stall_landing, Cl_max, MLW/MTOW, fig);
