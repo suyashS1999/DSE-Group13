@@ -1,5 +1,5 @@
-from PayloadRangeDiagram import *
-from WingandThrustLoadingDiagrams import *
+from ConceptEvaluation.PayloadRangeDiagram import *
+from ConceptEvaluation.WingandThrustLoadingDiagrams import *
 
 #%% ---------------------- Constants ----------------------
 g = 9.81;										# Gravitaional acceleration [m/s^2]
