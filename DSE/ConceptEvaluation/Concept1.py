@@ -1,18 +1,19 @@
 from PayloadRangeDiagram import*
 from WingandThrustLoadingDiagrams import*
 
+#Temporarily this acts as the performance analysis tool of the Braced wing + BLI combined, handled by the performance group
 #%% ---------------------- Constants ----------------------
 g = 9.81;										# Gravitaional acceleration [m/s^2]
 rho0 = 1.225;									# Sea level air Density [kg/m^3]
 M = 0.78;										# Cruise mach number [-]
 #%% ------------------------ INPUTS ------------------------
-MTOW = 79165.48507*g;							# Max Take off Weight [N]
+MTOW = 74616.9829*g;							# Max Take off Weight [N]
 MLW = 0.86*MTOW									# Max Landing Weight [N]
-OEW = 44119.82052*g;							# Operational empty weight [N]
+OEW = 42145.77058*g;							# Operational empty weight [N]
 Payload_max = 20*1000*g;						# Payload weight [N]
-Max_Fuel_cap = 20.03*1000*g;						# Max fuel weight [N]
-cj = 1.48e-05;									# Specific fuel consumption [kg/Ns]
-L_D = 18.77825959;										# Lift to drag ratio [-]
+Max_Fuel_cap = 16.4*1000*g;						# Max fuel weight [N]
+cj = 1.30E-05;									# Specific fuel consumption [kg/Ns]
+L_D = 20.41115173;										# Lift to drag ratio [-]
 h = 11000;										# Cruise altitude [m]
 e = 0.7023214054;										# Ozwald efficiency [-]
 landdis = 1800;									# Landing distance [m]
@@ -23,14 +24,14 @@ rho_airport = 1.225;							# air density at runway altitude [kg/m^3]
 sigma = rho_airport/rho0;						# Density ratio [-]
 N_engines = 2;									# Number of engines [-]
 #c_v = 0.012 (gradient now specified inside function) # Climb gradient divied by velocity [-]
-Cl_max = array([2.3,2.5,2.7]);				# Cl max values for assessment [-]
-Cl_max_takeoff = array([1.7,1.9,2.1]);		# Cl_max for take off [-]
-A = array([16,17,18]);						# Aspect ratio [-]
+Cl_max = array([2.4]);				# Cl max values for assessment [-]
+Cl_max_takeoff = array([2.0]);		# Cl_max for take off [-]
+A = array([17]);						# Aspect ratio [-]
 W_S_max = 7000;									# Max Wing Loading value, change this value if you want to change the range of wing loading values you want to assess [N/m^2]
 n = 2.5;										# Maximum load factor [-]
-reserve_fuel_frac = 0.1162668129;						# Reserve fuel fraction [-]
-pre_cruise_fuel_frac = 0.2331160867;					# Pre cruise fuel fraction [-]
-post_cruise_fuel_frac = 0.0777628308;					# Post cruise fuel fraction [-]
+reserve_fuel_frac = 0.1099369057;						# Reserve fuel fraction [-]
+pre_cruise_fuel_frac = 0.2650798726;					# Pre cruise fuel fraction [-]
+post_cruise_fuel_frac = 0.09092724717;					# Post cruise fuel fraction [-]
 #%% ------------------------ Main ------------------------
 T, p, rho_cruise, a = ISA_trop(h);
 sigma_cruise = rho_cruise/rho0;			# Density ratio [-]
