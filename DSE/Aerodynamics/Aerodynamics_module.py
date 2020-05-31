@@ -15,9 +15,9 @@ def XFLR5PolarDataextraction(path_polars, path_X):
 		X = chord location of the Cp values (array)
 		Cp_start_idx = array containing the indicies of where the first Cp value is for each AOA (array)
 	"""
-	polars = array(open(f_Polars).read().splitlines());
+	polars = array(open(path_polars).read().splitlines());
 	unwantedtxt = [polars[0], polars[1], polars[2], polars[3], polars[4], polars[6], polars[7]];
-	X = genfromtxt(f_X)[:, 0];
+	X = genfromtxt(path_X)[:, 0];
 
 	for i in range(len(unwantedtxt)):
 		idx = where(polars == unwantedtxt[i]);
@@ -39,7 +39,7 @@ def ApplyCompressibilityCorrection(M, C):
 		C = corrected quantity (same a input C)
 	"""
 	beta = (sqrt(1 - M**2));
-	coeff = 1/(beta)	# + (M**2/(1 + beta))*C/2);
+	coeff = 1/(beta)# + 0.5*(1 - beta)*C);	# + (M**2/(1 + beta))*C/2);
 	return C*coeff;
 
 def ComputeLocalPressure(M, Cp, p_inf, gamma, ratio):
@@ -84,6 +84,8 @@ M = 0.78;				# Freestream Mach
 p_inf = 100000.;		# Freestream staic pressure
 gamma = 1.4;			# ratio of specific heats
 
+aoa = 2;				# Specify the aoa you want to analyse
+print("Specified Angle of attack: {} degrees".format(aoa));
 polars, X, Cp_start_idx = XFLR5PolarDataextraction(f_Polars, f_X);
 data = vstack((polars)[Cp_start_idx - 1]);
 AOA = data[:, 0];
@@ -105,26 +107,26 @@ fig = plt.figure(figsize = (16, 16));
 ax1 = plt.subplot(2, 2, 1);
 ax1.plot(AOA, Cl, label = "Incompressible");
 ax1.plot(AOA, Cl_comp, 'r', label = "Compressible M =" + str(M));
-ax1.set_xlabel("alpha [degrees]")
-ax1.set_ylabel("Cl [-]")
+ax1.set_xlabel("alpha [degrees]");
+ax1.set_ylabel("Cl [-]");
 
 ax2 = plt.subplot(2, 2, 2);
 ax2.plot(AOA, Cd, label = "Incompressible");
 ax2.plot(AOA, Cd_comp, 'r', label = "Compressible M =" + str(M));
-ax2.set_xlabel("alpha [degrees]")
-ax2.set_ylabel("Cd [-]")
+ax2.set_xlabel("alpha [degrees]");
+ax2.set_ylabel("Cd [-]");
 
 ax3 = plt.subplot(2, 2, 3);
 ax3.plot(AOA, Cm, label = "Incompressible");
 ax3.plot(AOA, Cm_comp, 'r', label = "Compressible M =" + str(M));
-ax3.set_xlabel("alpha [degrees]")
-ax3.set_ylabel("Cm [-]")
+ax3.set_xlabel("alpha [degrees]");
+ax3.set_ylabel("Cm [-]");
 
 ax4 = plt.subplot(2, 2, 4);
 ax4.plot(Cd, Cl, label = "Incompressible");
 ax4.plot(Cd_comp, Cl_comp, 'r', label = "Compressible M =" + str(M));
-ax4.set_xlabel("Cd [-]")
-ax4.set_ylabel("Cl [-]")
+ax4.set_xlabel("Cd [-]");
+ax4.set_ylabel("Cl [-]");
 ax1.grid(True);
 ax2.grid(True);
 ax3.grid(True);
@@ -134,7 +136,6 @@ ax2.legend();
 ax3.legend();
 ax4.legend();
 
-aoa = int(input("Specify Angle of attack (limited to small AOA):"));
 req_idx = where(AOA == aoa);
 cp = CP[:, req_idx].reshape(1, -1)[0];
 cp_comp = ApplyCompressibilityCorrection(M, cp);
