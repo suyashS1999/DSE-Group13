@@ -111,7 +111,6 @@
     <Content Include="Aerodynamics\OpenVSPSimData\sweep20.history" />
     <Content Include="Aerodynamics\OpenVSPSimData\sweep20.lod" />
     <Content Include="Aerodynamics\OpenVSPSimData\sweep20.polar" />
-    <Content Include="Aerodynamics\OpenVSPSimData\sweep20.vspaero" />
     <Content Include="Aerodynamics\OpenVSPSimData\sweep30.adb" />
     <Content Include="Aerodynamics\OpenVSPSimData\sweep30.adb.cases" />
     <Content Include="Aerodynamics\OpenVSPSimData\sweep30.csv" />
@@ -120,7 +119,6 @@
     <Content Include="Aerodynamics\OpenVSPSimData\sweep30.history" />
     <Content Include="Aerodynamics\OpenVSPSimData\sweep30.lod" />
     <Content Include="Aerodynamics\OpenVSPSimData\sweep30.polar" />
-    <Content Include="Aerodynamics\OpenVSPSimData\sweep30.vspaero" />
     <Content Include="Aerodynamics\Polars.txt" />
     <Content Include="Aerodynamics\Polars2.txt" />
     <Content Include="Aerodynamics\x_col.txt" />

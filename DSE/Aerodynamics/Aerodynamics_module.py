@@ -4,6 +4,7 @@ from matplotlib import pyplot as plt
 flow and predicts Mach number over airfoil. Note, the code used linearized theory for 
 compressible flow thus this analysis is only valid for small pertubations ie. small AOA.
 """
+#%% ------------------- Functions -------------------
 def XFLR5PolarDataextraction(path_polars, path_X):
 	""" This function extracts the simulation data from 
 		the .txt files generated with XFLR5 software for 2D airfoil simulation
@@ -76,7 +77,7 @@ def IsentropicRelation(gamma, ratio_value, P_or_T_ratio):
 	M = sqrt((ratio_value - 1)*2/(gamma - 1));
 	return M;
 
-#%% Input data
+#%% ------------------- Input data -------------------
 # These paths are specific to my PC, change path to your own directory, and don't forget the "r" at the start
 f_Polars = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Aerodynamics\Polars2.txt";
 f_X = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Aerodynamics\x_col.txt";
@@ -102,7 +103,7 @@ for i in range(len(AOA)):
 
 CP = CP_v;
 
-#%% Plots
+#%%  ------------------- Plots -------------------
 fig = plt.figure(figsize = (16, 16));
 ax1 = plt.subplot(2, 2, 1);
 ax1.plot(AOA, Cl, label = "Incompressible");
