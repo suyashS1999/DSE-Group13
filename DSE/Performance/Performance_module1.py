@@ -18,27 +18,43 @@ h_cruise = 11000                # Altitude in cruise [m]
 MTOW = 74616.9829                   # MTOW [kg]
 S_ref =  142.520611                 # Reference wing area [m^2]
 CL_max_clean = 1.5                  # DUMMY Max CL with clean configuration [-]
-CL_min_clean = -0.8*CL_max_clean    # DUMMY negative Max CL with clean configuration [-]
-CL_max_flap = 2.0                   # MAX CL with LANDING CONFIGURATION (need to be determined) [-]
+CL_min_clean = -CL_max_clean       # Assumed same magnitude, negative Max CL with clean configuration [-] (not so critical)
+CL_max_flap = 2.0                   # MAX CL with LANDING CONFIGURATION [-]
 n_max = 2.5                         # Positive limit maneuvering load factor [-]
 n_min = -1                          # Negative limit maneuvering load factor [-]
 n_flap = 2                          # Assumed (from 2nd year project guide)
+
+CL_alpha = 6                        # (DUMMY) CL alpha gradient [-/rad]
+W_S = 5262                          # Wing loading [N/m^2]
+c = 6                               # Mean geometrical chord [m]
 #%% ---------------------- Functions ----------------------
+def relevant_V(W_cruise):
+    """
+    This function outputs all the relevant characteristic velocities
+    These are stall speeds, maneuver speeds, cruise speeds, dive speeds
+    All of these velocities are EAS!!!
+    Input is he weight of the aircraft [N]
+    """
+    V_stall_clean = np.sqrt(W_cruise/S_ref*2/rho0/CL_max_clean)     # Stall speed EAS [m/s]
+    V_stall_flap = np.sqrt(W_cruise/S_ref*2/rho0/CL_max_flap)       # Stall speed EAS with flaps extended
+    V_maneuver = V_stall_clean*np.sqrt(n_max)                       # Maneuver speed EAS [m/s]
+    V_neg_stall_clean = np.sqrt(W_cruise/S_ref*2/rho0/-CL_min_clean)# Limiting velocity when n = -1 [m/s]
+    V_cruise = a0*M_cruise*np.sqrt(p/p0)                            # Cruise speed EAS [m/s]
+    V_dive = V_cruise/0.8                                           # Dive speed EAS [m/s]
+    return (V_stall_flap, V_stall_clean, V_neg_stall_clean, V_maneuver, V_cruise, V_dive)
 
-
-
+def gust_n(V_EAS, U_EAS):
+    """
+    This function gives the limiting load factors due to gust with given velocity
+    """
+    delta_n = K_g*CL_alpha*rho0*U_EAS*V_EAS/(2*W_S)
+    return (delta_n)
+    
 #%% ---------------------- Main ----------------------
 T, p, rho, a = ISA_trop(h_cruise)
 T0, p0, rho0, a0 = ISA_trop(0)
-
-W_cruise = MTOW*g;                                          # For now I assume W is MTOW during cruise
-V_stall_clean = np.sqrt(W_cruise/S_ref*2/rho0/CL_max_clean) # Stall speed EAS [m/s]
-V_stall_flap = np.sqrt(W_cruise/S_ref*2/rho0/CL_max_flap)   # DUMMY Stall speed EAS with flaps extended
-V_maneuver = V_stall_clean*np.sqrt(n_max)                   # Maneuver speed EAS [m/s]
-V_cruise = a0*M_cruise*np.sqrt(p/p0)                        # Cruise speed EAS [m/s]
-V_dive = V_cruise/0.8                                       # Dive speed EAS [m/s]
-V_neg_stall_clean = np.sqrt(W_cruise/S_ref*2/rho0/-CL_min_clean)
-V_max_flap = 0.85*V_maneuver                                 # Max speed with flaps extended
+V_stall_flap, V_stall_clean, V_neg_stall_clean, V_maneuver, V_cruise, V_dive = relevant_V(MTOW*g) # For now I assume W is MTOW during cruise
+V_max_flap = 1.8*1.05*V_stall_flap                                 # Max speed with flaps extended EAS [m/s]
 
 #Maneuver envelope
 fig = plt.figure(figsize = (12, 8))
@@ -85,3 +101,30 @@ plt.vlines(x = V_stall_flap, ymin = 0, ymax = 2, linestyles = "--")
 plt.text(V_stall_flap, 0, '$V_{S0}$', ha='left', va='bottom')
 plt.vlines(x = V_maneuver, ymin = 0, ymax = (V_maneuver/V_stall_clean)**2, linestyles = "--")
 plt.text(V_maneuver, 0, '$V_A$', ha='left', va='bottom')
+
+
+###Gust envelope###
+w = W_S*0.020885439                                         # W/S [lb/ft^2]
+mu = 2*w/(rho*0.0019403203*c/0.3048*CL_alpha*g/0.3048)
+K_g = 0.88*mu/(5.3+mu)                                      # Gust alleviation factor [-]
+dU_refdH = (7.92-13.41)/(15240-4572)                        # U_ref relation with altititude higher than 4572 m [m/s /m]
+U_ref = ((h_cruise-4572)*dU_refdH+13.41)/0.3048             # Gust reference velocity [ft/s] (CS25. 341(5))
+V_alpha_max = V_stall_clean*(1+K_g*U_ref*V_cruise*1.94384*CL_alpha/(498*w))**(1/2) #[m/s]
+U_alpha_max = K_g*51*0.3048                                 # Statistical gust velocity high alpha TAS [m/s]
+U_cruise = K_g*36.5*0.3048                                  # Statistical gust velocity cruise TAS [m/s]
+U_dive = K_g*18.5*0.3048                                    # Statistical gust velocity dive TAS [m/s]
+U_gusts = np.array([U_alpha_max, U_cruise, U_dive])
+V_gusts = np.array([V_alpha_max, V_cruise, V_dive])
+n_gusts = gust_n(V_gusts, U_gusts)
+
+
+
+
+plt.plot([0,V_alpha_max, V_cruise, V_dive], [1, 1+n_gusts[0], 1+n_gusts[1], 1+n_gusts[2]], color = "black")
+plt.plot([0,V_alpha_max, V_cruise, V_dive], [1, 1-n_gusts[0], 1-n_gusts[1], 1-n_gusts[2]], color = "black")
+plt.plot([0, V_alpha_max], [1, 1+n_gusts[0]], "--", color = "black")
+plt.plot([0, V_cruise], [1, 1+n_gusts[1]], "--", color = "black")
+plt.plot([0, V_dive], [1, 1+n_gusts[2]], "--", color = "black")
+plt.plot([0, V_alpha_max], [1, 1-n_gusts[0]], "--", color = "black")
+plt.plot([0, V_cruise], [1, 1-n_gusts[1]], "--", color = "black")
+plt.plot([0, V_dive], [1, 1-n_gusts[2]], "--", color = "black")
