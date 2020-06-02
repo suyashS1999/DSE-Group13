@@ -1,0 +1,510 @@
+***************************************************************************************************************************************************************************************** 
+
+# Name                   Value      Units             
+Sref_                 142.5206110 Lunit^2             
+Cref_                   2.8954390 Lunit               
+Bref_                  49.2224580 Lunit               
+Xcg_                    5.9952620 Lunit               
+Ycg_                   -0.0000000 Lunit               
+Zcg_                    0.0000000 Lunit               
+Mach_                   0.4000000 no_unit             
+AoA_                   -5.0000000 deg                 
+Beta_                   0.0000000 deg                 
+Rho_                    1.2250000 Munit/Lunit^3       
+Vinf_                 100.0000000 Lunit/Tunit         
+Roll__Rate              0.0000000 rad/Tunit           
+Pitch_Rate              0.0000000 rad/Tunit           
+Yaw___Rate              0.0000000 rad/Tunit           
+
+
+
+Solver Case: 1 
+
+  Iter      Mach       AoA      Beta       CL         CDo       CDi      CDtot      CS        L/D        E        CFx       CFy       CFz       CMx       CMy       CMz       T/QS 
+        1   0.40000  -5.00000   0.00000  -0.44211   0.00331   0.00423   0.00754   0.00000 -58.64727   0.86470  -0.03660   0.00000  -0.44060   0.00000  -0.03922  -0.00000   0.00000
+
+
+
+Skin Friction Drag Break Out:
+
+
+Surface                                      CDo 
+
+Main Wing                                   0.00165 
+Main Wing                                   0.00165 
+***************************************************************************************************************************************************************************************** 
+
+# Name                   Value      Units             
+Sref_                 142.5206110 Lunit^2             
+Cref_                   2.8954390 Lunit               
+Bref_                  49.2224580 Lunit               
+Xcg_                    5.9952620 Lunit               
+Ycg_                   -0.0000000 Lunit               
+Zcg_                    0.0000000 Lunit               
+Mach_                   0.4000000 no_unit             
+AoA_                   -3.9290000 deg                 
+Beta_                   0.0000000 deg                 
+Rho_                    1.2250000 Munit/Lunit^3       
+Vinf_                 100.0000000 Lunit/Tunit         
+Roll__Rate              0.0000000 rad/Tunit           
+Pitch_Rate              0.0000000 rad/Tunit           
+Yaw___Rate              0.0000000 rad/Tunit           
+
+
+
+Solver Case: 2 
+
+  Iter      Mach       AoA      Beta       CL         CDo       CDi      CDtot      CS        L/D        E        CFx       CFy       CFz       CMx       CMy       CMz       T/QS 
+        1   0.40000  -3.92900   0.00000  -0.34845   0.00285   0.00262   0.00546   0.00000 -63.80627   0.86920  -0.02268   0.00000  -0.34771   0.00000  -0.03090  -0.00000   0.00000
+
+
+
+Skin Friction Drag Break Out:
+
+
+Surface                                      CDo 
+
+Main Wing                                   0.00142 
+Main Wing                                   0.00142 
+***************************************************************************************************************************************************************************************** 
+
+# Name                   Value      Units             
+Sref_                 142.5206110 Lunit^2             
+Cref_                   2.8954390 Lunit               
+Bref_                  49.2224580 Lunit               
+Xcg_                    5.9952620 Lunit               
+Ycg_                   -0.0000000 Lunit               
+Zcg_                    0.0000000 Lunit               
+Mach_                   0.4000000 no_unit             
+AoA_                   -2.8570000 deg                 
+Beta_                   0.0000000 deg                 
+Rho_                    1.2250000 Munit/Lunit^3       
+Vinf_                 100.0000000 Lunit/Tunit         
+Roll__Rate              0.0000000 rad/Tunit           
+Pitch_Rate              0.0000000 rad/Tunit           
+Yaw___Rate              0.0000000 rad/Tunit           
+
+
+
+Solver Case: 3 
+
+  Iter      Mach       AoA      Beta       CL         CDo       CDi      CDtot      CS        L/D        E        CFx       CFy       CFz       CMx       CMy       CMz       T/QS 
+        1   0.40000  -2.85700   0.00000  -0.25394   0.00249   0.00138   0.00387   0.00000 -65.59171   0.87260  -0.01203   0.00000  -0.25366   0.00000  -0.02252  -0.00000   0.00000
+
+
+
+Skin Friction Drag Break Out:
+
+
+Surface                                      CDo 
+
+Main Wing                                   0.00124 
+Main Wing                                   0.00124 
+***************************************************************************************************************************************************************************************** 
+
+# Name                   Value      Units             
+Sref_                 142.5206110 Lunit^2             
+Cref_                   2.8954390 Lunit               
+Bref_                  49.2224580 Lunit               
+Xcg_                    5.9952620 Lunit               
+Ycg_                   -0.0000000 Lunit               
+Zcg_                    0.0000000 Lunit               
+Mach_                   0.4000000 no_unit             
+AoA_                   -1.7860000 deg                 
+Beta_                   0.0000000 deg                 
+Rho_                    1.2250000 Munit/Lunit^3       
+Vinf_                 100.0000000 Lunit/Tunit         
+Roll__Rate              0.0000000 rad/Tunit           
+Pitch_Rate              0.0000000 rad/Tunit           
+Yaw___Rate              0.0000000 rad/Tunit           
+
+
+
+Solver Case: 4 
+
+  Iter      Mach       AoA      Beta       CL         CDo       CDi      CDtot      CS        L/D        E        CFx       CFy       CFz       CMx       CMy       CMz       T/QS 
+        1   0.40000  -1.78600   0.00000  -0.15899   0.00224   0.00054   0.00278   0.00000 -57.17870   0.87491  -0.00471   0.00000  -0.15893   0.00000  -0.01411  -0.00000   0.00000
+
+
+
+Skin Friction Drag Break Out:
+
+
+Surface                                      CDo 
+
+Main Wing                                   0.00112 
+Main Wing                                   0.00112 
+***************************************************************************************************************************************************************************************** 
+
+# Name                   Value      Units             
+Sref_                 142.5206110 Lunit^2             
+Cref_                   2.8954390 Lunit               
+Bref_                  49.2224580 Lunit               
+Xcg_                    5.9952620 Lunit               
+Ycg_                   -0.0000000 Lunit               
+Zcg_                    0.0000000 Lunit               
+Mach_                   0.4000000 no_unit             
+AoA_                   -0.7140000 deg                 
+Beta_                   0.0000000 deg                 
+Rho_                    1.2250000 Munit/Lunit^3       
+Vinf_                 100.0000000 Lunit/Tunit         
+Roll__Rate              0.0000000 rad/Tunit           
+Pitch_Rate              0.0000000 rad/Tunit           
+Yaw___Rate              0.0000000 rad/Tunit           
+
+
+
+Solver Case: 5 
+
+  Iter      Mach       AoA      Beta       CL         CDo       CDi      CDtot      CS        L/D        E        CFx       CFy       CFz       CMx       CMy       CMz       T/QS 
+        1   0.40000  -0.71400   0.00000  -0.06363   0.00210   0.00009   0.00219   0.00000 -29.03746   0.87612  -0.00076   0.00000  -0.06362   0.00000  -0.00569  -0.00000   0.00000
+
+
+
+Skin Friction Drag Break Out:
+
+
+Surface                                      CDo 
+
+Main Wing                                   0.00105 
+Main Wing                                   0.00105 
+***************************************************************************************************************************************************************************************** 
+
+# Name                   Value      Units             
+Sref_                 142.5206110 Lunit^2             
+Cref_                   2.8954390 Lunit               
+Bref_                  49.2224580 Lunit               
+Xcg_                    5.9952620 Lunit               
+Ycg_                   -0.0000000 Lunit               
+Zcg_                    0.0000000 Lunit               
+Mach_                   0.4000000 no_unit             
+AoA_                    0.3570000 deg                 
+Beta_                   0.0000000 deg                 
+Rho_                    1.2250000 Munit/Lunit^3       
+Vinf_                 100.0000000 Lunit/Tunit         
+Roll__Rate              0.0000000 rad/Tunit           
+Pitch_Rate              0.0000000 rad/Tunit           
+Yaw___Rate              0.0000000 rad/Tunit           
+
+
+
+Solver Case: 6 
+
+  Iter      Mach       AoA      Beta       CL         CDo       CDi      CDtot      CS        L/D        E        CFx       CFy       CFz       CMx       CMy       CMz       T/QS 
+        1   0.40000   0.35700   0.00000   0.03182   0.00209   0.00002   0.00211  -0.00000  15.10258   0.87635  -0.00019  -0.00000   0.03182  -0.00000   0.00285  -0.00000   0.00000
+
+
+
+Skin Friction Drag Break Out:
+
+
+Surface                                      CDo 
+
+Main Wing                                   0.00104 
+Main Wing                                   0.00104 
+***************************************************************************************************************************************************************************************** 
+
+# Name                   Value      Units             
+Sref_                 142.5206110 Lunit^2             
+Cref_                   2.8954390 Lunit               
+Bref_                  49.2224580 Lunit               
+Xcg_                    5.9952620 Lunit               
+Ycg_                   -0.0000000 Lunit               
+Zcg_                    0.0000000 Lunit               
+Mach_                   0.4000000 no_unit             
+AoA_                    1.4290000 deg                 
+Beta_                   0.0000000 deg                 
+Rho_                    1.2250000 Munit/Lunit^3       
+Vinf_                 100.0000000 Lunit/Tunit         
+Roll__Rate              0.0000000 rad/Tunit           
+Pitch_Rate              0.0000000 rad/Tunit           
+Yaw___Rate              0.0000000 rad/Tunit           
+
+
+
+Solver Case: 7 
+
+  Iter      Mach       AoA      Beta       CL         CDo       CDi      CDtot      CS        L/D        E        CFx       CFy       CFz       CMx       CMy       CMz       T/QS 
+        1   0.40000   1.42900   0.00000   0.12726   0.00218   0.00035   0.00253   0.00000  50.33389   0.87543  -0.00302   0.00000   0.12723  -0.00000   0.01131  -0.00000   0.00000
+
+
+
+Skin Friction Drag Break Out:
+
+
+Surface                                      CDo 
+
+Main Wing                                   0.00109 
+Main Wing                                   0.00109 
+***************************************************************************************************************************************************************************************** 
+
+# Name                   Value      Units             
+Sref_                 142.5206110 Lunit^2             
+Cref_                   2.8954390 Lunit               
+Bref_                  49.2224580 Lunit               
+Xcg_                    5.9952620 Lunit               
+Ycg_                   -0.0000000 Lunit               
+Zcg_                    0.0000000 Lunit               
+Mach_                   0.4000000 no_unit             
+AoA_                    2.5000000 deg                 
+Beta_                   0.0000000 deg                 
+Rho_                    1.2250000 Munit/Lunit^3       
+Vinf_                 100.0000000 Lunit/Tunit         
+Roll__Rate              0.0000000 rad/Tunit           
+Pitch_Rate              0.0000000 rad/Tunit           
+Yaw___Rate              0.0000000 rad/Tunit           
+
+
+
+Solver Case: 8 
+
+  Iter      Mach       AoA      Beta       CL         CDo       CDi      CDtot      CS        L/D        E        CFx       CFy       CFz       CMx       CMy       CMz       T/QS 
+        1   0.40000   2.50000   0.00000   0.22234   0.00239   0.00106   0.00345   0.00000  64.40144   0.87349  -0.00922   0.00000   0.22215  -0.00000   0.01972  -0.00000   0.00000
+
+
+
+Skin Friction Drag Break Out:
+
+
+Surface                                      CDo 
+
+Main Wing                                   0.00120 
+Main Wing                                   0.00120 
+***************************************************************************************************************************************************************************************** 
+
+# Name                   Value      Units             
+Sref_                 142.5206110 Lunit^2             
+Cref_                   2.8954390 Lunit               
+Bref_                  49.2224580 Lunit               
+Xcg_                    5.9952620 Lunit               
+Ycg_                   -0.0000000 Lunit               
+Zcg_                    0.0000000 Lunit               
+Mach_                   0.4000000 no_unit             
+AoA_                    3.5710000 deg                 
+Beta_                   0.0000000 deg                 
+Rho_                    1.2250000 Munit/Lunit^3       
+Vinf_                 100.0000000 Lunit/Tunit         
+Roll__Rate              0.0000000 rad/Tunit           
+Pitch_Rate              0.0000000 rad/Tunit           
+Yaw___Rate              0.0000000 rad/Tunit           
+
+
+
+Solver Case: 9 
+
+  Iter      Mach       AoA      Beta       CL         CDo       CDi      CDtot      CS        L/D        E        CFx       CFy       CFz       CMx       CMy       CMz       T/QS 
+        1   0.40000   3.57100   0.00000   0.31696   0.00271   0.00216   0.00488   0.00000  65.01399   0.87046  -0.01876   0.00000   0.31640  -0.00000   0.02811  -0.00000   0.00000
+
+
+
+Skin Friction Drag Break Out:
+
+
+Surface                                      CDo 
+
+Main Wing                                   0.00136 
+Main Wing                                   0.00136 
+***************************************************************************************************************************************************************************************** 
+
+# Name                   Value      Units             
+Sref_                 142.5206110 Lunit^2             
+Cref_                   2.8954390 Lunit               
+Bref_                  49.2224580 Lunit               
+Xcg_                    5.9952620 Lunit               
+Ycg_                   -0.0000000 Lunit               
+Zcg_                    0.0000000 Lunit               
+Mach_                   0.4000000 no_unit             
+AoA_                    4.6430000 deg                 
+Beta_                   0.0000000 deg                 
+Rho_                    1.2250000 Munit/Lunit^3       
+Vinf_                 100.0000000 Lunit/Tunit         
+Roll__Rate              0.0000000 rad/Tunit           
+Pitch_Rate              0.0000000 rad/Tunit           
+Yaw___Rate              0.0000000 rad/Tunit           
+
+
+
+Solver Case: 10 
+
+  Iter      Mach       AoA      Beta       CL         CDo       CDi      CDtot      CS        L/D        E        CFx       CFy       CFz       CMx       CMy       CMz       T/QS 
+        1   0.40000   4.64300   0.00000   0.41098   0.00314   0.00365   0.00679   0.00000  60.50875   0.86632  -0.03160   0.00000   0.40977  -0.00000   0.03645  -0.00000   0.00000
+
+
+
+Skin Friction Drag Break Out:
+
+
+Surface                                      CDo 
+
+Main Wing                                   0.00157 
+Main Wing                                   0.00157 
+***************************************************************************************************************************************************************************************** 
+
+# Name                   Value      Units             
+Sref_                 142.5206110 Lunit^2             
+Cref_                   2.8954390 Lunit               
+Bref_                  49.2224580 Lunit               
+Xcg_                    5.9952620 Lunit               
+Ycg_                   -0.0000000 Lunit               
+Zcg_                    0.0000000 Lunit               
+Mach_                   0.4000000 no_unit             
+AoA_                    5.7140000 deg                 
+Beta_                   0.0000000 deg                 
+Rho_                    1.2250000 Munit/Lunit^3       
+Vinf_                 100.0000000 Lunit/Tunit         
+Roll__Rate              0.0000000 rad/Tunit           
+Pitch_Rate              0.0000000 rad/Tunit           
+Yaw___Rate              0.0000000 rad/Tunit           
+
+
+
+Solver Case: 11 
+
+  Iter      Mach       AoA      Beta       CL         CDo       CDi      CDtot      CS        L/D        E        CFx       CFy       CFz       CMx       CMy       CMz       T/QS 
+        1   0.40000   5.71400   0.00000   0.50400   0.00367   0.00552   0.00919   0.00000  54.84171   0.86106  -0.04766   0.00000   0.50175  -0.00000   0.04471  -0.00000   0.00000
+
+
+
+Skin Friction Drag Break Out:
+
+
+Surface                                      CDo 
+
+Main Wing                                   0.00183 
+Main Wing                                   0.00183 
+***************************************************************************************************************************************************************************************** 
+
+# Name                   Value      Units             
+Sref_                 142.5206110 Lunit^2             
+Cref_                   2.8954390 Lunit               
+Bref_                  49.2224580 Lunit               
+Xcg_                    5.9952620 Lunit               
+Ycg_                   -0.0000000 Lunit               
+Zcg_                    0.0000000 Lunit               
+Mach_                   0.4000000 no_unit             
+AoA_                    6.7860000 deg                 
+Beta_                   0.0000000 deg                 
+Rho_                    1.2250000 Munit/Lunit^3       
+Vinf_                 100.0000000 Lunit/Tunit         
+Roll__Rate              0.0000000 rad/Tunit           
+Pitch_Rate              0.0000000 rad/Tunit           
+Yaw___Rate              0.0000000 rad/Tunit           
+
+
+
+Solver Case: 12 
+
+  Iter      Mach       AoA      Beta       CL         CDo       CDi      CDtot      CS        L/D        E        CFx       CFy       CFz       CMx       CMy       CMz       T/QS 
+        1   0.40000   6.78600   0.00000   0.59602   0.00428   0.00778   0.01206   0.00000  49.40906   0.85476  -0.06687   0.00000   0.59227  -0.00000   0.05288  -0.00000   0.00000
+
+
+
+Skin Friction Drag Break Out:
+
+
+Surface                                      CDo 
+
+Main Wing                                   0.00214 
+Main Wing                                   0.00214 
+***************************************************************************************************************************************************************************************** 
+
+# Name                   Value      Units             
+Sref_                 142.5206110 Lunit^2             
+Cref_                   2.8954390 Lunit               
+Bref_                  49.2224580 Lunit               
+Xcg_                    5.9952620 Lunit               
+Ycg_                   -0.0000000 Lunit               
+Zcg_                    0.0000000 Lunit               
+Mach_                   0.4000000 no_unit             
+AoA_                    7.8570000 deg                 
+Beta_                   0.0000000 deg                 
+Rho_                    1.2250000 Munit/Lunit^3       
+Vinf_                 100.0000000 Lunit/Tunit         
+Roll__Rate              0.0000000 rad/Tunit           
+Pitch_Rate              0.0000000 rad/Tunit           
+Yaw___Rate              0.0000000 rad/Tunit           
+
+
+
+Solver Case: 13 
+
+  Iter      Mach       AoA      Beta       CL         CDo       CDi      CDtot      CS        L/D        E        CFx       CFy       CFz       CMx       CMy       CMz       T/QS 
+        1   0.40000   7.85700   0.00000   0.68666   0.00497   0.01042   0.01539   0.00000  44.60938   0.84741  -0.08910   0.00000   0.68087  -0.00000   0.06095  -0.00000   0.00000
+
+
+
+Skin Friction Drag Break Out:
+
+
+Surface                                      CDo 
+
+Main Wing                                   0.00249 
+Main Wing                                   0.00249 
+***************************************************************************************************************************************************************************************** 
+
+# Name                   Value      Units             
+Sref_                 142.5206110 Lunit^2             
+Cref_                   2.8954390 Lunit               
+Bref_                  49.2224580 Lunit               
+Xcg_                    5.9952620 Lunit               
+Ycg_                   -0.0000000 Lunit               
+Zcg_                    0.0000000 Lunit               
+Mach_                   0.4000000 no_unit             
+AoA_                    8.9290000 deg                 
+Beta_                   0.0000000 deg                 
+Rho_                    1.2250000 Munit/Lunit^3       
+Vinf_                 100.0000000 Lunit/Tunit         
+Roll__Rate              0.0000000 rad/Tunit           
+Pitch_Rate              0.0000000 rad/Tunit           
+Yaw___Rate              0.0000000 rad/Tunit           
+
+
+
+Solver Case: 14 
+
+  Iter      Mach       AoA      Beta       CL         CDo       CDi      CDtot      CS        L/D        E        CFx       CFy       CFz       CMx       CMy       CMz       T/QS 
+        1   0.40000   8.92900   0.00000   0.77588   0.00574   0.01343   0.01917   0.00000  40.47188   0.83901  -0.11427   0.00000   0.76745  -0.00000   0.06890  -0.00000   0.00000
+
+
+
+Skin Friction Drag Break Out:
+
+
+Surface                                      CDo 
+
+Main Wing                                   0.00287 
+Main Wing                                   0.00287 
+***************************************************************************************************************************************************************************************** 
+
+# Name                   Value      Units             
+Sref_                 142.5206110 Lunit^2             
+Cref_                   2.8954390 Lunit               
+Bref_                  49.2224580 Lunit               
+Xcg_                    5.9952620 Lunit               
+Ycg_                   -0.0000000 Lunit               
+Zcg_                    0.0000000 Lunit               
+Mach_                   0.4000000 no_unit             
+AoA_                   10.0000000 deg                 
+Beta_                   0.0000000 deg                 
+Rho_                    1.2250000 Munit/Lunit^3       
+Vinf_                 100.0000000 Lunit/Tunit         
+Roll__Rate              0.0000000 rad/Tunit           
+Pitch_Rate              0.0000000 rad/Tunit           
+Yaw___Rate              0.0000000 rad/Tunit           
+
+
+
+Solver Case: 15 
+
+  Iter      Mach       AoA      Beta       CL         CDo       CDi      CDtot      CS        L/D        E        CFx       CFy       CFz       CMx       CMy       CMz       T/QS 
+        1   0.40000  10.00000   0.00000   0.86331   0.00655   0.01682   0.02337  -0.00000  36.93485   0.82959  -0.14220  -0.00000   0.85156  -0.00000   0.07670  -0.00000   0.00000
+
+
+
+Skin Friction Drag Break Out:
+
+
+Surface                                      CDo 
+
+Main Wing                                   0.00328 
+Main Wing                                   0.00328 
