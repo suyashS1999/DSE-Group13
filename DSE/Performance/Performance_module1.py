@@ -1,5 +1,6 @@
 #%% ---------------------- About this code ----------------------
 # This program generates the flight envelope of the aircraft
+# It makes both maneuver and gust V-n diagrams in one graph
 # Inputs are:
 # Outputs are:
 
