@@ -64,7 +64,7 @@ x_c_m_inb = 0.3
 t_c_stream_inb = 0.15
 M_crit_airfoil_inb = 0.592   #- 
 laminar_flow_inb  = 0.1
-turb_flow_outb = 0.9 
+turb_flow_inb = 0.9 
 
 # Outboard
 
@@ -82,6 +82,8 @@ alp_max_airf_outb = 20
 t_c_avg_outb = 0.18
 x_c_m_outb = 0.5
 t_c_stream_outb = 0.18
-M_crit_airfoil_outb = 0.62  #-  
+M_crit_airfoil_outb = 0.62  #- 
+laminar_flow_outb  = 0.1
+turb_flow_outb = 0.9  
 
 

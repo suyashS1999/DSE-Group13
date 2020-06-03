@@ -61,7 +61,7 @@ def CL_alpha_DATCOM(A,M,a0,sweep_half):
     
     return a
 
-def CD0_wing(t_c_avg,x_c_m,sweep_LE,C_r_m,C_t_m,C_r,b_total,rho_cruise,V_cruise,mu_cruise,k_wing,M_cruise):
+def CD0_wing(S_wet_ratio,t_c_avg,x_c_m,sweep_LE,C_r_m,C_t_m,C_r,b_total,rho_cruise,V_cruise,mu_cruise,k_wing,M_cruise,laminar_flow,turb_flow):
     
 
     sweep_max_thickness = sweep_x(x_c_m,sweep_LE,C_r_m, C_t_m, b_total)

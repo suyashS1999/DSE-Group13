@@ -38,20 +38,19 @@ CD_misc = 5        #% of total CD0
 
 #INBOARD
 
-CD_0_cruise_inb = (1+(CD_misc/100))*tl.CD0_wing(t_c_avg_inb,x_c_m_inb,sweep_LE,C_r_m,C_t_m,Cr_inb,span,rho_cruise,V_cruise,mu_cruise,k_wing,M_cruise)
+CD_0_cruise_inb = (1+(CD_misc/100))*tl.CD0_wing(S_wet_ratio,t_c_avg_inb,x_c_m_inb,sweep_LE,C_r_m,C_t_m,Cr_inb,span,rho_cruise,V_cruise,mu_cruise,k_wing,M_cruise,laminar_flow_inb,turb_flow_inb)
 
 delta_CD_inb = tl.delta_wave_drag(M_cruise, t_c_stream_inb, sweep_LE, CL_cruise, M_crit_airfoil_inb)
 
 CD_induced_inb = (CL_cruise**2)/(np.pi*AR_inb*e)
 
-Total_CD_inb = CD_0_cruise + delta_CD_inb + CD_induced_inb
+Total_CD_inb = CD_0_cruise_inb + delta_CD_inb + CD_induced_inb
 
-print("The total Drag (CD) INBOARD : {} ".format(Total_CD))
 
 
 #OUTBOARD
 
-CD_0_cruise_outb = (1+(CD_misc/100))*tl.CD0_wing(t_c_avg_outb,x_c_m_outb,sweep_LE,C_r_m,C_t_m,Cr_outb,span,rho_cruise,V_cruise,mu_cruise,k_wing,M_cruise)
+CD_0_cruise_outb = (1+(CD_misc/100))*tl.CD0_wing(S_wet_ratio,t_c_avg_outb,x_c_m_outb,sweep_LE,C_r_m,C_t_m,Cr_outb,span,rho_cruise,V_cruise,mu_cruise,k_wing,M_cruise,laminar_flow_outb,turb_flow_outb)
 
 delta_CD_outb = tl.delta_wave_drag(M_cruise, t_c_stream_outb, sweep_LE, CL_cruise, M_crit_airfoil_outb)
 
@@ -68,14 +67,14 @@ t_final = time.time()
 
 
 print("Inboard Section Results ..... \n \n")
-print("CL_alpha  =  \n")
-print("Total_CD  =  \n")
+print("CL_alpha  = ",CL_alp_inb,"\n")
+print("Total_CD  =", Total_CD_inb  ,"\n")
 print("CL_max    =   \n ")
 print("Stall angle =   \n \n \n ")
 
 print("Outboard Section Results ..... \n \n")
-print("CL_alpha  =  \n")
-print("Total_CD  =  \n")
+print("CL_alpha  =",CL_alp_outb,"\n")
+print("Total_CD  =", Total_CD_outb,  "\n")
 print("CL_max    =   \n")
 print("Stall angle =   \n \n \n ")
 
