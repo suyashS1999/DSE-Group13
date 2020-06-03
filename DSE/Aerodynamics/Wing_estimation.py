@@ -14,12 +14,29 @@ t_s = time.time()
 
 sweep_half_c = tl.sweep_x(0.5, sweep_LE, C_r_m, C_t_m, span)
 CLmax_Clmax = 0.73
-Clmax_M02_inb = 1.67
-Clmax_M02_outb = 1.6
+
 Alpha0_inb = -4 #deg
 Alpha0_outb = -2 #deg
 d_alpha_clmax = 3.5 #deg
 
+"""Reading graphs from NACA tests"""
+
+V_M02 = 59.01 #m/s
+kin_visc = 1.46e-05 #sea level
+MAC = MAC[0]
+ReM02 = (V_M02*MAC)/kin_visc
+
+if ReM02 >= 8.1e06:
+    Clmax_M02_inb = 1.67
+    Clmax_M02_outb = 1.6
+elif ReM02 >= 5.58e06 and ReM02< 8.1e06:
+    Clmax_M02_inb = 1.6
+    Clmax_M02_outb = 1.5
+elif ReM02 < 5.58e06:
+    Clmax_M02_inb = 1.47
+    Clmax_M02_outb = 1.38
+else:
+    print("Clmax at M=0.2 is wronk")
 
 
 """Lift Calculations"""
