@@ -57,7 +57,7 @@ def e(AR,sweep_le):
 def CL_alpha_DATCOM(A,M,a0,sweep_half):
     
     k = a0/(2*np.pi)
-    a = (2*np.pi*A)/(2+np.sqrt((((A**2)*(1-(M**2))/k**2)*(1+((np.tan(sweep_half)**2)/(1-(M**2)))))+4))
+AD-    a = (2*np.pi*A)/(2+np.sqrt((((A**2)*(1-(M**2))/k**2)*(1+((np.tan(sweep_half)**2)/(1-(M**2)))))+4))
     
     return a
 
