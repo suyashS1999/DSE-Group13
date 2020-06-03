@@ -41,12 +41,6 @@ def M_dd(t_c_stream,lmb_le,CL):
     return Md
 
 
-def sweep_x(x,lmb_le,Cr,Ct,b_total):
-    
-    sweep_arb = np.arctan((np.tan(lmb_le)) - (Cr*x/(b_total*0.5)) + (Ct*x/(b_total*0.5)))
-    
-    return sweep_arb
-    
 
 def e(AR,sweep_le):
     

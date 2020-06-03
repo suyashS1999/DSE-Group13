@@ -2,16 +2,18 @@ from numpy import*
 
 #%% ------------------- Input data -------------------
 # Global Main Wing
-AR = 17;									# Wing Aspect ratio [-]
-S = 142.520611;								# Wing surface area [m^2]
-span = 49.22245815;							# Wing span [m]
-ave_chord = S/span;							# Average chord lenght [m]
-taper_ratio = 0.3;							# Taper ratio [-]
-# Inboard Wing
-span_inboard = 36;							# Span of inboard wing [m]
-span_outboard = span - span_inboard;		# Span of outboard wing [m]
+
 
 #%% ------------------- Functions -------------------
+
+def sweep_x(x,lmb_le,Cr,Ct,b_total):
+    
+    sweep_arb = arctan((tan(lmb_le)) - (Cr*x/(b_total*0.5)) + (Ct*x/(b_total*0.5)))
+    
+    return sweep_arb
+    
+
+
 def Calc_root_tip_chordMain(span, AR, taper_ratio):
 	""" Function to compute the root and tip chord for the main wing
 	Input:
@@ -53,6 +55,3 @@ def InboardOutboard_wing_parms(S, span_inboard, span_outboard, root_chord, tip_c
 
 	return (root_chord_inb, tip_chord_inb, S_inb, AR_inb, taper_ratio_inb), (root_chord_outb, tip_chord_outb, S_outb, AR_outb, taper_ratio_outb);
 
-root_chord, tip_chord = Calc_root_tip_chordMain(span, AR, taper_ratio);
-inb, outb = InboardOutboard_wing_parms(S, span_inboard, span_outboard, root_chord, tip_chord);
-print(inb, outb);
