@@ -22,6 +22,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Aerodynamics\Aero_tools.py" />
+    <Compile Include="Aerodynamics\Input_parameters.py" />
     <Compile Include="Aerodynamics\WingPlanform.py">
       <SubType>Code</SubType>
     </Compile>
