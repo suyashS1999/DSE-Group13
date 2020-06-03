@@ -13,7 +13,7 @@ AR = 17;									# Wing Aspect ratio [-]
 S = 142.520611;								# Wing surface area [m^2]
 span = 49.22245815;							# Wing span [m]
 ave_chord = S/span;							# Average chord lenght [m]
-taper_ratio = 0.3;							# Taper ratio [-]
+taper_ratio = 0.45;							# Taper ratio [-]
 # Inboard Wing
 span_inboard = 36;							# Span of inboard wing [m]
 span_outboard = span - span_inboard;		# Span of outboard wing [m]
@@ -28,6 +28,7 @@ C_r_m, C_t_m = planf.Calc_root_tip_chordMain(span, AR, taper_ratio)
 
 sweep_LE = np.radians(40.63) 
 
+MAC = planf.Compute_MAC(C_r_m,C_t_m, sweep_LE, span)
 
 # e  = e(AR,sweep_LE)
 e = 0.7
