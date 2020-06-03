@@ -132,6 +132,9 @@ print("Optimal Taper Ratio:", planf.Optimal_taper(sweep_quart),"\n")
 
 print("Time Taken:", t_final-t_s, "seconds")
 
+print(sweep_half_c)
+print(sweep_quart)
 
 
-
+print(CL_alp_inb_M02)
+print(CL_alp_outb_M02)

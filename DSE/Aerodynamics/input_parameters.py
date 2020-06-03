@@ -86,5 +86,3 @@ t_c_stream_outb = 0.18
 M_crit_airfoil_outb = 0.62  #- 
 laminar_flow_outb  = 0.1
 turb_flow_outb = 0.9  
-
-

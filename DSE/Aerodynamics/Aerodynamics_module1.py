@@ -157,8 +157,8 @@ class ExtractData_OpenVSP():
 		return 0;
 
 #%% ------------------- Input data -------------------
-dir = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Aerodynamics\OpenVSPSimData";			# Change this to you local directory
-
+#dir = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Aerodynamics\OpenVSPSimData";			# Change this to you local directory
+dir = r"C:\Users\miksw\Desktop\DSE\DSE-Group13\DSE\Aerodynamics\OpenVSPSimData";
 #%% ------------------- Main -------------------
 vsp_data = ExtractData_OpenVSP(dir);
 vsp_data.plot_Polars();
