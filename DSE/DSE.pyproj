@@ -24,6 +24,11 @@
     <Compile Include="Aerodynamics\Aerodynamics_module2.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Aerodynamics\WingPlanform.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Aerodynamics\Wing_drag_estimation.py" />
+    <Compile Include="Aerodynamics\Zero_lift_drag_estimation.py" />
     <Compile Include="Aerodynamics\__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -64,6 +69,7 @@
     <Compile Include="GenericGlobal_module1.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Performance\Class_II_Torenbeek.py" />
     <Compile Include="Performance\Performance_module.py" />
     <Compile Include="Performance\Performance_module1.py" />
     <Compile Include="Performance\Performance_module2.py" />
@@ -103,6 +109,7 @@
     <Folder Include="Aerodynamics\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include=".DS_Store" />
     <Content Include="Aerodynamics\OpenVSPSimData\.vsptime" />
     <Content Include="Aerodynamics\OpenVSPSimData\baseline.adb" />
     <Content Include="Aerodynamics\OpenVSPSimData\baseline.adb.cases" />
