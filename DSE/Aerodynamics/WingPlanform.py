@@ -49,3 +49,22 @@ def InboardOutboard_wing_parms(S, span_inboard, span_outboard, root_chord, tip_c
 
 	return (root_chord_inb, tip_chord_inb, S_inb, AR_inb, taper_ratio_inb), (root_chord_outb, tip_chord_outb, S_outb, AR_outb, taper_ratio_outb);
 
+def Compute_MAC(root_chord, tip_chord, sweep_LE, span):
+	""" Function to compute the Mean Aerodynamic chord
+	Input:
+		root_chord = Root chord of the main wing [m]
+		tip_chord = Tip chord of main wing [m]
+		sweep_LE = leading edge sweep [rad]
+		span = wing span [m]
+	Output:
+		MAC = Mean Aerodynamic Chord [m]
+		MAC_y = span location of MAC [m]
+	"""
+	a = lambda x: x*tan(sweep_LE);
+	f = lambda x: tip_chord + root_chord/2 + ((a(span/2) - tip_chord/2 - root_chord/2)/(span/2))*x;
+	x = (tip_chord + root_chord/2)/((1.5*tip_chord + 1.5*root_chord)/(span/2));
+	a_prime = a(x);
+	c = f(x);
+	MAC = (c - a_prime - tip_chord)*2;
+	MAC_y = x;
+	return MAC, MAC_y;
