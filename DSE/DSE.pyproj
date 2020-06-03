@@ -26,7 +26,6 @@
     <Compile Include="Aerodynamics\WingPlanform.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Aerodynamics\Wing_drag_estimation.py" />
     <Compile Include="Aerodynamics\Wing_estimation.py" />
     <Compile Include="Aerodynamics\__init__.py">
       <SubType>Code</SubType>
