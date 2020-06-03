@@ -98,12 +98,10 @@ class ExtractData_OpenVSP():
 			fig = plot of the distribution
 		"""
 		for name in (self.names):
-			if name.startswith(self.file_types[0][1:]):
-				AoA = self.Polar_Dict[name]["AoA"];
-			elif name.startswith(self.file_types[1][1:]):
+			if name.startswith(self.file_types[1][1:]):
 				fig = plt.figure(figsize = (12, 10));
 				for i in range(len(self.subDict)):
-					alpha = AoA[i]
+					alpha = float(list(self.subDict)[i]);
 					CL = asarray(self.subDict[alpha]["Cl"])*asarray(self.subDict[alpha]["Chord"])/asarray(self.subDict[alpha]["Cref_"]);
 					CD = asarray(self.subDict[alpha]["Cd"])*asarray(self.subDict[alpha]["Chord"])/asarray(self.subDict[alpha]["Cref_"]);
 					span = asarray(self.subDict[alpha]["Yavg"]);
