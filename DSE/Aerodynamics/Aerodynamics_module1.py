@@ -1,4 +1,5 @@
 from numpy import*
+from numpy.linalg import inv, norm
 import glob, os
 from matplotlib import pyplot as plt
 import time
@@ -32,6 +33,7 @@ class ExtractData_OpenVSP():
 					self.Load_Dict[name] = array(open(file).read().splitlines());
 		self.Sort_LoadDistribution();
 
+	# ------------------- Functions -------------------
 	def plot_Polars(self):
 		""" Function to plot the polars from the data
 		Output:
@@ -50,13 +52,13 @@ class ExtractData_OpenVSP():
 				ax1 = plt.subplot(2, 2, 1);									ax2 = plt.subplot(2, 2, 2);
 				ax1.plot(alpha, CL, label = label);							ax2.plot(alpha, Cm, label = label);
 				ax1.set_xlabel("alpha [degrees]");							ax2.set_xlabel("alpha [degrees]");
-				ax1.set_ylabel("Cl [-]");									ax2.set_ylabel("Cm [-]");
+				ax1.set_ylabel("CL [-]");									ax2.set_ylabel("Cm [-]");
 				ax1.grid(True);												ax2.grid(True);
 
 				ax3 = plt.subplot(2, 2, 3);									ax4 = plt.subplot(2, 2, 4);
 				ax3.plot(CDtot, CL, label = label);							ax4.plot(alpha, L_D, label = label);
 				ax3.set_xlabel("CD [-]");									ax4.set_xlabel("alpha [degrees]");
-				ax3.set_ylabel("CL [-]");									ax4.set_ylabel("Cl/CD [-]");
+				ax3.set_ylabel("CL [-]");									ax4.set_ylabel("CL/CD [-]");
 				ax3.grid(True);												ax4.grid(True);
 
 				ax1.legend();
@@ -125,6 +127,35 @@ class ExtractData_OpenVSP():
 					ax2.legend(loc = "upper right");
 		return 0;
 
+
+	def Cm_CL_alpha_calc(self, precision = 25):
+		""" Function to compute the Cm-alpha and CL-alpha curves.
+		It uses linear regression to compute the curves. The precision is input does
+		not need to be changed
+		"""
+		least_sq_Matrix = lambda x: vstack((ones(shape(x)), x));
+		for name in self.names:
+			if name.startswith(self.file_types[0][1:]):
+				alpha = self.Polar_Dict[name]["AoA"];
+				CL = self.Polar_Dict[name]["CL"];
+				Cm = self.Polar_Dict[name]["CMy"];
+				idx = asarray(range(0, len(alpha), int(precision/len(alpha))));
+				alpha_i = alpha[idx];
+				CL_i = CL[idx];
+				Cm_i = Cm[idx];
+				LSM = least_sq_Matrix(alpha_i);
+				A = LSM.dot(LSM.T);
+
+				a_CL = inv(A).dot(LSM.dot(CL_i));
+				R2_CL = 1 - norm(LSM.T.dot(a_CL) - CL_i);
+				a_Cm = inv(A).dot(LSM.dot(Cm_i));
+				R2_Cm = 1 - norm(LSM.T.dot(a_Cm) - Cm_i);
+				print("Test Case:", name[len(self.file_types[0][1:]) :])
+				print("CL(alpha) = %f + %f alpha" %(a_CL[0], a_CL[1]), "\n R^2 = {}".format(R2_CL));
+				print("Cm(alpha) = %f + %f alpha" %(a_Cm[0], a_Cm[1]), "\n R^2 = {}".format(R2_Cm));
+				print("\n")
+		return 0;
+
 #%% ------------------- Input data -------------------
 dir = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Aerodynamics\OpenVSPSimData";			# Change this to you local directory
 
@@ -132,5 +163,8 @@ dir = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Aerodynamics\OpenVSPSimData";			
 vsp_data = ExtractData_OpenVSP(dir);
 vsp_data.plot_Polars();
 vsp_data.plot_LoadDistribution();
+vsp_data.Cm_CL_alpha_calc();
 plt.show();
+
+
 
