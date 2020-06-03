@@ -13,7 +13,7 @@ AR = 17;									# Wing Aspect ratio [-]
 S = 142.520611;								# Wing surface area [m^2]
 span = 49.22245815;							# Wing span [m]
 ave_chord = S/span;							# Average chord lenght [m]
-taper_ratio = 0.45;							# Taper ratio [-]
+taper_ratio = 0.44;							# Taper ratio [-]
 # Inboard Wing
 span_inboard = 36;							# Span of inboard wing [m]
 span_outboard = span - span_inboard;		# Span of outboard wing [m]
