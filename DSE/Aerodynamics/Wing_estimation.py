@@ -63,6 +63,19 @@ CLmax_M02_outb = CLmax_Clmax*Clmax_M02_outb #M=0.2
 
 alpha_stall_outb = np.degrees(CLmax_M02_outb/CL_alp_outb_M02 + np.radians(Alpha0_outb) + np.radians(d_alpha_clmax))
 
+#FULL WING
+
+if alpha_stall_inb < alpha_stall_outb:
+    alpha_stall = alpha_stall_inb
+elif alpha_stall_outb < alpha_stall_inb:
+    alpha_stall = alpha_stall_outb
+else:
+    print("Stall angle is no good ma boi")
+
+CL_inb = np.radians(CL_alp_inb_M02)*alpha_stall
+CL_outb = np.radians(CL_alp_outb_M02)*alpha_stall
+CL_max = (span_inboard*CL_inb + span_outboard*CL_outb)/span
+
 
 """Drag Calculation"""
 
@@ -110,6 +123,11 @@ print("CL_alpha  =",CL_alp_outb,"\n")
 print("Total_CD  =", Total_CD_outb,  "\n")
 print("CL_max    =  ", CLmax_M02_outb," \n")
 print("Stall angle = ", alpha_stall_outb,"  \n \n \n ")
+
+print("Full Wing Results ..... \n \n")
+print("Stall AOA of first section to stall =", alpha_stall, "\n")
+print("Average CL_max at this AOA =", CL_max, "\n \n \n")
+
 print("Optimal Taper Ratio:", planf.Optimal_taper(sweep_quart),"\n")
 
 print("Time Taken:", t_final-t_s, "seconds")
