@@ -1,6 +1,11 @@
 import numpy as np
 
-
+def sweep_x(x,lmb_le,Cr,Ct,b_total):
+    
+    sweep_arb = np.arctan((np.tan(lmb_le)) - (Cr*x/(b_total*0.5)) + (Ct*x/(b_total*0.5)))
+    
+    return sweep_arb
+    
 
 def Re_subsonic(rho,V,l,mu,k):
     R_actual = rho*V*l/mu
@@ -56,17 +61,17 @@ def CL_alpha_DATCOM(A,M,a0,sweep_half):
     
     return a
 
-def CD0_wing(t_c_avg,x_c_m,sweep_LE,C_r,C_t,b_total,rho_cruise,V_cruise,mu_cruise,k_wing,M_cruise):
+def CD0_wing(t_c_avg,x_c_m,sweep_LE,C_r_m,C_t_m,C_r,b_total,rho_cruise,V_cruise,mu_cruise,k_wing,M_cruise):
     
 
-    sweep_max_thickness = sweep_x(x_c_m,sweep_LE,C_r, C_t, b_total)
+    sweep_max_thickness = sweep_x(x_c_m,sweep_LE,C_r_m, C_t_m, b_total)
 
-    Re_cruise_max = tl.Re_transonic(rho_cruise, V_cruise, C_r,mu_cruise, k_wing, M_cruise)
+    Re_cruise_max = Re_transonic(rho_cruise, V_cruise, C_r,mu_cruise, k_wing, M_cruise)
 
 
-    Cf_total = laminar_flow*tl.Cf_laminar(Re_cruise_max) + turb_flow*tl.Cf_turb(M_cruise, Re_cruise_max)
+    Cf_total = laminar_flow*Cf_laminar(Re_cruise_max) + turb_flow*Cf_turb(M_cruise, Re_cruise_max)
 
-    FF_wing = tl.Form_factor_wing(t_c_avg, x_c_m, M_cruise, sweep_max_thickness)
+    FF_wing = Form_factor_wing(t_c_avg, x_c_m, M_cruise, sweep_max_thickness)
 
     
 

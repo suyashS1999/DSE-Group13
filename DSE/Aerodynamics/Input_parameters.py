@@ -21,7 +21,7 @@ t_c_avg  = 0.15         # Aver. t/c
 x_c_m    = 0.1          # location of max thickness
 # t_c_stream =           #-
 CL_cruise  = 0.4744     #-
-M_crit_airfoil = 0.592  #-  
+
 S_wet_ratio = 2.14         #- 
 
 C_r_m, C_t_m = planf.Calc_root_tip_chordMain(span, AR, taper_ratio)
@@ -60,7 +60,11 @@ Cl_max_inb = 1.67
 Cd_inb  = 0.005
 alp_max_airf_inb = 15
 t_c_avg_inb = 0.15
-x_c_m_inb = 
+x_c_m_inb = 0.3
+t_c_stream_inb = 0.15
+M_crit_airfoil_inb = 0.592   #- 
+laminar_flow_inb  = 0.1
+turb_flow_outb = 0.9 
 
 # Outboard
 
@@ -75,6 +79,9 @@ Cl0_outb = 0.45
 Cl_max_outb = 1.6
 Cd_outb  = 0.0045
 alp_max_airf_outb = 20
-t_c_avg_outb = 
+t_c_avg_outb = 0.18
+x_c_m_outb = 0.5
+t_c_stream_outb = 0.18
+M_crit_airfoil_outb = 0.62  #-  
 
 

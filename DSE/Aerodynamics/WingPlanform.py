@@ -6,12 +6,6 @@ from numpy import*
 
 #%% ------------------- Functions -------------------
 
-def sweep_x(x,lmb_le,Cr,Ct,b_total):
-    
-    sweep_arb = arctan((tan(lmb_le)) - (Cr*x/(b_total*0.5)) + (Ct*x/(b_total*0.5)))
-    
-    return sweep_arb
-    
 
 
 def Calc_root_tip_chordMain(span, AR, taper_ratio):
