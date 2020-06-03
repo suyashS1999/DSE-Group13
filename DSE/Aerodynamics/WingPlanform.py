@@ -68,3 +68,10 @@ def Compute_MAC(root_chord, tip_chord, sweep_LE, span):
 	MAC = (c - a_prime - tip_chord)*2;
 	MAC_y = x;
 	return MAC, MAC_y;
+
+
+def Optimal_taper(sweep_quart):
+    
+    taper = 0.45*np.exp(-0.036*sweep_quart)
+    
+    return taper
