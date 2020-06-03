@@ -13,6 +13,12 @@ import time as time
 t_s = time.time()
 
 sweep_half_c = tl.sweep_x(0.5, sweep_LE, C_r_m, C_t_m, span)
+CLmax_Clmax = 0.73
+Clmax_M02_inb = 1.67
+Clmax_M02_outb = 1.6
+Alpha0_inb = -4 #deg
+Alpha0_outb = -2 #deg
+d_alpha_clmax = 3.5 #deg
 
 
 
@@ -23,12 +29,21 @@ sweep_half_c = tl.sweep_x(0.5, sweep_LE, C_r_m, C_t_m, span)
 
 CL_alp_inb = tl.CL_alpha_DATCOM(AR_inb, M_cruise, a0_inb, sweep_half_c)
 
+CL_alp_inb_M02 = tl.CL_alpha_DATCOM(AR_inb, 0.2, a0_inb, sweep_half_c)
+
+CLmax_M02_inb = CLmax_Clmax*Clmax_M02_inb #M=0.2
+
+alpha_stall_inb = np.degrees(CLmax_M02_inb/CL_alp_inb_M02 + np.radians(Alpha0_inb) + np.radians(d_alpha_clmax))
+
 #OUTBOARD
 
 CL_alp_outb = tl.CL_alpha_DATCOM(AR_outb, M_cruise, a0_outb, sweep_half_c)
 
+CL_alp_outb_M02 = tl.CL_alpha_DATCOM(AR_outb, 0.2, a0_outb, sweep_half_c)
 
+CLmax_M02_outb = CLmax_Clmax*Clmax_M02_outb #M=0.2
 
+alpha_stall_outb = np.degrees(CLmax_M02_outb/CL_alp_outb_M02 + np.radians(Alpha0_outb) + np.radians(d_alpha_clmax))
 
 
 """Drag Calculation"""
@@ -68,15 +83,15 @@ t_final = time.time()
 
 print("Inboard Section Results ..... \n \n")
 print("CL_alpha  = ",CL_alp_inb,"\n")
-print("Total_CD  =", Total_CD_inb  ,"\n")
-print("CL_max    =   \n ")
-print("Stall angle =   \n \n \n ")
+print("Total_CD  = ", Total_CD_inb  ,"\n")
+print("CL_max    = ", CLmax_M02_inb,"  \n ")
+print("Stall angle =", alpha_stall_inb,"   \n \n \n ")
 
 print("Outboard Section Results ..... \n \n")
 print("CL_alpha  =",CL_alp_outb,"\n")
 print("Total_CD  =", Total_CD_outb,  "\n")
-print("CL_max    =   \n")
-print("Stall angle =   \n \n \n ")
+print("CL_max    =  ", CLmax_M02_outb," \n")
+print("Stall angle = ", alpha_stall_outb,"  \n \n \n ")
 
 print("Time Taken:", t_final-t_s, "seconds")
 
