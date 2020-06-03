@@ -13,6 +13,7 @@ import time as time
 t_s = time.time()
 
 sweep_half_c = tl.sweep_x(0.5, sweep_LE, C_r_m, C_t_m, span)
+sweep_quart = tl.sweep_x(0.25, sweep_LE, C_r_m, C_t_m, span)
 CLmax_Clmax = 0.73
 
 Alpha0_inb = -4 #deg
@@ -109,6 +110,7 @@ print("CL_alpha  =",CL_alp_outb,"\n")
 print("Total_CD  =", Total_CD_outb,  "\n")
 print("CL_max    =  ", CLmax_M02_outb," \n")
 print("Stall angle = ", alpha_stall_outb,"  \n \n \n ")
+print("Optimal Taper Ratio:", planf.Optimal_taper(sweep_quart),"\n")
 
 print("Time Taken:", t_final-t_s, "seconds")
 
