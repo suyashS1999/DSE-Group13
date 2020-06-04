@@ -31,3 +31,5 @@ V_fan_e_to = 116 #required fan exhaust velocity during take-off
 V_fan_e_cr = 263 #required fan exhaust velocity during cruise
 V_core_e_to = 255.72 #required core exhaust velocity during take-off
 V_core_e_cr = 377.96 #required core exhaust velocity during cruise
+
+#%% ---------------------- Inputs ----------------------
