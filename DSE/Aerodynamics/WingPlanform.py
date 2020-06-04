@@ -1,13 +1,5 @@
 from numpy import*
-
-#%% ------------------- Input data -------------------
-# Global Main Wing
-
-
 #%% ------------------- Functions -------------------
-
-
-
 def Calc_root_tip_chordMain(span, AR, taper_ratio):
 	""" Function to compute the root and tip chord for the main wing
 	Input:
@@ -71,7 +63,11 @@ def Compute_MAC(root_chord, tip_chord, sweep_LE, span):
 
 
 def Optimal_taper(sweep_quart):
-	
-	taper = 0.45*exp(-0.036*sweep_quart)
-	
+	""" Function to compute the optimum taper ratio
+	Input:
+		sweep_quart = Quater chord sweep angle [rad]
+	Output:
+		taper = optimum taper ratio
+	"""
+	taper = 0.45*exp(-0.036*sweep_quart);
 	return taper

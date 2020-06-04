@@ -40,7 +40,7 @@ def ApplyCompressibilityCorrection(M, C):
 		C = corrected quantity (same a input C)
 	"""
 	beta = (sqrt(1 - M**2));
-	coeff = 1/(beta)# + 0.5*(1 - beta)*C);	# + (M**2/(1 + beta))*C/2);
+	coeff = 1/(beta + (M**2/(1 + beta))*C/2);
 	return C*coeff;
 
 def ComputeLocalPressure(M, Cp, p_inf, gamma, ratio):
