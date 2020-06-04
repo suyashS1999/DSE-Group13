@@ -7,7 +7,7 @@
 
 import numpy as np
 import Aero_tools as tl
-from Input_parameters import *
+from input_parameters import *
 import time as time
 
 t_s = time.time()
