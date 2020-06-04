@@ -83,22 +83,22 @@ def CD0_wing(S_wet_ratio,t_c_avg,x_c_m,sweep_LE,C_r_m,C_t_m,C_r,b_total,rho_crui
 	
 
 def delta_wave_drag(M_cruise,t_c_stream,sweep_LE,CL_cruise,M_crit_airfoil):
-    
-    M_dd_cruise = M_dd(t_c_stream, sweep_LE, CL_cruise)
-    M_crit_wing = M_crit_airfoil/np.cos(sweep_LE)
-    
-    if M_crit_wing>M_cruise:
-        delta_cd = 0
-        print("Gooood")
+	
+	M_dd_cruise = M_dd(t_c_stream, sweep_LE, CL_cruise)
+	M_crit_wing = M_crit_airfoil/np.cos(sweep_LE)
+	
+	if M_crit_wing>M_cruise:
+		delta_cd = 0
+		print("Gooood")
 
-    elif M_crit_wing<=M_cruise and M_cruise<=M_dd_cruise:
-        delta_cd = 0.002*((1+(2.5*((M_dd_cruise-M_cruise)/0.05)))**-1)
-        print("Okeii")
-    elif M_dd_cruise<M_cruise:
-        delta_cd = 0.002*((1+(((M_dd_cruise-M_cruise)/0.05)))**25)
-        print("Baaaaaaddd")
-    
-    return delta_cd
+	elif M_crit_wing<=M_cruise and M_cruise<=M_dd_cruise:
+		delta_cd = 0.002*((1+(2.5*((M_dd_cruise-M_cruise)/0.05)))**-1)
+		print("Okeii")
+	elif M_dd_cruise<M_cruise:
+		delta_cd = 0.002*((1+(((M_dd_cruise-M_cruise)/0.05)))**25)
+		print("Baaaaaaddd")
+	
+	return delta_cd
 
 
 
