@@ -102,3 +102,4 @@ def delta_wave_drag(M_cruise,t_c_stream,sweep_LE,CL_cruise,M_crit_airfoil):
 
 
 
+
