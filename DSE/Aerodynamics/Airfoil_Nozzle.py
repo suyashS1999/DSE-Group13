@@ -147,11 +147,11 @@ nacafunc = np.polyfit(naca[:,0],naca[:,1],12)
 x = np.linspace(0,cw,1001)
 
 def reconstruct_f(coeff, plot_nodes):
-    F = 0;
-    coeff = coeff[::-1];
-    for i in range(len(coeff)):
-	    F += coeff[i]*plot_nodes**i;
-    return F;
+	F = 0;
+	coeff = coeff[::-1];
+	for i in range(len(coeff)):
+		F += coeff[i]*plot_nodes**i;
+	return F;
 
 y = reconstruct_f(nacafunc,x)
 
@@ -166,11 +166,11 @@ nasafunc = np.polyfit(nasasc[:,0],nasasc[:,1],12)
 xs = np.linspace(nasasc[0,0],nasasc[-1,0],451)
 
 def reconstruct_f(coeff, plot_nodes):
-    F = 0;
-    coeff = coeff[::-1];
-    for i in range(len(coeff)):
-	    F += coeff[i]*plot_nodes**i;
-    return F;
+	F = 0;
+	coeff = coeff[::-1];
+	for i in range(len(coeff)):
+		F += coeff[i]*plot_nodes**i;
+	return F;
 
 ys = reconstruct_f(nasafunc,xs)
 
@@ -192,7 +192,7 @@ add = np.where(naca[:,0] == cw*0.15)[0][0]
 print(nasasc[0])
 
 for i in range(451):
-    area[i] = (naca[(i+add),1] - naca[(add),1])  + nasasc[i,1]
+	area[i] = (naca[(i+add),1] - naca[(add),1])  + nasasc[i,1]
 
 
 biig = area.max()
