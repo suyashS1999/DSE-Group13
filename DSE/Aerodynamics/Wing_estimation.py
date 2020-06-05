@@ -65,7 +65,8 @@ else:
 
 CL_inb = np.radians(CL_alp_inb_M02)*alpha_stall;
 CL_outb = np.radians(CL_alp_outb_M02)*alpha_stall;
-CL_max = (span_inboard*CL_inb + span_outboard*CL_outb)/span;
+#CL_max = (span_inboard*CL_inb + span_outboard*CL_outb)/span;
+CL_max = (S_inb*CL_inb + S_outb*CL_outb)/S;
 
 
 # ----- Drag Calculation -------
