@@ -104,35 +104,35 @@ def delta_wave_drag(M_cruise,t_c_stream,sweep_LE,CL_cruise,M_crit_airfoil):
 
 
 def bisection(f,a,b,N):
-    '''
-    Parameters
-    ----------
-    f : function for which solution f(x)=0 is needed
-    a,b : The interval in which to search for a solution. 
-    N : number of iterations 
+	'''
+	Parameters
+	----------
+	f : function for which solution f(x)=0 is needed
+	a,b : The interval in which to search for a solution. 
+	N : number of iterations 
 
-    '''
-    if f(a)*f(b) >= 0:
-        print("Bisection method fails.")
-        return None
-    a_n = a
-    b_n = b
-    for n in range(1,N+1):
-        m_n = (a_n + b_n)/2
-        f_m_n = f(m_n)
-        if f(a_n)*f_m_n < 0:
-            a_n = a_n
-            b_n = m_n
-        elif f(b_n)*f_m_n < 0:
-            a_n = m_n
-            b_n = b_n
-        elif f_m_n == 0:
-            print("Found exact solution.")
-            return m_n
-        else:
-            print("Bisection method fails.")
-            return None
-    return (a_n + b_n)/2
+	'''
+	if f(a)*f(b) >= 0:
+		print("Bisection method fails.")
+		return None
+	a_n = a
+	b_n = b
+	for n in range(1,N+1):
+		m_n = (a_n + b_n)/2
+		f_m_n = f(m_n)
+		if f(a_n)*f_m_n < 0:
+			a_n = a_n
+			b_n = m_n
+		elif f(b_n)*f_m_n < 0:
+			a_n = m_n
+			b_n = b_n
+		elif f_m_n == 0:
+			print("Found exact solution.")
+			return m_n
+		else:
+			print("Bisection method fails.")
+			return None
+	return (a_n + b_n)/2
 
 
 def M_cr_calc_h(M_cr):
