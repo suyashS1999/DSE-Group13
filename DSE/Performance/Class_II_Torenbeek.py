@@ -26,15 +26,15 @@ MF = 12471.21232    #Fuel mass [kg]
 V_D = 156.7297      #dive speed in EAS [m/s]
 l_t = 12              #Length between quarter chords of wing and h tail [m]
 
-b_f = 4              #width fuselage [m]
-h_f = 4             #height fuselage [m]
+b_f = 4.2              #width fuselage [m]
+h_f = 4.2             #height fuselage [m]
 l_f = 40            #length fuselage [m]
 S_G = 450           #gross shell area (entire outer surface of the fuselage) [m^2]
 
 b =  49.22               #wing span [m]
 Lamda_halfc =   0.682    #half chord sweep [rad]
 S =     142.5            #wing area [m^2]
-t_r =    1.5           #maximum thickness root chord [m]
+t_r =    0.18*4.021           #maximum thickness root chord [m]
 
 S_h =    30           #horizontal tail area [m^s]
 Lamda_h = 0.3          #Sweep angle of horizontal tail [rad]
@@ -110,22 +110,22 @@ def W_surfcont(): # eq (8-18)
     return W_sc #Verified
 
 #Engine section and nacelle group
-def W_nacelle():
-    W_n = 0.065*T_TO/9.81
-    return W_n
+def W_nacelle(): # eq (8-25)
+    W_n = 0.065*T_TO/9.81*0.9
+    return W_n #Verified
 
 #Propulsion group
-def W_prop():
+def W_prop(): #eq (8-27)
     W_pg = k_pg*k_thr*N_e*W_engine
-    return W_pg
+    return W_pg #Verified
 
 #Airframe services and equipment
 def W_equip():
-    W_se= 0.11*MTOW
-    return W_se
+    W_se= 0.11*MTOW #assume "medium range transport aircraft"
+    return W_se #Verified
 
 #%% ------------------------ Main ------------------------
-W_airframe = W_wing() + W_body() + W_undercarriage() + W_surfcont() + W_nacelle() + W_tail()
+W_airframe = W_wing() + W_tail() + W_body() + W_undercarriage() + W_surfcont() + W_nacelle()
 W_prop = W_prop()
 W_equip = W_equip()
 OEW = W_airframe + W_prop + W_equip
