@@ -6,7 +6,7 @@ p_amb_cr = 22632.1 #ambient pressure during cruise
 T_amb_to = 288.15 #ambient temperature during take-off
 T_amb_cr = 216.65 #ambient temperature during cruise
 v_0_to = 0 #freestream velocity during take-off
-v_0_cr = 230 #freestream velocity during cruise
+v_0_cr = 230.1382 #freestream velocity during cruise
 
 Cp_air = 1000 #cp value during cold conditions
 Cp_gas = 1150 #cp value during hot conditions
@@ -29,8 +29,8 @@ p_ratio_comb = 0.99
 
 efficiency_inlet = 0.97
 efficiency_fan = 0.91
-efficiency_LPC = 0.92
-efficiency_HPC = 0.94
+efficiency_LPC = 0.94
+efficiency_HPC = 0.92
 efficiency_HPT = 0.94
 efficiency_LPT = 0.95
 efficiency_comb = 0.99
@@ -59,7 +59,7 @@ def Engine(BPR,M_core,TIT,PI_fan,PI_HPC,PI_LPC,PI_comb,eff_inlet,eff_fan,eff_LPC
     M_fan = M_core*BPR
     T_t2, p_t2 = inlet(T_amb,p_amb,eff_inlet,v_0,cp_air,K_air) #inlet
     T_t21, p_t21, Power_fan = compressor(T_t2,p_t2,eff_fan,PI_fan,M_fan,cp_air,K_air) #fan
-    T_t24, p_t24, Power_LPC = compressor(T_t2,p_t2,eff_LPC,PI_LPC,M_core,cp_air,K_air) #LPC
+    T_t24, p_t24, Power_LPC = compressor(T_t21,p_t21,eff_LPC,PI_LPC,M_core,cp_air,K_air) #LPC
     T_t3, p_t3, Power_HPC = compressor(T_t24,p_t24,eff_HPC,PI_HPC,M_core,cp_air,K_air) #HPC
 
     Power_HPT = Power_HPC #power provided by HPT
