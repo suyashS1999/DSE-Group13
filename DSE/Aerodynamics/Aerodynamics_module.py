@@ -78,9 +78,8 @@ def IsentropicRelation(gamma, ratio_value, P_or_T_ratio):
 	return M;
 
 #%% ------------------- Input data -------------------
-# These paths are specific to my PC, change path to your own directory, and don't forget the "r" at the start
-f_Polars = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Aerodynamics\Polars2.txt";
-f_X = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Aerodynamics\x_col.txt";
+f_Polars = r"Aerodynamics\Polars2.txt";
+f_X = r"Aerodynamics\x_col.txt";
 M = 0.78;				# Freestream Mach 
 p_inf = 100000.;		# Freestream staic pressure
 gamma = 1.4;			# ratio of specific heats

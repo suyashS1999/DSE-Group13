@@ -101,7 +101,7 @@ class ExtractData_OpenVSP():
 		"""
 		for name in (self.names):
 			if name.startswith(self.file_types[1][1:]):
-				fig = plt.figure(figsize = (12, 8));
+				fig = plt.figure(figsize = (12, 9));
 				for i in range(len(self.subDict)):
 					alpha = float(list(self.subDict)[i]);
 					CL = asarray(self.subDict[alpha]["Cl"])*asarray(self.subDict[alpha]["Chord"])/asarray(self.subDict[alpha]["Cref_"]);
@@ -157,8 +157,7 @@ class ExtractData_OpenVSP():
 		return 0;
 
 #%% ------------------- Input data -------------------
-dir = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Aerodynamics\OpenVSPSimData";			# Change this to you local directory
-#dir = r"C:\Users\miksw\Desktop\DSE\DSE-Group13\DSE\Aerodynamics\OpenVSPSimData";
+dir = r"Aerodynamics\OpenVSPSimData";			# Path to directory
 #%% ------------------- Main -------------------
 vsp_data = ExtractData_OpenVSP(dir);
 vsp_data.plot_Polars();
