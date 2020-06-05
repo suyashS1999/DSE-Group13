@@ -5,11 +5,14 @@
     <ProjectGuid>1724d448-8474-4c49-a822-e26bef80c2d1</ProjectGuid>
     <ProjectHome>.</ProjectHome>
     <StartupFile>Aerodynamics\Aerodynamics_module1.py</StartupFile>
-    <SearchPath>Aerodynamics;ConceptEvaluation;Controls;Performance;Propulsion;Structures</SearchPath>
+    <SearchPath>
+    </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>DSE</Name>
     <RootNamespace>DSE</RootNamespace>
+    <IsWindowsApplication>False</IsWindowsApplication>
+    <InterpreterId>Global|PythonCore|3.6</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -196,6 +199,9 @@
     <Content Include="PreviewOfFolderOrganization.png" />
     <Content Include="Propulsion\Thrust_Requirement\Thrust.m" />
     <Content Include="Structures\liftdistribution.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="Global|PythonCore|3.6" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
