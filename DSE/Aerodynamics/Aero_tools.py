@@ -100,29 +100,18 @@ def delta_wave_drag(M_cruise,t_c_stream,sweep_LE,CL_cruise,M_crit_airfoil):
 	
 	return delta_cd
 
-def M_cr_calc_h(M_cr):
-	
-	gam = 1.4
-	cpm = -0.31  	
-	p1 = ((2+((gam-1)*(M_cr**2)))/(gam+1))**(gam/(gam-1))
-	
-	val = (cpm/np.sqrt(1-(M_cr**2))) -(2/(gam*(M_cr**2)))*(p1-1)
-	
-	return val
 
-def M_cr_calc_v(M_cr):
-	
-	gam = 1.4
-	
-	cpm = -0.31  # min cp for airfoil
-	p1 = ((2+((gam-1)*(M_cr**2)))/(gam+1))**(gam/(gam-1))
-	
-	val = (cpm/np.sqrt(1-(M_cr**2))) -(2/(gam*(M_cr**2)))*(p1-1)
-	
-	return val
 
 
 def bisection(f,a,b,N):
+	'''
+	Parameters
+	----------
+	f : function for which solution f(x)=0 is needed
+	a,b : The interval in which to search for a solution. 
+	N : number of iterations 
+
+	'''
 	if f(a)*f(b) >= 0:
 		print("Bisection method fails.")
 		return None
@@ -143,7 +132,51 @@ def bisection(f,a,b,N):
 		else:
 			print("Bisection method fails.")
 			return None
-		return (a_n + b_n)/2
+	return (a_n + b_n)/2
 
 
+def M_cr_calc_h(M_cr):
+	
+	gam = 1.4
+	
+	cpm = -0.57  # min cp for airfoil
+	
+	p1 = ((2+((gam-1)*(M_cr**2)))/(gam+1))**(gam/(gam-1))
+	
+	val = (cpm/np.sqrt(1-(M_cr**2))) -(2/(gam*(M_cr**2)))*(p1-1)
+	
+	return val
 
+
+def M_cr_calc_v(M_cr):
+	
+	gam = 1.4
+	
+	cpm = -0.31  # min cp for airfoil
+	
+	p1 = ((2+((gam-1)*(M_cr**2)))/(gam+1))**(gam/(gam-1))
+	
+	val = (cpm/np.sqrt(1-(M_cr**2))) -(2/(gam*(M_cr**2)))*(p1-1)
+	
+	return val
+
+
+def Re(rho,V,l,mu):
+	re = (rho*V*l)/mu
+	
+	return mu
+
+def bound_thick_lam_incom(Re,x):
+	thick = (5.0*x)/(np.sqrt(Re))
+	
+	return thick
+
+def disp_thick_lam_incom(Re,x):
+	thick = (1.72*x)/(np.sqrt(Re))
+	
+	return thick
+
+def mom_thick_lam_incom(Re,x):
+	thick = (0.664*x)/(np.sqrt(Re))
+	
+	return thick

@@ -93,15 +93,17 @@ class ExtractData_OpenVSP():
 					self.subDict[secDict["AoA_"]] = secDict;
 
 
-	def plot_LoadDistribution(self):
+	def plot_LoadDistribution(self, AOA, write_dir):
 		""" Function to plot the Lift and Drag distribution over 
 		the wing from the data
 		Output:
 			fig = plot of the distribution
 		"""
+		w_file = open(write_dir, mode = "w");
+		c = 0;
 		for name in (self.names):
 			if name.startswith(self.file_types[1][1:]):
-				fig = plt.figure(figsize = (12, 10));
+				fig = plt.figure(figsize = (12, 9));
 				for i in range(len(self.subDict)):
 					alpha = float(list(self.subDict)[i]);
 					CL = asarray(self.subDict[alpha]["Cl"])*asarray(self.subDict[alpha]["Chord"])/asarray(self.subDict[alpha]["Cref_"]);
@@ -109,6 +111,10 @@ class ExtractData_OpenVSP():
 					span = asarray(self.subDict[alpha]["Yavg"]);
 					sort_idx = argsort(span);
 					span = span[sort_idx];		CL = CL[sort_idx];		CD = CD[sort_idx];
+					if alpha == AOA:
+						if c == 0: CL_w = span; c += 1;
+						CL_w = vstack((CL_w, CL));
+						print(CL);
 					ax1 = plt.subplot(2, 1, 1);
 					ax1.title.set_text("Lift Distribution {}".format(name[len(self.file_types[1][1:]) :]));
 					ax1.plot(span, CL, "x-", label = "alpha = {}".format(alpha));
@@ -125,6 +131,7 @@ class ExtractData_OpenVSP():
 
 					ax1.legend(loc = "upper right");
 					ax2.legend(loc = "upper right");
+		savetxt(write_dir, CL_w);
 		return 0;
 
 
@@ -157,12 +164,14 @@ class ExtractData_OpenVSP():
 		return 0;
 
 #%% ------------------- Input data -------------------
-dir = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Aerodynamics\OpenVSPSimData";			# Change this to you local directory
-#dir = r"C:\Users\miksw\Desktop\DSE\DSE-Group13\DSE\Aerodynamics\OpenVSPSimData";
+dir = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Aerodynamics\OpenVSPSimData";			# Path to directory, this is for my PC, you can use the lower one
+#dir = r"\Aerodynamics\OpenVSPSimData";													# Path to directory, Comment the top line and use this one
+write_dir = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\liftdistribution.txt"	# Write directory
 #%% ------------------- Main -------------------
 vsp_data = ExtractData_OpenVSP(dir);
+AOA = 14.737;
 vsp_data.plot_Polars();
-vsp_data.plot_LoadDistribution();
+vsp_data.plot_LoadDistribution(AOA, write_dir);
 vsp_data.Cm_CL_alpha_calc();
 plt.show();
 

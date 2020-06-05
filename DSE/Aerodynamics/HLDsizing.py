@@ -67,11 +67,15 @@ class HighLiftDevices():
 		Delta_CL_LE, Delta_alpha0_LE = self.Delta_CL_alpha0(delta_Clmax_LE, Swf_S_LE, lambda_hingeLn_LE, (delta_Land, c_f_c));
 		Delta_CL_TE, Delta_alpha0_TE = self.Delta_CL_alpha0(delta_Clmax_TE, Swf_S_TE, lambda_hingeLn_TE, (delta_Land, c_f_c));
 		if TE_HLD == "SingleFowlerFlap" or TE_HLD == "DoubleFowlerFlap" or TE_HLD == "TripleFowlerFlap":
-			CL_alpha = (1 + c_f_c)*ori_CL_alpha;
+			if Swf_S_TE != 0: CL_alpha = (1 + c_f_c)*ori_CL_alpha;
+			else: CL_alpha = ori_CL_alpha;
 		else:
 			CL_alpha = ori_CL_alpha;
 		CL0 = ori_CL0 - Delta_alpha0_LE - Delta_alpha0_TE;
-		CL_max = ori_CL_alpha + Delta_CL_LE + Delta_CL_TE;
+		CL_max = ori_CL_max + Delta_CL_LE + Delta_CL_TE;
+		print("# ---------------------------- #");
+		print("New CL max = {}".format(CL_max));
+		print("# ---------------------------- #");
 		alpha = linspace(-5.0, 10, 20);
 		CL_ori = ori_CL_alpha*alpha + ori_CL0;
 		CL_new = CL_alpha*alpha + CL0;
@@ -84,12 +88,22 @@ class HighLiftDevices():
 		plt.show();
 		return 0;
 
-
+#%% ------------------ Main ------------------
 HLD = HighLiftDevices();
 #HLD.plot_Delta_CL_alpha0("LE", 0.25);
 #HLD.plot_Delta_CL_alpha0("TE", 0.25);
 #plt.show();
-HLD.Adjust_CL_alpha(0.074417, 0.300238, 1.1, "KrugerFlap", "DoubleFowlerFlap", 0.25, 0.7, 0.9, 0.7, 0.6);
+ori_CL_alpha = 0.074417;					# Original Clean CL-alpha
+ori_CL0 = 0.300238;							# Original Clean CL at zero aoa
+ori_CL_max = 1.113;							# Original Clean CL max
+LE_HLD = "KrugerFlap";						# Choose leading edge HLD. Choose between ["FixedSlot", "LEFlap", "KrugerFlap"]
+TE_HLD = "SingleFowlerFlap";				# Choose trailing edge HLD. Choose between ["PlainFlap", "SingleSlottedFlap", "SingleFowlerFlap", "DoubleFowlerFlap", "TripleFowlerFlap"]
+c_f_c = 0.25;								# fraction of the chord that is the HLD
+Swf_S_TE = 0.6;								# Flapped (TE) area ratio
+Swf_S_LE = 0.8;								# Flapped (LE) area ratio
+lambda_hingeLn_LE = 0.7;					# Sweep of hinge line LE
+lambda_hingeLn_TE = 0.6;					# Sweep of hinge line TE
+HLD.Adjust_CL_alpha(ori_CL_alpha, ori_CL0, ori_CL_max, LE_HLD, TE_HLD, c_f_c, Swf_S_TE, Swf_S_LE, lambda_hingeLn_LE, lambda_hingeLn_TE);
 
 
 		

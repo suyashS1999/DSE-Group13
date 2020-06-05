@@ -11,6 +11,8 @@
     <OutputPath>.</OutputPath>
     <Name>DSE</Name>
     <RootNamespace>DSE</RootNamespace>
+    <IsWindowsApplication>False</IsWindowsApplication>
+    <InterpreterId>Global|PythonCore|3.6</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,12 +24,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Aerodynamics\Aero_tools.py" />
+    <Compile Include="Aerodynamics\Airfoil_Nozzle.py" />
     <Compile Include="Aerodynamics\HLDsizing.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Aerodynamics\Input_parameters.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Aerodynamics\Tail_planform.py" />
     <Compile Include="Aerodynamics\WingPlanform.py">
       <SubType>Code</SubType>
     </Compile>
@@ -73,6 +77,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Performance\Class_II_Torenbeek.py" />
+    <Compile Include="Performance\h tail.py" />
     <Compile Include="Performance\Performance_module.py" />
     <Compile Include="Performance\Performance_module1.py" />
     <Compile Include="Performance\Performance_module2.py" />
@@ -86,6 +91,9 @@
     <Compile Include="Propulsion\Propulsion_module2.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Propulsion\Turbo_fan\Core_equations.py" />
+    <Compile Include="Propulsion\Turbo_fan\fan_equations.py" />
+    <Compile Include="Propulsion\Turbo_fan\Turbofan.py" />
     <Compile Include="Propulsion\__init__.py" />
     <Compile Include="Structures\Structures_module.py">
       <SubType>Code</SubType>
@@ -107,6 +115,8 @@
     <Folder Include="ConceptEvaluation\" />
     <Folder Include="Controls\" />
     <Folder Include="Performance\" />
+    <Folder Include="Propulsion\Thrust_Requirement\" />
+    <Folder Include="Propulsion\Turbo_fan\" />
     <Folder Include="Structures\" />
     <Folder Include="Propulsion\" />
     <Folder Include="Aerodynamics\" />
@@ -188,6 +198,11 @@
     <Content Include="Aerodynamics\x_col.txt" />
     <Content Include="git_tutorial.txt" />
     <Content Include="PreviewOfFolderOrganization.png" />
+    <Content Include="Propulsion\Thrust_Requirement\Thrust.m" />
+    <Content Include="Structures\liftdistribution.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="Global|PythonCore|3.6" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

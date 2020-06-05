@@ -1,5 +1,15 @@
 import numpy as np
 
+def inlet(T1,p1,eff,v0,cp,K):
+    """
+    Inlet
+    This function outputs total pressure and temperature after the inlet.
+    Inputs: atmospheric temperature and pressure, efficiency 
+    """
+    p02 = p1*(1+eff*v0**2/(2*cp*T1))**(K/(K-1))
+    T02 = T1+v0**2/(2*cp)
+    return T02,p02
+
 def compressor(T1,p1,eff,PI,mf,cp,K):
     """
     Compressor
@@ -46,11 +56,11 @@ def exhaust(p0,T01,p01,eff,K,cp):
     V_e = np.sqrt(2*cp*(T01-T_e))
     return T_e, V_e
 
-def thrust_core(T_e,T_0,mf):
+def thrust_exhaust(V_e,V_0,mf):
     """
     Thrust from core
     This functions outputs core thrust.
-    Inputs: temperature exit, temperature before, massflow core fuel + air
+    Inputs: velocity exit, velocity before, massflow core fuel + air
     """
-    Thr_core = mf*(T_e-T_0) #assumed no pressure difference
+    Thr_core = mf*(V_e-V_0) #assumed no pressure difference
     return Thr_core
