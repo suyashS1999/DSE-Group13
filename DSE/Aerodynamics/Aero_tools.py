@@ -159,3 +159,24 @@ def M_cr_calc_v(M_cr):
 	val = (cpm/np.sqrt(1-(M_cr**2))) -(2/(gam*(M_cr**2)))*(p1-1)
 	
 	return val
+
+
+def Re(rho,V,l,mu):
+	re = (rho*V*l)/mu
+	
+	return mu
+
+def bound_thick_lam_incom(Re,x):
+	thick = (5.0*x)/(np.sqrt(Re))
+	
+	return thick
+
+def disp_thick_lam_incom(Re,x):
+	thick = (1.72*x)/(np.sqrt(Re))
+	
+	return thick
+
+def mom_thick_lam_incom(Re,x):
+	thick = (0.664*x)/(np.sqrt(Re))
+	
+	return thick
