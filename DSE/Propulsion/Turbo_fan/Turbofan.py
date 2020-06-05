@@ -25,7 +25,7 @@ P_bli = 1.64E6
 p_ratio_fan = 1.2 #pressure ratio fan
 p_ratio_HPC  = 21 #pressure ratio high pressure compressor
 p_ratio_LPC = 2.76 #pressure ratio low pressure compressor
-p_ratio_comb = 0.99
+p_ratio_comb = 0.99 #pressure ratio combustion chamber
 
 efficiency_inlet = 0.97
 efficiency_fan = 0.91
