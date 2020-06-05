@@ -8,7 +8,7 @@
 #%% ---------------------- Imports ----------------------
 import numpy as np
 import matplotlib.pyplot as plt
-from ConceptEvaluation.PayloadRangeDiagram import ISA_trop
+#from ConceptEvaluation.PayloadRangeDiagram import ISA_trop
 
 #%% ---------------------- Constants ----------------------
 g = 9.81                        # Gravitational acceleration [m/s^2]
@@ -16,19 +16,36 @@ M_cruise = 0.78                 # Mach number in cruise [-]
 h_cruise = 11000                # Altitude in cruise [m]
 
 #%% ---------------------- Inputs ----------------------
-MTOW = 74616.9829                   # MTOW [kg]
-S_ref =  142.520611                 # Reference wing area [m^2]
-CL_max_clean = 1.5                  # DUMMY Max CL with clean configuration [-]
-CL_min_clean = -CL_max_clean       # Assumed same magnitude, negative Max CL with clean configuration [-] (not so critical)
-CL_max_flap = 2.0                   # MAX CL with LANDING CONFIGURATION [-]
+MTOW = 71311.11553                   # MTOW - fuel used in ascend [kg]
+S_ref =  139.1                 # Reference wing area [m^2]
+CL_max_clean = 1.1                # Max CL with clean configuration [-]
+CL_min_clean = -CL_max_clean        # Assumed same magnitude, negative Max CL with clean configuration [-] (not so critical)
+CL_max_flap = 2.4                   # MAX CL with LANDING CONFIGURATION [-]
 n_max = 2.5                         # Positive limit maneuvering load factor [-]
 n_min = -1                          # Negative limit maneuvering load factor [-]
 n_flap = 2                          # Assumed (from 2nd year project guide)
 
-CL_alpha = 6                        # (DUMMY) CL alpha gradient [-/rad]
+CL_alpha = 5.267/np.sqrt(1-M_cruise**2)                    # CL alpha gradient of inboard (higher gradient more critical) [-/rad]
 W_S = 5262                          # Wing loading [N/m^2]
-c = 6                               # Mean geometrical chord [m]
+c = 1.501                           # Mean aerodynamic chord [m]
 #%% ---------------------- Functions ----------------------
+def ISA_trop(h):
+	""" This function computes the atmospheric properties 
+		within the troposphere
+	Input:
+		h = altitude [m]
+	Output:
+		T = Temperature [K]
+		p = Pressure [Pa]
+		rho = Densituy [kg/m^3]
+		a = spped of sound [m/s]
+	"""
+	T = 288.15 - 0.0065*h;
+	p = 101325*(T/288.15)**(-g/(-0.0065*287));
+	rho = 1.225*(T/288.15)**(-g/(-0.0065*287) - 1);
+	a = np.sqrt(1.4*287*T);
+	return T, p, rho, a;
+
 def relevant_V(W_cruise):
     """
     This function outputs all the relevant characteristic velocities
@@ -55,14 +72,16 @@ def gust_n(V_EAS, U_EAS):
 T, p, rho, a = ISA_trop(h_cruise)
 T0, p0, rho0, a0 = ISA_trop(0)
 V_stall_flap, V_stall_clean, V_neg_stall_clean, V_maneuver, V_cruise, V_dive = relevant_V(MTOW*g) # For now I assume W is MTOW during cruise
-V_max_flap = 1.8*1.05*V_stall_flap                                 # Max speed with flaps extended EAS [m/s]
+V_max_flap = 1.8*V_stall_flap                                 # Max speed with flaps extended EAS [m/s]
+#V_cruise = a*M_cruise*np.sqrt(rho/rho0)
+#V_dive = V_cruise/0.8
 
 #Maneuver envelope
 fig = plt.figure(figsize = (12, 8))
 plt.xlabel("Equivalent airspeed, $V_{EAS}$")
 plt.ylabel("Load factor, n")
 plt.axhline(y = 0, color = "black")
-plt.xlim(0, V_dive + 10)
+#plt.xlim(0, V_dive + 10)
 
 #Limiting velocities EAS
 plt.vlines(x = V_dive, ymin = 0, ymax = n_max)
