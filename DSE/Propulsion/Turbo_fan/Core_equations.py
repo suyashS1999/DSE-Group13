@@ -28,7 +28,7 @@ def combustion(T1,T2,mf,LHV,cp,eff,p1,PI):
     Inputs: total temp before, total temp after, massflow air + fuel, LHV_f, cp(gas),
             efficiency combustion, total pressure before, pressure ratio combustion
     """
-    mf_f = mf*cp*eff*(T2-T1)/LHV
+    mf_f = mf*cp*(T2-T1)/(LHV*eff)
     p2 = p1*PI
     new_mf = mf + mf_f
     return mf_f, p2, new_mf
