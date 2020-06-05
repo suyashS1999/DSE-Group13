@@ -101,7 +101,7 @@ class ExtractData_OpenVSP():
 		"""
 		for name in (self.names):
 			if name.startswith(self.file_types[1][1:]):
-				fig = plt.figure(figsize = (12, 10));
+				fig = plt.figure(figsize = (12, 8));
 				for i in range(len(self.subDict)):
 					alpha = float(list(self.subDict)[i]);
 					CL = asarray(self.subDict[alpha]["Cl"])*asarray(self.subDict[alpha]["Chord"])/asarray(self.subDict[alpha]["Cref_"]);
