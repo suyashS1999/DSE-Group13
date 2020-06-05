@@ -62,8 +62,8 @@ def Engine(BPR,M_core,TIT,PI_fan,PI_HPC,PI_LPC,PI_comb,eff_inlet,eff_fan,eff_LPC
     T_t24, p_t24, Power_LPC = compressor(T_t21,p_t21,eff_LPC,PI_LPC,M_core,cp_air,K_air) #LPC
     T_t3, p_t3, Power_HPC = compressor(T_t24,p_t24,eff_HPC,PI_HPC,M_core,cp_air,K_air) #HPC
 
-    Power_HPT = Power_HPC #power provided by HPT
-    Power_LPT = Power_LPC + Power_fan + Power_BLI #power provided by LPT
+    Power_HPT = Power_HPC*0.99 #power provided by HPT
+    Power_LPT = (Power_LPC + Power_fan + Power_BLI)*0.99 #power provided by LPT
 
     mf_f, p_t4, M_core = combustion(T_t3,TIT,M_core,LHV,cp_gas,eff_comb,p_t3,PI_comb) #combustion chamber
     T_t45,p_t45, PI_HPT = turbine(Power_HPT,M_core,cp_gas,TIT,p_t4,eff_HPT,K_gas) #HPT
@@ -75,6 +75,8 @@ def Engine(BPR,M_core,TIT,PI_fan,PI_HPC,PI_LPC,PI_comb,eff_inlet,eff_fan,eff_LPC
     thrust_core = thrust_exhaust(v_e_core,v_0,M_core) #thrust core
     thrust_fan = thrust_exhaust(v_e_fan,v_0,M_fan) #thrust fan
     thrust = thrust_core + thrust_fan #total thrust
+    temps = [T_t2,T_t24,T_t3,TIT ,T_t45,T_t5,T_e_core,T_t21,T_e_fan]
+    pres  = [p_t2,p_t24,p_t3,p_t4,p_t45,p_t5,p_amb   ,p_t21,p_amb  ]
     return thrust
 
 print(Engine(BP_ratio,M_core_cr,TIT_cr,p_ratio_fan,p_ratio_HPC,p_ratio_LPC,p_ratio_comb,efficiency_inlet,efficiency_fan,efficiency_LPC,efficiency_HPC,efficiency_HPT,efficiency_LPT,efficiency_comb,efficiency_exhaust,p_amb_cr,T_amb_cr,v_0_cr,Cp_air,Cp_gas,k_air,k_gas,P_bli,LHV_f))
