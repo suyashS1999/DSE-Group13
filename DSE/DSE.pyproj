@@ -24,6 +24,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Aerodynamics\Aero_tools.py" />
+    <Compile Include="Aerodynamics\Airfoil_Nozzle.py" />
     <Compile Include="Aerodynamics\HLDsizing.py">
       <SubType>Code</SubType>
     </Compile>
