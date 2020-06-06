@@ -33,7 +33,7 @@ def monomial_basis(nodes, f):
 	for i in range(N):
 		A[:, i] = nodes**i;
 	coeff = inv(A).dot(f);
-	print(coeff);
+	#print(coeff);
 	return coeff;
 
 def reconstruct_f(coeff, plot_nodes):
@@ -54,6 +54,8 @@ plt.show();
 
 #%%------------Bending Moment Equation---------------------------
 from sympy import Symbol, Poly
+import numpy as np
+
 #print(coeff)
 x = Symbol('x')
 V = Poly(coeff, x)
@@ -65,17 +67,26 @@ def V(x):
 #def V1(t):
     #return (9*t**2 - 103.72*t)
 #print(V(2))
-#print(span_location[27:])
+#print(span_location[29:])
 
 Vtab = []
+Vtot = 0
+xtab = np.arange(0,22.5,0.01)
+#print(xtab)
+ 
+
 for i in range(27,len(span_location)):
-    Vnum = V(span_location[i])
+    Vnum = V(xtab[i])
+    Vtot = Vtot + Vnum
     Vtab.append(Vnum)
+    
+#print(Vtot)
+
 print(span_location[27:])
 print(Vtab)
 
-#plt.plot(span_location[27:],Vtab)
-
+plt.plot(span_location[27:],Vtab)
+plt.show()
 #def M(x):
  #   return x*(1.9541242997433e-30*x**26 - 1.00298256227131e-29*x**25 - 7.3443471608949e-27*x**24 + 3.28639946033419e-26*x**23 + 1.22102281205588e-23*x**22 - 4.64804343113463e-23*x**21 - 1.18220599057669e-20*x**20 + 3.70062893573879e-20*x**19 + 7.38541957812638e-18*x**18 - 1.8087943741236e-17*x**17 - 3.11669552445891e-15*x**16 + 5.51647195222334e-15*x**15 + 9.04361729764229e-13*x**14 - 9.98867726697525e-13*x**13 - 1.80266398772825e-10*x**12 + 8.51850800005809e-11*x**11 + 2.42737687552867e-8*x**10 + 2.27083965791162e-9*x**9 - 2.13542065217398e-6*x**8 - 1.16079616842799e-6*x**7 + 0.000116247428860799*x**6 + 9.35480330016276e-5*x**5 - 0.00360746497512304*x**4 - 0.0028353781451931*x**3 + 0.0553868309130224*x**2 + 0.0250522342930375*x + 1.49300235895663)
         
@@ -83,15 +94,70 @@ print(Vtab)
 
 Mtab = []
 xtab = []
+M_nosum = []
+Mtot = 0
 
 for i in range(27,len(span_location)):
     x = span_location[i]
     M = V(span_location[i])*span_location[i]
-    print(M)
-    Mtab.append(M)
+    Mtot = Mtot + M
+    M_nosum.append(M)
+    Mtab.append(Mtot)
     xtab.append(x)
     
-print(Mtab)
+#print(Mtot)
+#print(Mtab)
+print(M_nosum)
 plt.plot(xtab,Mtab)
-plt.show
+
+#%%------------Equilibrium equations---------------------------
+P = 10
+g = 10
+M_nosum.append(-P*g)
+xtab.append(g)
+
+d = 49.22/2*0.55
+
+h = 18
+H_y = 0.0981
+M_nosum.append(-H_y*h)
+xtab.append(h)
+
+F_br = ((Mtot-g*P-h*H_y)/d)
+A_y = Vtot-P-H_y-F_br
+
+M_nosum.append(-F_br*d)
+xtab.append(d)
+
+print(F_br)
+#print(A_y)
+
+#print(Mtab)
+#print(xtab)
+#%%-----------------Adding point moments to moment diagram------------------------ 
+from more_itertools import sort_together
+
+sort=sort_together([xtab, M_nosum])    #sorting points together by location
+
+xtab_sorted = sort[0]
+Mtab_sorted = sort[1]
+
+xtab_fin =[]
+Mtab_fin = []
+Mtot2 = 0
+
+for i in range(0,len(xtab_sorted)): 
+    Mtot2 = Mtot2 + Mtab_sorted[i]
+    Mtab_fin.append(Mtot2)
+print(Mtab_sorted)
+
+#print(Mtab_fin)
+plt.plot(xtab_sorted,Mtab_fin)
+plt.show()
+#%%-----------------Calculate tensile stress------------------------ 
+M_max = max(Mtab_fin)
+
+M_min = min(Mtab_fin)
+
+
 
