@@ -5,8 +5,7 @@
     <ProjectGuid>1724d448-8474-4c49-a822-e26bef80c2d1</ProjectGuid>
     <ProjectHome>.</ProjectHome>
     <StartupFile>Aerodynamics\Aerodynamics_module1.py</StartupFile>
-    <SearchPath>
-    </SearchPath>
+    <SearchPath>..\DSE</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>DSE</Name>
@@ -95,6 +94,9 @@
     <Compile Include="Propulsion\Turbo_fan\fan_equations.py" />
     <Compile Include="Propulsion\Turbo_fan\Turbofan.py" />
     <Compile Include="Propulsion\__init__.py" />
+    <Compile Include="Structures\InterpolationandIntegration.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Structures\Structures_module.py">
       <SubType>Code</SubType>
     </Compile>

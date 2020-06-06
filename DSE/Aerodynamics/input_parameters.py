@@ -4,7 +4,7 @@
 """
 
 import numpy as np
-import WingPlanform as planf
+import Aerodynamics.WingPlanform as planf
 
 
 #Global Wing
