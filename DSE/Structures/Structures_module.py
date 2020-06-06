@@ -82,8 +82,8 @@ for i in range(27,len(span_location)):
     
 #print(Vtot)
 
-print(span_location[27:])
-print(Vtab)
+#print(span_location[27:])
+#print(Vtab)
 
 plt.plot(span_location[27:],Vtab)
 plt.show()
@@ -105,10 +105,7 @@ for i in range(27,len(span_location)):
     Mtab.append(Mtot)
     xtab.append(x)
     
-#print(Mtot)
-#print(Mtab)
-print(M_nosum)
-plt.plot(xtab,Mtab)
+#plt.plot(xtab,Mtab)
 
 #%%------------Equilibrium equations---------------------------
 P = 10
@@ -129,11 +126,6 @@ A_y = Vtot-P-H_y-F_br
 M_nosum.append(-F_br*d)
 xtab.append(d)
 
-print(F_br)
-#print(A_y)
-
-#print(Mtab)
-#print(xtab)
 #%%-----------------Adding point moments to moment diagram------------------------ 
 from more_itertools import sort_together
 
@@ -149,15 +141,42 @@ Mtot2 = 0
 for i in range(0,len(xtab_sorted)): 
     Mtot2 = Mtot2 + Mtab_sorted[i]
     Mtab_fin.append(Mtot2)
-print(Mtab_sorted)
+#print(Mtab_sorted)
 
 #print(Mtab_fin)
 plt.plot(xtab_sorted,Mtab_fin)
 plt.show()
-#%%-----------------Calculate tensile stress------------------------ 
-M_max = max(Mtab_fin)
 
-M_min = min(Mtab_fin)
+#%%-----------------Moment of intertia calculation------------------------ 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+#%%-----------------Calculate tensile bending stress------------------------ 
+M_max = max(Mtab_fin)*10**3
+
+M_min = min(Mtab_fin)*10**3
+print(M_min)
+
+E = 69000
+I = 545283755.8622*10**(-4)*10**(-4)*10**(-4)
+y = 603.15/2*10**(-3)
+
+sigma = M_min*y/I
+sigma_yield = 324*10**6
+
+
+print(sigma*10**(-6))
+print(sigma_yield*10**(-6))
