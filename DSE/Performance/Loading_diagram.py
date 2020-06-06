@@ -8,54 +8,51 @@ Created on Thu Mar 12 13:48:53 2020
 import numpy as np
 import matplotlib.pyplot as plt
 
-#General position information
-lmac = 1.501
-xlemac = 4 + (32.05*0.5) - 0.25*lmac          #quarter MAC at 50% of cabin (SEAD rough approximation)
-x_cargo_frw = 7.07
-x_cargo_aft = 37.7
-x_cg_fuel = xlemac
+#%% ---------------------- Inputs ----------------------
+#Aircraft dimensions
+lmac = 1.501                            # MAC [m]
+l_fuse = 42.6                           # Fuselage length [m]
+xlemac = 4 + (32.05*0.5) - 0.25*lmac    # X position of LEMAC from nose (quarter MAC at 50% of cabin (SEAD rough approximation))
+l_t = 17.75                             # Tail moment arm [m], distance between 1/4 chords of wing + tail (for now V_tail)
 
-#CG locations
-l_fuse = 42.6
-x_cg_wing = xlemac+lmac*0.25 #?
-x_cg_tail = 5.75
-x_cg_body = 20.08
-x_cg_undercarriage_main = 0.6*l_fuse
-x_cg_undercarriage_nose = 0.1*l_fuse
-x_cg_surfcont = x_cg_wing
-x_cg_nacelle = xlemac
-x_cg_engine = x_cg_nacelle
-x_cg_equip = x_cg_body
+#CG locations in X direction from the nose (Assumptions/Justification in brackets)
+x_cargo_frw = 7.07                      # forward cargo [m] (from concept 3 midterm side view) 
+x_cargo_aft = 37.7                      # aft cargo [m] (from concept 3 midterm side view)
+x_cg_fuel = xlemac                      # fuel [m] (approximated to be at the LEMAC, forward of approximate CG of wing since there will be no fuel at the tips)
+x_cg_wing = xlemac+lmac*0.25            # wing, as function of MAC [m] (For now assumed to be quarter chord MAC)
+x_cg_tail = l_t+x_cg_wing               # tail [m] (cg wing + tail arm)
+x_cg_body = l_fuse*0.5                  # body/fuselage [m] (midpoint of fuselage length)
+x_cg_undercarriage_main = 0.47*l_fuse   # main landing gear [m] (relative to fuselage length of A320)
+x_cg_undercarriage_nose = 0.135*l_fuse  # nose landing gear [m] (relative to fuselage length of A320)
+x_cg_surfcont = x_cg_wing               # surface control [m] (assumed to be same as wing cg)
+x_cg_nacelle = xlemac                   # nacelle + pylons [m] (assumed to be at LEMAC)
+x_cg_engine = xlemac                    # engines [m] (assumed to be at LEMAC)
+x_cg_equip = x_cg_body                  # equipment e.g. APU and all that stuff [m] (assumed to be equally spread along the body)
 
-#Determine CG of the OEW w.r.t. nose
+#Passenger arrangement (input value)
+total_pax = 192                         # Number of passengers [-] (ITS 194 BUT MODIFIED SO THAT ROWS FIT NICELY)
+window_row = 2                          # number of rows [-] (all from mid-term)
+middle_row = 2
+aisle_row = 2
+total_row = window_row+middle_row+aisle_row
+pax_per_row = total_pax/total_row
+seat_pitch = 812.8e-3                   # seating pitch [m] (from mid-term)
+l_cabin = 30.25                         # length of cabin [m] (from mid-term)
+l_cockpit = 4                           # length of cockpit [m] (from mid-term)
+x_seat_mostfrw = l_cockpit+(l_cabin-(seat_pitch*total_pax/(total_row)))/2 # Position of most forward seat from nose [m] (Assume all seat at the middle of cabin with the seating pitch)
+pax_weight = 95*194/192                 # weight per pax [kg] (assumed 95, but corrected to 192 pax from 194 pax)
+
+# Aircraft weights
+PL = 20000                                      # Payload mass [kg] (from req.)
+m_cargo_frw = (PL - total_pax*pax_weight)*4/7   # Frw cargo [kg]
+m_cargo_aft = (PL - total_pax*pax_weight)*3/7   # Aft cargo [kg]
+m_fuel = 12471.21232                            # Fuel weight [kg]
+#Verified that PL mass indeed equals PAX+cargofrw+cargoaft
+#%% ---------------------- Main ----------------------
+#Compile CGs
 from Class_II_Torenbeek import *
 x_cg_oew = (W_wing*x_cg_wing + W_tail*x_cg_tail + W_body*x_cg_body + W_undercarriage_main*x_cg_undercarriage_main + W_undercarriage_nose*x_cg_undercarriage_nose + W_surfcont*x_cg_surfcont + W_nacelle*x_cg_nacelle + W_engine*x_cg_engine + W_equip*x_cg_equip)/OEW
 
-#Passenger arrangement (input value)
-total_pax = 192
-window_row = 2
-middle_row = 2
-aisle_row = 2
-seat_pitch = 812.8e-3 #[m] 
-x_seat_mostfrw = 7 #[m] Assume all seat at the middle
-pax_weight = 95*194/192 #[kg]
-
-#General weight information (input value)
-#OEW = 42145.77058 #[kg] #Including pilots and crew etc!
-PL = 20000
-m_cargo_frw = (PL - total_pax*pax_weight)*4/7
-m_cargo_aft = (PL - total_pax*pax_weight)*3/7
-m_fuel = 12471.21232
-
-
-#Determine passenger number per row
-pax_per_row = total_pax/(window_row + middle_row + aisle_row)
-
-if pax_per_row == int(pax_per_row):
-    pax_per_row = int(pax_per_row)
-else:
-    print("number of passenger per row is not equal!")
-    exit()
 
 def cargo_component_cg(m_frw, m_aft, x_frw, x_aft):
     frw_aft = [[],[]]
