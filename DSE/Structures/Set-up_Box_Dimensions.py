@@ -92,6 +92,8 @@ geometry = np.array([[width_box],
                     [A_spar_cap]])
 print(geometry)
 
+
+
 centroid = MOI.calc_centroid(geometry[0], geometry[1], geometry[2], geometry[3], geometry[4], geometry[5], geometry[6], geometry[7], geometry[8])
 
 stif_coordinates_top, stif_coordinates_bot = MOI.calc_stif_locations(geometry[0], geometry[1], geometry[5], geometry[6])
