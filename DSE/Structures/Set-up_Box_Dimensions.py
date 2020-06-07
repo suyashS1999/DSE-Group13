@@ -4,7 +4,7 @@ Created on Fri Jun  5 09:59:14 2020
 
 @author: steph
 """
-import Wingbox_MOI.py as MOI
+#import Wingbox_MOI.py as MOI
 import numpy as np
 
 b = 22.9
@@ -94,11 +94,11 @@ print(geometry)
 
 
 
-centroid = MOI.calc_centroid(geometry[0], geometry[1], geometry[2], geometry[3], geometry[4], geometry[5], geometry[6], geometry[7], geometry[8])
+#centroid = MOI.calc_centroid(geometry[0], geometry[1], geometry[2], geometry[3], geometry[4], geometry[5], geometry[6], geometry[7], geometry[8])
 
-stif_coordinates_top, stif_coordinates_bot = MOI.calc_stif_locations(geometry[0], geometry[1], geometry[5], geometry[6])
+#stif_coordinates_top, stif_coordinates_bot = MOI.calc_stif_locations(geometry[0], geometry[1], geometry[5], geometry[6])
 
-Ixx, Izz = MOI.calc_MOI(geometry[0], geometry[1], geometry[2], geometry[3], geometry[4], geometry[5], geometry[6], geometry[7], geometry[8], centroid, stif_coordinates_top, stif_coordinates_bot)
+#Ixx, Izz = MOI.calc_MOI(geometry[0], geometry[1], geometry[2], geometry[3], geometry[4], geometry[5], geometry[6], geometry[7], geometry[8], centroid, stif_coordinates_top, stif_coordinates_bot)
 
 #chord at hinge
 #c_h = 2
