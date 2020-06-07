@@ -1,6 +1,7 @@
 from numpy import*
 from matplotlib import pyplot as plt
 from numpy.linalg import inv
+import math as ma
 
 #%% ------------- Input ------------------
 # I have just copied this for now, I will clean it up by importing the txt file later
@@ -113,23 +114,28 @@ for i in range(27,len(span_location)):
 #plt.plot(xtab,Mtab)
 
 #%%------------Equilibrium equations---------------------------
-P = 10
-g = 10
-M_nosum.append(-P*g)
-xtab.append(g)
+Fe = 10
+e = 10
+M_nosum.append(-F_e*e)
+xtab.append(e)
 
 d = 49.22/2*0.55
 
 h = 18
-H_y = 0.0981
-M_nosum.append(-H_y*h)
+F_H = 0.0981
+M_nosum.append(-F_H*h)
 xtab.append(h)
+D = 4.2
+gamma = ma.atan(d/D)
 
-F_br = ((Mtot-g*P-h*H_y)/d)
-A_y = Vtot-P-H_y-F_br
+F_brz = ((Mtot-e*Fe-h*F_H)/d)
+Ay = -F_brz/ma.tan(gamma)
+Az = Fe - F-H + F_brz - L
 
-M_nosum.append(-F_br*d)
-xtab.append(d)
+
+
+
+
 
 #%%-----------------Adding point moments to moment diagram------------------------ 
 from more_itertools import sort_together
@@ -189,12 +195,16 @@ print(sigma_yield*10**(-6))
 #%%-----------------Calculate bending shear stress------------------------
 #V =? Shear force
 
+t = 1.5
 h = 356.09999999999997
-y = h/2*0.5*h/2*1.5
 w = 1068.3
-A = h*w/2-(w-2*1.5)*(h-1.5)
+
+y = (h/2*t*h/4*2 + t*(w - 2*t)*(h/2 - t/2))/(h/2*t*2 + t*(w-2*t))
+
+A = h/2*t*2 + t*(w - 2*t)
 
 Q = A*y
+
 
 
 
