@@ -93,16 +93,16 @@ HLD = HighLiftDevices();
 #HLD.plot_Delta_CL_alpha0("LE", 0.25);
 #HLD.plot_Delta_CL_alpha0("TE", 0.25);
 #plt.show();
-ori_CL_alpha = 0.074417;					# Original Clean CL-alpha
-ori_CL0 = 0.300238;							# Original Clean CL at zero aoa
-ori_CL_max = 1.113;							# Original Clean CL max
+ori_CL_alpha = 0.072215;					# Original Clean CL-alpha
+ori_CL0 = 0.304192;							# Original Clean CL at zero aoa
+ori_CL_max = 1.35;							# Original Clean CL max
 LE_HLD = "KrugerFlap";						# Choose leading edge HLD. Choose between ["FixedSlot", "LEFlap", "KrugerFlap"]
-TE_HLD = "SingleFowlerFlap";				# Choose trailing edge HLD. Choose between ["PlainFlap", "SingleSlottedFlap", "SingleFowlerFlap", "DoubleFowlerFlap", "TripleFowlerFlap"]
+TE_HLD = "DoubleFowlerFlap";				# Choose trailing edge HLD. Choose between ["PlainFlap", "SingleSlottedFlap", "SingleFowlerFlap", "DoubleFowlerFlap", "TripleFowlerFlap"]
 c_f_c = 0.25;								# fraction of the chord that is the HLD
-Swf_S_TE = 0.6;								# Flapped (TE) area ratio
+Swf_S_TE = 0.65;							# Flapped (TE) area ratio
 Swf_S_LE = 0.8;								# Flapped (LE) area ratio
-lambda_hingeLn_LE = 0.7;					# Sweep of hinge line LE
-lambda_hingeLn_TE = 0.6;					# Sweep of hinge line TE
+lambda_hingeLn_LE = 0.70912;				# Sweep of hinge line LE
+lambda_hingeLn_TE = 0.653;					# Sweep of hinge line TE
 HLD.Adjust_CL_alpha(ori_CL_alpha, ori_CL0, ori_CL_max, LE_HLD, TE_HLD, c_f_c, Swf_S_TE, Swf_S_LE, lambda_hingeLn_LE, lambda_hingeLn_TE);
 
 

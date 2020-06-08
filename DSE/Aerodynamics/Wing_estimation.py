@@ -1,6 +1,6 @@
 import numpy as np
 import Aero_tools as tl
-from Input_parameters import *
+from Input_parm import *
 import time as time
 
 #%% ------------------ Main ----------------------

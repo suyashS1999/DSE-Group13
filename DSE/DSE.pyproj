@@ -27,7 +27,7 @@
     <Compile Include="Aerodynamics\HLDsizing.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Aerodynamics\Input_parameters.py">
+    <Compile Include="Aerodynamics\Input_parm.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Aerodynamics\Tail_planform.py" />
@@ -49,6 +49,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ConceptEvaluation\PayloadRangeDiagram.py" />
+    <Compile Include="ConceptEvaluation\Validation.py" />
     <Compile Include="ConceptEvaluation\Verification.py">
       <SubType>Code</SubType>
     </Compile>
@@ -77,6 +78,7 @@
     </Compile>
     <Compile Include="Performance\Class_II_Torenbeek.py" />
     <Compile Include="Performance\h tail.py" />
+    <Compile Include="Performance\Loading_diagram.py" />
     <Compile Include="Performance\Performance_module.py" />
     <Compile Include="Performance\Performance_module1.py" />
     <Compile Include="Performance\Performance_module2.py" />
@@ -97,6 +99,8 @@
     <Compile Include="Structures\InterpolationandIntegration.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Structures\Set-up_Box_Dimensions.py" />
+    <Compile Include="Structures\structures_foldingwingtip_loads.py" />
     <Compile Include="Structures\Structures_module.py">
       <SubType>Code</SubType>
     </Compile>
@@ -106,6 +110,7 @@
     <Compile Include="Structures\Structures_module2.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Structures\Wingbox_MOI.py" />
     <Compile Include="Structures\__init__.py" />
     <Compile Include="__init__.py">
       <SubType>Code</SubType>
