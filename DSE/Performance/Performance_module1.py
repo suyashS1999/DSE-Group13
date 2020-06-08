@@ -14,11 +14,12 @@ import matplotlib.pyplot as plt
 g = 9.81                        # Gravitational acceleration [m/s^2]
 M_cruise = 0.78                 # Mach number in cruise [-]
 h_cruise = 11000                # Altitude in cruise [m]
+h = h_cruise
 
 #%% ---------------------- Inputs ----------------------
 MTOW = 71311.11553                   # MTOW - fuel used in ascend [kg]
 S_ref =  139.1                 # Reference wing area [m^2]
-CL_max_clean = 1.1                # Max CL with clean configuration [-]
+CL_max_clean = 1.35                # Max CL with clean configuration [-]
 CL_min_clean = -CL_max_clean        # Assumed same magnitude, negative Max CL with clean configuration [-] (not so critical)
 CL_max_flap = 2.4                   # MAX CL with LANDING CONFIGURATION [-]
 n_max = 2.5                         # Positive limit maneuvering load factor [-]
@@ -57,9 +58,9 @@ def relevant_V(W_cruise):
     V_stall_flap = np.sqrt(W_cruise/S_ref*2/rho0/CL_max_flap)       # Stall speed EAS with flaps extended
     V_maneuver = V_stall_clean*np.sqrt(n_max)                       # Maneuver speed EAS [m/s]
     V_neg_stall_clean = np.sqrt(W_cruise/S_ref*2/rho0/-CL_min_clean)# Limiting velocity when n = -1 [m/s]
-    V_cruise = a0*M_cruise*np.sqrt(p/p0)                            # Cruise speed EAS [m/s]
-    V_dive = V_cruise/0.8                                           # Dive speed EAS [m/s]
-    return (V_stall_flap, V_stall_clean, V_neg_stall_clean, V_maneuver, V_cruise, V_dive)
+                               # Cruise speed EAS [m/s]
+                                              # Dive speed EAS [m/s]
+    return (V_stall_flap, V_stall_clean, V_neg_stall_clean, V_maneuver)
 
 def gust_n(V_EAS, U_EAS):
     """
@@ -69,13 +70,12 @@ def gust_n(V_EAS, U_EAS):
     return (delta_n)
     
 #%% ---------------------- Main ----------------------
-T, p, rho, a = ISA_trop(h_cruise)
+T, p, rho, a = ISA_trop(h)
 T0, p0, rho0, a0 = ISA_trop(0)
-V_stall_flap, V_stall_clean, V_neg_stall_clean, V_maneuver, V_cruise, V_dive = relevant_V(MTOW*g) # For now I assume W is MTOW during cruise
+V_stall_flap, V_stall_clean, V_neg_stall_clean, V_maneuver = relevant_V(MTOW*g) # For now I assume W is MTOW during cruise
 V_max_flap = 1.8*V_stall_flap                                 # Max speed with flaps extended EAS [m/s]
-#V_cruise = a*M_cruise*np.sqrt(rho/rho0)
-#V_dive = V_cruise/0.8
-
+V_cruise = a0*M_cruise*np.sqrt(ISA_trop(h_cruise)[1]/p0) 
+V_dive = V_cruise/0.8
 #Maneuver envelope
 fig = plt.figure(figsize = (12, 8))
 plt.xlabel("Equivalent airspeed, $V_{EAS}$")
