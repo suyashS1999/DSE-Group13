@@ -41,8 +41,8 @@ sweep_le_v = np.radians(42)    # deg
 
 b_h = np.sqrt(A_h*S_h)
 MAC_h = S_h/b_h
-# Cr_h = (2*S_h)/(b_h*(1+taper_h))
-Cr_h = (3/2)*(1+taper_h)/(1+taper_h+(taper_h**2))
+Cr_h = (2*S_h)/(b_h*(1+taper_h))
+# Cr_h = (3/2)*(1+taper_h)/(1+taper_h+(taper_h**2))
 Ct_h = taper_h*Cr_h
 sweep_half_h = tl.sweep_x(0.5,sweep_le_h,Cr_h,Ct_h,b_h)
 CL_h_alpha = tl.CL_alpha_DATCOM(A_h,M_cruise,a0_h,sweep_half_h)
@@ -56,7 +56,9 @@ else:
 # Vertical Tail
 
 b_v = np.sqrt(A_v*S_v)
+MAC_v = S_v/b_v
 Cr_v = (2*S_v)/(b_v*(1+taper_v))
+# Cr_v = (3/2)*(1+taper_v)/(1+taper_v+(taper_v**2))
 Ct_v = taper_v*Cr_v
 sweep_half_v = tl.sweep_x(0.5,sweep_le_v,Cr_v,Ct_v,b_v)
 CL_v_alpha = tl.CL_alpha_DATCOM(A_v,M_cruise,a0_v,sweep_half_v)
@@ -74,6 +76,7 @@ print("Span =", b_h)
 print("CL_alpha =", CL_h_alpha)
 print("Cr =", Cr_h)
 print("Ct =",Ct_h)
+print("MAC =", MAC_h)
 print("M_crit =",M_crit_h, val_h)
 print("Incidence angle =", np.rad2deg(CL_h_design/CL_h_alpha), "\n \n")
 
@@ -83,5 +86,6 @@ print("Span =", b_v)
 print("CL_alpha =", CL_v_alpha)
 print("Cr =", Cr_v)
 print("Ct =",Ct_v)
+print("MAC =", MAC_v)
 print("M_crit =",M_crit_v, val_v, "\n \n")
 
