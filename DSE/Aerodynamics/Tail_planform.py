@@ -12,9 +12,9 @@ M_cruise = 0.78
 
 # Horizontal Tail
 
-a0_h = 0.1071233*180/np.pi   #1/rad
+a0_h = 0.1071233*180/np.pi   #1/rad4.49
 S_h = 32    #m^2
-CL_h_design = 0.15
+CL_h_design = -0.13
 M_crit_a_h = tl.bisection(tl.M_cr_calc_h,0.2,0.99,100)
 # print(M_crit_a_h)
 A_h =  3           # Design Choice
@@ -29,7 +29,7 @@ CL_v_design = 0.1613575552564497
 M_crit_a_v = tl.bisection(tl.M_cr_calc_v,0.2,0.99,100)
 # print(M_crit_a_v)
 A_v =   1.1         # Design Choice
-taper_v = 0.4     # Design Choice
+taper_v = 0.78446     # Design Choice
 sweep_le_v = np.radians(41)    # deg
 
 
@@ -41,8 +41,8 @@ sweep_le_v = np.radians(41)    # deg
 
 b_h = np.sqrt(A_h*S_h)
 MAC_h = S_h/b_h
-# Cr_h = (2*S_h)/(b_h*(1+taper_h))
-Cr_h = (3/2)*MAC_h*(1+taper_h)/(1+taper_h+(taper_h**2))
+Cr_h = (2*S_h)/(b_h*(1+taper_h))
+# Cr_h = (3/2)*MAC_h*(1+taper_h)/(1+taper_h+(taper_h**2))
 Ct_h = taper_h*Cr_h
 sweep_half_h = tl.sweep_x(0.5,sweep_le_h,Cr_h,Ct_h,b_h)
 CL_h_alpha = tl.CL_alpha_DATCOM(A_h,M_cruise,a0_h,sweep_half_h)
@@ -57,8 +57,8 @@ else:
 
 b_v = np.sqrt(A_v*S_v)
 MAC_v = S_v/b_v
-# Cr_v = (2*S_v)/(b_v*(1+taper_v))
-Cr_v = (3/2)*MAC_v*(1+taper_v)/(1+taper_v+(taper_v**2))
+Cr_v = (2*S_v)/(b_v*(1+taper_v))
+# Cr_v = (3/2)*MAC_v*(1+taper_v)/(1+taper_v+(taper_v**2))
 Ct_v = taper_v*Cr_v
 sweep_half_v = tl.sweep_x(0.5,sweep_le_v,Cr_v,Ct_v,b_v)
 CL_v_alpha = tl.CL_alpha_DATCOM(A_v,M_cruise,a0_v,sweep_half_v)
