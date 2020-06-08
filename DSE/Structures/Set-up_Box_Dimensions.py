@@ -4,7 +4,7 @@ Created on Fri Jun  5 09:59:14 2020
 
 @author: steph
 """
-#import Wingbox_MOI.py as MOI
+import Wingbox_MOI.py as MOI
 import numpy as np
 
 b = 22.9
