@@ -1,6 +1,6 @@
 import numpy as np
 import Aero_tools as tl
-from Input_parameters import *
+from Input_parm import *
 import time as time
 
 #%% ------------------ Main ----------------------
@@ -16,10 +16,10 @@ d_alpha_clmax = 3.5					# [deg]
 
 # ----- Reading graphs from NACA tests ------
 
-V_M02 = 59.01;					# [m/s]
-kin_visc = 1.46e-05				# kinematic viscoty at sea level
-MAC = MAC[0];					# Mean aerodynamic chord [m]	
-ReM02 = (V_M02*MAC)/kin_visc	# Reynolds number at MAC
+V_M02 = 59.01;							# [m/s]
+kin_visc = 1.46e-05						# kinematic viscoty at sea level
+MAC = MAC[0];							# Mean aerodynamic chord [m]	
+ReM02 = (V_M02*MAC)/kin_visc			# Reynolds number at MAC
 
 if ReM02 >= 8.1e06:
 	Clmax_M02_inb = 1.67;

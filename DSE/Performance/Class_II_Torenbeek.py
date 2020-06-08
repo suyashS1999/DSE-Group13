@@ -28,8 +28,8 @@ l_t = 12              #Length between quarter chords of wing and h tail [m]
 
 b_f = 4.2              #width fuselage [m]
 h_f = 4.2             #height fuselage [m]
-l_f = 40            #length fuselage [m]
-S_G = 450           #gross shell area (entire outer surface of the fuselage) [m^2]
+l_f = 42.6            #length fuselage [m]
+S_G = 524.515           #gross shell area (entire outer surface of the fuselage) [m^2]
 
 b =  49.22               #wing span [m]
 Lamda_halfc =   0.682    #half chord sweep [rad]
@@ -38,15 +38,16 @@ t_r =    0.18*4.021           #maximum thickness root chord [m]
 
 S_h =    30           #horizontal tail area [m^s]
 Lamda_h = 0.3          #Sweep angle of horizontal tail [rad]
-h_h =    6           #height of horizontal stabiliser
 S_v =    20           #vertical tail area [m^s]
 Lamda_v =  0.3         #Sweep angle of vertical tail [rad] 
-b_v = h_h           #span of vertical tail (assumed to be same as height of the h tail because its a T tail)
+b_v = np.sqrt(S_v)           #span of vertical tail (assumed to be same as height of the h tail because its a T tail)
+h_h = 0.9*b_v           #height of horizontal stabiliser
+
 
 T_TO = 211545.862   #Take off thrust [N] (From wing/thrust loading)
 N_e = 2             #number of engine [-]
-W_engine =  2500        #Total engine weight [kg]
-
+W_engine =  2550    #Total engine weight [kg]
+W_BLI = 700
 #%% ------------------------ Functions ------------------------ 
 #Functions weight estimations
 #Airframe structure
@@ -102,7 +103,7 @@ def W_undercarriage(): #eq (8-17)
     C_nose = 0
     D_nose = 2.97e-6
     W_uc_nose = k_uc*(A_nose+B_nose*MTOW**(3/4)+C_nose*MTOW+D_nose*MTOW**(3/2))
-    return W_uc_main+W_uc_nose #Verified
+    return W_uc_main, W_uc_nose #Verified
 
 #Surface controls group
 def W_surfcont(): # eq (8-18)
@@ -124,8 +125,20 @@ def W_equip():
     W_se= 0.11*MTOW #assume "medium range transport aircraft"
     return W_se #Verified
 
+def W_furnish():
+    W_furnish = 1.5*0.196*(MTOW-MF)**0.91
+    return W_furnish #Verified
 #%% ------------------------ Main ------------------------
-W_airframe = W_wing() + W_tail() + W_body() + W_undercarriage() + W_surfcont() + W_nacelle()
+W_wing = W_wing() 
+W_tail = W_tail() 
+W_body = W_body()
+W_undercarriage_main = W_undercarriage()[0]
+W_undercarriage_nose = W_undercarriage()[1]
+W_surfcont = W_surfcont()
+W_nacelle = W_nacelle()
+W_airframe = W_wing + W_tail + W_body + W_undercarriage_main + W_undercarriage_nose + W_surfcont + W_nacelle
 W_prop = W_prop()
 W_equip = W_equip()
-OEW = W_airframe + W_prop + W_equip
+W_furnish = W_furnish()
+EW = W_airframe + W_prop + W_equip + W_BLI  #Basic empty weight
+OEW  = EW + W_furnish

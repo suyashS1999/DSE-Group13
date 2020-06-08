@@ -5,8 +5,7 @@
     <ProjectGuid>1724d448-8474-4c49-a822-e26bef80c2d1</ProjectGuid>
     <ProjectHome>.</ProjectHome>
     <StartupFile>Aerodynamics\Aerodynamics_module1.py</StartupFile>
-    <SearchPath>
-    </SearchPath>
+    <SearchPath>..\DSE</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>DSE</Name>
@@ -28,7 +27,7 @@
     <Compile Include="Aerodynamics\HLDsizing.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Aerodynamics\Input_parameters.py">
+    <Compile Include="Aerodynamics\Input_parm.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Aerodynamics\Tail_planform.py" />
@@ -50,6 +49,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ConceptEvaluation\PayloadRangeDiagram.py" />
+    <Compile Include="ConceptEvaluation\Validation.py" />
     <Compile Include="ConceptEvaluation\Verification.py">
       <SubType>Code</SubType>
     </Compile>
@@ -78,6 +78,7 @@
     </Compile>
     <Compile Include="Performance\Class_II_Torenbeek.py" />
     <Compile Include="Performance\h tail.py" />
+    <Compile Include="Performance\Loading_diagram.py" />
     <Compile Include="Performance\Performance_module.py" />
     <Compile Include="Performance\Performance_module1.py" />
     <Compile Include="Performance\Performance_module2.py" />
@@ -95,6 +96,11 @@
     <Compile Include="Propulsion\Turbo_fan\fan_equations.py" />
     <Compile Include="Propulsion\Turbo_fan\Turbofan.py" />
     <Compile Include="Propulsion\__init__.py" />
+    <Compile Include="Structures\InterpolationandIntegration.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structures\Set-up_Box_Dimensions.py" />
+    <Compile Include="Structures\structures_foldingwingtip_loads.py" />
     <Compile Include="Structures\Structures_module.py">
       <SubType>Code</SubType>
     </Compile>
@@ -104,6 +110,7 @@
     <Compile Include="Structures\Structures_module2.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Structures\Wingbox_MOI.py" />
     <Compile Include="Structures\__init__.py" />
     <Compile Include="__init__.py">
       <SubType>Code</SubType>
@@ -123,76 +130,28 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".DS_Store" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWing.adb" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWing.adb.cases" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWing.csv" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWing.fem" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWing.group.1" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWing.history" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWing.lod" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWing.polar" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWing.vspaero" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWingcom0.5Cruise.adb" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWingcom0.5Cruise.adb.cases" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWingcom0.5Cruise.csv" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWingcom0.5Cruise.fem" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWingcom0.5Cruise.group.1" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWingcom0.5Cruise.history" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWingcom0.5Cruise.lod" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWingcom0.5Cruise.polar" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWingcom0.5Cruise.vspaero" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWingcom0.78Cruise.adb" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWingcom0.78Cruise.adb.cases" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWingcom0.78Cruise.csv" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWingcom0.78Cruise.fem" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWingcom0.78Cruise.group.1" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWingcom0.78Cruise.history" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWingcom0.78Cruise.lod" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWingcom0.78Cruise.polar" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWingcom0.78Cruise.vspaero" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWingIncomCruise.adb" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWingIncomCruise.adb.cases" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWingIncomCruise.csv" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWingIncomCruise.fem" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWingIncomCruise.group.1" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWingIncomCruise.history" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWingIncomCruise.lod" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWingIncomCruise.polar" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iter1BaselineWingIncomCruise.vspaero" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\.vsptime" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\baseline.adb" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\baseline.adb.cases" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\baseline.csv" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\baseline.fem" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\baseline.group.1" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\baseline.history" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\baseline.lod" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\baseline.polar" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Baseline_Wing_CompGeom.csv" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\TaperRatio0.1.adb" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\TaperRatio0.1.adb.cases" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\TaperRatio0.1.csv" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\TaperRatio0.1.fem" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\TaperRatio0.1.group.1" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\TaperRatio0.1.history" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\TaperRatio0.1.lod" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\TaperRatio0.1.polar" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\TaperRatio0.3.adb" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\TaperRatio0.3.adb.cases" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\TaperRatio0.3.csv" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\TaperRatio0.3.fem" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\TaperRatio0.3.group.1" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\TaperRatio0.3.history" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\TaperRatio0.3.lod" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\TaperRatio0.3.polar" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\TaperRatio0.8.adb" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\TaperRatio0.8.adb.cases" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\TaperRatio0.8.csv" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\TaperRatio0.8.fem" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\TaperRatio0.8.group.1" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\TaperRatio0.8.history" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\TaperRatio0.8.lod" />
-    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\TaperRatio0.8.polar" />
+    <Content Include="Aerodynamics\OpenVSPSimData\iter1CompFlow0.78_Cruise.adb" />
+    <Content Include="Aerodynamics\OpenVSPSimData\iter1CompFlow0.78_Cruise.adb.cases" />
+    <Content Include="Aerodynamics\OpenVSPSimData\iter1CompFlow0.78_Cruise.csv" />
+    <Content Include="Aerodynamics\OpenVSPSimData\iter1CompFlow0.78_Cruise.cuts" />
+    <Content Include="Aerodynamics\OpenVSPSimData\iter1CompFlow0.78_Cruise.fem" />
+    <Content Include="Aerodynamics\OpenVSPSimData\iter1CompFlow0.78_Cruise.group.1" />
+    <Content Include="Aerodynamics\OpenVSPSimData\iter1CompFlow0.78_Cruise.history" />
+    <Content Include="Aerodynamics\OpenVSPSimData\iter1CompFlow0.78_Cruise.lod" />
+    <Content Include="Aerodynamics\OpenVSPSimData\iter1CompFlow0.78_Cruise.polar" />
+    <Content Include="Aerodynamics\OpenVSPSimData\iter1CompFlow0.78_Cruise.slc" />
+    <Content Include="Aerodynamics\OpenVSPSimData\iter1CompFlow0.78_Cruise.vspaero" />
+    <Content Include="Aerodynamics\OpenVSPSimData\iter1IncompFlow_SeaLevel.adb" />
+    <Content Include="Aerodynamics\OpenVSPSimData\iter1IncompFlow_SeaLevel.adb.cases" />
+    <Content Include="Aerodynamics\OpenVSPSimData\iter1IncompFlow_SeaLevel.csv" />
+    <Content Include="Aerodynamics\OpenVSPSimData\iter1IncompFlow_SeaLevel.cuts" />
+    <Content Include="Aerodynamics\OpenVSPSimData\iter1IncompFlow_SeaLevel.fem" />
+    <Content Include="Aerodynamics\OpenVSPSimData\iter1IncompFlow_SeaLevel.group.1" />
+    <Content Include="Aerodynamics\OpenVSPSimData\iter1IncompFlow_SeaLevel.history" />
+    <Content Include="Aerodynamics\OpenVSPSimData\iter1IncompFlow_SeaLevel.lod" />
+    <Content Include="Aerodynamics\OpenVSPSimData\iter1IncompFlow_SeaLevel.polar" />
+    <Content Include="Aerodynamics\OpenVSPSimData\iter1IncompFlow_SeaLevel.slc" />
+    <Content Include="Aerodynamics\OpenVSPSimData\iter1IncompFlow_SeaLevel.vspaero" />
     <Content Include="Aerodynamics\Polars.txt" />
     <Content Include="Aerodynamics\Polars2.txt" />
     <Content Include="Aerodynamics\x_col.txt" />
@@ -200,6 +159,7 @@
     <Content Include="PreviewOfFolderOrganization.png" />
     <Content Include="Propulsion\Thrust_Requirement\Thrust.m" />
     <Content Include="Structures\liftdistribution.txt" />
+    <Content Include="Structures\troquedistribution.txt" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|3.6" />
