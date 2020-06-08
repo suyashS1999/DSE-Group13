@@ -93,7 +93,7 @@ def M_cr_calc(M_cr):
 	
 	gam = 1.4
 	
-	cpm = -0.907  # min cp for airfoil
+	cpm = -0.364  # min cp for airfoil
 	
 	p1 = ((2+((gam-1)*(M_cr**2)))/(gam+1))**(gam/(gam-1))
 	
