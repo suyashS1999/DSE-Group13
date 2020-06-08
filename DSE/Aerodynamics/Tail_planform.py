@@ -12,7 +12,7 @@ M_cruise = 0.78
 
 # Horizontal Tail
 
-a0_h = 6.195564526   #1/rad
+a0_h = 0.1071233*180/np.pi   #1/rad
 S_h = 32    #m^2
 CL_h_design = 0.15
 M_crit_a_h = tl.bisection(tl.M_cr_calc_h,0.2,0.99,100)
@@ -37,8 +37,12 @@ sweep_le_v = np.radians(42)    # deg
 
 # Horizontal Tail
 
+
+
 b_h = np.sqrt(A_h*S_h)
-Cr_h = (2*S_h)/(b_h*(1+taper_h))
+MAC_h = S_h/b_h
+# Cr_h = (2*S_h)/(b_h*(1+taper_h))
+Cr_h = (3/2)*(1+taper_h)/(1+taper_h+(taper_h**2))
 Ct_h = taper_h*Cr_h
 sweep_half_h = tl.sweep_x(0.5,sweep_le_h,Cr_h,Ct_h,b_h)
 CL_h_alpha = tl.CL_alpha_DATCOM(A_h,M_cruise,a0_h,sweep_half_h)
@@ -70,7 +74,8 @@ print("Span =", b_h)
 print("CL_alpha =", CL_h_alpha)
 print("Cr =", Cr_h)
 print("Ct =",Ct_h)
-print("M_crit =",M_crit_h, val_h,"\n \n")
+print("M_crit =",M_crit_h, val_h)
+print("Incidence angle =", np.rad2deg(CL_h_design/CL_h_alpha), "\n \n")
 
 
 print("Vertical Tail \n \n")
