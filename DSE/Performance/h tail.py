@@ -13,7 +13,7 @@ K_c = 1.4
 V_h = 1.1       # Tail volume assumed, M. Adraey [m^3]
 D_f = 4.2       # Diameter fuselage [m]
 MAC = 1.501     # MAC [m]
-S = 142.5       # Wing area [m^2]
+S = 139.1       # Wing area [m^2]
 AR = 17
 lamda_LE = 40.63/360*2*np.pi
 Cm_af = -0.1125
@@ -27,3 +27,13 @@ S_h = V_h*MAC*S/l_h
 CMac = Cm_af*(AR*(np.cos(lamda_LE))**2/(AR+2*np.cos(lamda_LE)))
 
 CL_h = (CMac + CL_cruise*dh)/V_h
+
+dH_mostaft = 0.08 #most positive (X_cg-X_ac)/C 
+lmac = 1.501
+h = (19.77-19.649749999999997)/lmac
+downwash = 0.3
+l_t = 18
+CL_a_wf = 4.1
+CL_alpha_h = 4
+
+CM_a = CL_a_wf*(dH_mostaft)- CL_alpha_h*S_h/S*(l_t/lmac-h)*(1-downwash)

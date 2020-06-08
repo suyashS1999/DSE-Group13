@@ -12,22 +12,24 @@ import matplotlib.pyplot as plt
 #Aircraft dimensions
 lmac = 1.501                            # MAC [m]
 l_fuse = 42.6                           # Fuselage length [m]
-xlemac = 4 + (32.05*0.5) - 0.25*lmac    # X position of LEMAC from nose (quarter MAC at 50% of cabin (SEAD rough approximation))
+xlemac = 4 + (32.05*0.55)    # X position of LEMAC from nose (quarter MAC at 50% of cabin (SEAD rough approximation))
 l_t = 17.75                             # Tail moment arm [m], distance between 1/4 chords of wing + tail (for now V_tail)
 
 #CG locations in X direction from the nose (Assumptions/Justification in brackets)
-x_cargo_frw = 7.07                      # forward cargo [m] (from concept 3 midterm side view) 
+x_cargo_frw = 10                      # forward cargo [m] (from concept 3 midterm side view) 
 x_cargo_aft = 37.7                      # aft cargo [m] (from concept 3 midterm side view)
 x_cg_fuel = xlemac                      # fuel [m] (approximated to be at the LEMAC, forward of approximate CG of wing since there will be no fuel at the tips)
 x_cg_wing = xlemac+lmac*0.25            # wing, as function of MAC [m] (For now assumed to be quarter chord MAC)
 x_cg_tail = l_t+x_cg_wing               # tail [m] (cg wing + tail arm)
 x_cg_body = l_fuse*0.5                  # body/fuselage [m] (midpoint of fuselage length)
-x_cg_undercarriage_main = 0.47*l_fuse   # main landing gear [m] (relative to fuselage length of A320)
-x_cg_undercarriage_nose = 0.135*l_fuse  # nose landing gear [m] (relative to fuselage length of A320)
+x_cg_undercarriage_main = 0.53*l_fuse   # main landing gear [m] (relative to fuselage length of A320)
+x_cg_undercarriage_nose = 0.095*l_fuse  # nose landing gear [m] (relative to fuselage length of A320)
 x_cg_surfcont = x_cg_wing               # surface control [m] (assumed to be same as wing cg)
 x_cg_nacelle = xlemac                   # nacelle + pylons [m] (assumed to be at LEMAC)
 x_cg_engine = xlemac                    # engines [m] (assumed to be at LEMAC)
 x_cg_equip = x_cg_body                  # equipment e.g. APU and all that stuff [m] (assumed to be equally spread along the body)
+x_cg_furnish = x_cg_body
+x_cg_BLI = l_fuse
 
 #Passenger arrangement (input value)
 total_pax = 192                         # Number of passengers [-] (ITS 194 BUT MODIFIED SO THAT ROWS FIT NICELY)
@@ -35,7 +37,7 @@ window_row = 2                          # number of rows [-] (all from mid-term)
 middle_row = 2
 aisle_row = 2
 total_row = window_row+middle_row+aisle_row
-pax_per_row = total_pax/total_row
+pax_per_row = int(total_pax/total_row)
 seat_pitch = 812.8e-3                   # seating pitch [m] (from mid-term)
 l_cabin = 30.25                         # length of cabin [m] (from mid-term)
 l_cockpit = 4                           # length of cockpit [m] (from mid-term)
@@ -51,7 +53,7 @@ m_fuel = 12471.21232                            # Fuel weight [kg]
 #%% ---------------------- Main ----------------------
 #Compile CGs
 from Class_II_Torenbeek import *
-x_cg_oew = (W_wing*x_cg_wing + W_tail*x_cg_tail + W_body*x_cg_body + W_undercarriage_main*x_cg_undercarriage_main + W_undercarriage_nose*x_cg_undercarriage_nose + W_surfcont*x_cg_surfcont + W_nacelle*x_cg_nacelle + W_engine*x_cg_engine + W_equip*x_cg_equip)/OEW
+x_cg_oew = (W_wing*x_cg_wing + W_tail*x_cg_tail + W_body*x_cg_body + W_undercarriage_main*x_cg_undercarriage_main + W_undercarriage_nose*x_cg_undercarriage_nose + W_surfcont*x_cg_surfcont + W_nacelle*x_cg_nacelle + W_engine*x_cg_engine + W_equip*x_cg_equip + W_furnish*x_cg_furnish + W_BLI*x_cg_BLI)/OEW
 
 
 def cargo_component_cg(m_frw, m_aft, x_frw, x_aft):
@@ -152,3 +154,5 @@ plt.legend()
 plt.xlabel("x_cg [mac]")
 plt.ylabel("Mass [kg]")
 plt.show()
+
+cg_frw = np.min([np.min(cargo_frw), np.min(window_frw), np.min(aisle_frw), np.min(middle_frw), np.min(x_cg_shift_fuel)])

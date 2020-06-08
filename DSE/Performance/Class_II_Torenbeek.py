@@ -41,13 +41,13 @@ Lamda_h = 0.3          #Sweep angle of horizontal tail [rad]
 S_v =    20           #vertical tail area [m^s]
 Lamda_v =  0.3         #Sweep angle of vertical tail [rad] 
 b_v = np.sqrt(S_v)           #span of vertical tail (assumed to be same as height of the h tail because its a T tail)
-h_h = 0.85*b_v           #height of horizontal stabiliser
+h_h = 0.9*b_v           #height of horizontal stabiliser
 
 
 T_TO = 211545.862   #Take off thrust [N] (From wing/thrust loading)
 N_e = 2             #number of engine [-]
-W_engine =  2500        #Total engine weight [kg]
-
+W_engine =  2550    #Total engine weight [kg]
+W_BLI = 700
 #%% ------------------------ Functions ------------------------ 
 #Functions weight estimations
 #Airframe structure
@@ -126,7 +126,7 @@ def W_equip():
     return W_se #Verified
 
 def W_furnish():
-    W_furnish = 0.196*(MTOW-MF)**0.91
+    W_furnish = 1.5*0.196*(MTOW-MF)**0.91
     return W_furnish #Verified
 #%% ------------------------ Main ------------------------
 W_wing = W_wing() 
@@ -140,5 +140,5 @@ W_airframe = W_wing + W_tail + W_body + W_undercarriage_main + W_undercarriage_n
 W_prop = W_prop()
 W_equip = W_equip()
 W_furnish = W_furnish()
-EW = W_airframe + W_prop + W_equip  #Basic empty weight
+EW = W_airframe + W_prop + W_equip + W_BLI  #Basic empty weight
 OEW  = EW + W_furnish
