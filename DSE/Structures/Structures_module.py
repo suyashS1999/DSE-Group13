@@ -206,8 +206,8 @@ A = h/2*t*2 + t*(w - 2*t)
 Q = A*y
 
 
-
-
+#%%--------------------Determine number of ribs required------------------
+for i in range(x,Mtab_fin
 
 
 
