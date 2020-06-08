@@ -26,8 +26,8 @@ def calc_centroid(c, h, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_
 def calc_stif_locations(c, h, n_stif_top, n_stif_bot):
 	""" Function to compute coordinates of all the top and bottom stiffeners
 		Input:
-			c: width
-			h: heighth
+			c: width array (wingbox width at each station)
+			h: heighth array (wingbox heighth at each station)
 		Output:
 			stif_coordinates: 2D array with first row having the top stiffener coordinates with respect
 			to wingbox centre and second row having the bottom stiffener coordinates
@@ -51,7 +51,7 @@ def calc_stif_locations(c, h, n_stif_top, n_stif_bot):
 
 	return stif_coordinates_top, stif_coordinates_bot
 
-def calc_MOI(c, h, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_cap,centroid,stif_coordinates_top,stif_coordinates_bot):
+def calc_MOI(c, h, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_cap,centroid):
 	""" Function to compute MOI of rectangular wingbox
 		Input:
 			c: width
@@ -59,27 +59,55 @@ def calc_MOI(c, h, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_
 		Output:
 			MOI: array of MOI for n stations
 	"""
-	MOI = np.ones(len(t_top))
 
 	# ------------------------  I_xx  ------------------------
 	# I_xx consists of 4 parts: spars (1), skin plates (2), stiffeners (3), spar caps (4)
 
 	I_xx1 = 2 * 1/12*t_spar*h**3
+	#print (I_xx1)
 	I_xx2 = 1/12*c*t_top**3 + c*t_top*(h/2-centroid)**2 + 1/12*c*t_bot**3 + c*t_bot*(-h/2-centroid)**2
+	#print (I_xx2)
 	I_xx3 = n_stif_top * A_stif*(h/2-centroid)**2 + n_stif_bot * A_stif*(-h/2-centroid)**2
+	#print (I_xx3)
 	I_xx4 = 2 * A_spar_cap*(h/2-centroid)**2 + 2 * A_spar_cap*(-h/2-centroid)**2
+	#print (I_xx4)
 
 	Ixx = I_xx1 + I_xx2 + I_xx3 + I_xx4
 
 	# ------------------------  I_zz  -------------------------
-	# I_yy consists of 4 parts: spars (1), skin plates (2), stiffeners (3), spar caps (4)
+	# I_yy consists of 4 parts: spars (1), skin plates (2), stiffeners top (3), stiffeners bottom (4), spar caps (5)
 
 	I_zz1 = 2 * ( 1/12*h*t_spar**3 + t_spar*(c/2)**2 )
 	I_zz2 = 1/12*t_top*c**3 + 1/12*t_bot*c**3
-	I_zz3 = 0
-	I_zz4 = 2 * A_spar_cap*(c/2)**2 + 2 * A_spar_cap*(-c/2)**2
 
-	Izz = I_zz1 + I_zz2 + I_zz3 + I_zz4
+	# to find I_zz3, the stiffener locations must be known
+	MOI = np.zeros(len(n_stif_top))
+	for i in range(len(n_stif_top)):
+		A_stif_top = A_stif * np.ones(n_stif_top[i])
+		s_top = c[i]/(n_stif_top[i]+1) #remember there are 2 spar caps in the corners, so
+		stif_coordinates_top = np.zeros(n_stif_top[i])
+		#print(stif_coordinates_top)
+		for k in range(n_stif_top[i]):
+			stif_coordinates_top[k] = -c[i]/2 + s_top*(k+1) #index plus one because start with spar cap
+		MOI[i] = A_stif_top.dot(stif_coordinates_top**2)
+	I_zz3 = MOI
+	#print(I_zz3)
+
+	# bottom stiffners
+	MOI = np.zeros(len(n_stif_bot))
+	for i in range(len(n_stif_bot)):
+		A_stif_bot = A_stif * np.ones(n_stif_bot[i])
+		s_bot = c[i]/(n_stif_bot[i]+1) #remember there are 2 spar caps in the corners, so
+		stif_coordinates_bot = np.zeros(n_stif_bot[i])
+		for k in range(n_stif_bot[i]):
+			stif_coordinates_bot[k] = -c[i]/2 + s_bot*(k+1) #index plus one because start with spar cap
+		MOI[i] = A_stif_bot.dot(stif_coordinates_bot**2)
+	I_zz4 = MOI
+	#print(I_zz4)
+
+	I_zz5 = 2 * A_spar_cap*(c/2)**2 + 2 * A_spar_cap*(-c/2)**2
+
+	Izz = I_zz1 + I_zz2 + I_zz3 + I_zz4 + I_zz5
 
 	return Ixx, Izz
 
@@ -99,9 +127,8 @@ A_spar_cap = 0.004
 
 
 centroid = calc_centroid(c, h, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_cap)
-stif_coordinates_top, stif_coordinates_bot = calc_stif_locations(c, h, n_stif_top, n_stif_bot)
-Ixx, Izz = calc_MOI(c, h, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_cap,centroid,stif_coordinates_top,stif_coordinates_bot)
+#stif_coordinates_top, stif_coordinates_bot = calc_stif_locations(c, h, n_stif_top, n_stif_bot)
+Ixx, Izz = calc_MOI(c, h, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_cap,centroid)
 
 print("centroid equals", centroid)
-print("stiffener coordinates on skin",stif_coordinates_top, stif_coordinates_bot)
 print("Ixx, Izz", Ixx, Izz)
