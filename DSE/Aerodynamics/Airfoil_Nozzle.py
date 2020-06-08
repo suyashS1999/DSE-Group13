@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from Input_parameters import *
+from Input_parm import *
 
 #Import Airfoils
 
@@ -14,11 +14,32 @@ nasasc = nasasc.astype(np.float)
 
 mach_area = 0.11965 #from aero textbook, M=0.59
 pcw = 0.7 #percentage of span where the strut attaches
+y = pcw*span
+
+def Chord_at_y_inb(y,taper_inb,b_inb,S_inb):
+	chord_at_y = ((2*S_inb)/((1+taper_inb)*b_inb))*(1-((1-taper_inb)/b_inb)*(y))
+	return chord_at_y
+
 if pcw*span <= 36:
-  cw = ((2*S_inb)/((1+taper_ratio_inb)*span_inboard))*(1-((1-taper_ratio_inb)/span_inboard)*(pcw*span))
+  cw = Chord_at_y_inb(y,taper_ratio_inb,span_inboard,S_inb)
   
 else:
   print("Fix the chord calculation")
+
+#Verification
+y = 36
+cwvtip = Chord_at_y_inb(y,taper_ratio_inb,span_inboard,S_inb)
+y = 0
+cwvroot = Chord_at_y_inb(y,taper_ratio_inb,span_inboard,S_inb)
+
+if (cwvtip - Ct_inb) > 0.01*cwvtip:
+	print("Formula Error: tip")
+
+if (cwvroot - Cr_inb) > 0.01*cwvroot:
+	print("Formula Error: chord")
+
+else:
+	print("good")
 
 cs = 0.45*cw
 
@@ -85,20 +106,24 @@ for i in range(451):
 
 #Calculate combined maximum delta thickness and thus minimum area
 
-biig = darea.max()
+biig = darea.max() #maximum delta Area
 print("Max delta A=",biig)
 indloc = np.where(darea[:] == biig)[0][0]
 
 loc = naca[(add+indloc)]
-print("Location x/y of NACA",loc)
-print("Location x/y of NASA SC",nasasc[indloc])
+print("Throat location x/y of Wing (NACA)",loc)
+print("Throat location x/y of Strut (NASA SC)",nasasc[indloc])
 
 # Calculate throat where M = 1
 
-throat = biig/mach_area
+throat = biig/mach_area #throat where M=1
 print("Throat =", throat)
 print(naca[add])
+
 #verification
 deltaA = loc[1] - naca[add,1]
 VMax_A = deltaA + nasasc[indloc,1]
-print(VMax_A - biig)
+if (VMax_A - biig) > 0:
+	print("Error in area calculations")
+else:
+	print("good")
