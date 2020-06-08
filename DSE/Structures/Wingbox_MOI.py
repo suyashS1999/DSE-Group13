@@ -23,34 +23,6 @@ def calc_centroid(c, h, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_
 	return z_centroid
 
 
-def calc_stif_locations(c, h, n_stif_top, n_stif_bot):
-	""" Function to compute coordinates of all the top and bottom stiffeners
-		Input:
-			c: width array (wingbox width at each station)
-			h: heighth array (wingbox heighth at each station)
-		Output:
-			stif_coordinates: 2D array with first row having the top stiffener coordinates with respect
-			to wingbox centre and second row having the bottom stiffener coordinates
-			[-c,-c+0.005,...]
-	"""
-	stif_coordinates_top = np.ones((len(n_stif_top),len(c)))
-	stif_coordinates_bot = np.ones((len(n_stif_bot),len(c)))
-
-	#s_top = stiffener spacing on top skin
-	s_top = np.ones(len(c))
-	s_bot = np.ones(len(c))
-	for i in range(len(c)):
-		s_top[i] = c[i]/(n_stif_top[i]+1) #remember there are 2 spar caps in the corners, so
-		s_bot[i] = c[i]/(n_stif_bot[i]+1) #if you have 2 stiffeners there are 3 spacings
-
-	for i in range(len(n_stif_top)):
-		stif_coordinates_top[:,i] = -c/2 + s_top[i]*(i+1) #index plus one because start with spar cap
-
-	for j in range(len(n_stif_bot)):
-		stif_coordinates_bot[:,j] = -c/2 + s_bot[j]*(j+1) #index plus one because start with spar cap
-
-	return stif_coordinates_top, stif_coordinates_bot
-
 def calc_MOI(c, h, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_cap,centroid):
 	""" Function to compute MOI of rectangular wingbox
 		Input:
@@ -93,7 +65,7 @@ def calc_MOI(c, h, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_
 	I_zz3 = MOI
 	#print(I_zz3)
 
-	# bottom stiffners
+	# I_zz4 (stiffners bottom)
 	MOI = np.zeros(len(n_stif_bot))
 	for i in range(len(n_stif_bot)):
 		A_stif_bot = A_stif * np.ones(n_stif_bot[i])
@@ -127,7 +99,6 @@ A_spar_cap = 0.004
 
 
 centroid = calc_centroid(c, h, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_cap)
-#stif_coordinates_top, stif_coordinates_bot = calc_stif_locations(c, h, n_stif_top, n_stif_bot)
 Ixx, Izz = calc_MOI(c, h, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_cap,centroid)
 
 print("centroid equals", centroid)
