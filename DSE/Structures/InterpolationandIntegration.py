@@ -1,7 +1,7 @@
 from numpy import*
 from matplotlib import pyplot as plt
 from numpy.linalg import inv
-from Aerodynamics.Input_parameters import*
+from Aerodynamics.Input_parm import*
 
 #%% ------------------- Functions ----------------------
 def Lagrange_Basis(nodes, f, plot_nodes):
