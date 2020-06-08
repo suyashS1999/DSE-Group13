@@ -2,6 +2,7 @@ from numpy import*
 from matplotlib import pyplot as plt
 from numpy.linalg import inv
 import math as ma
+from InterpolationandIntegration import *
 
 #%% ------------- Input ------------------
 # I have just copied this for now, I will clean it up by importing the txt file later
@@ -195,7 +196,7 @@ print(sigma_yield*10**(-6))
 #%%-----------------Calculate bending shear stress------------------------
 #V =? Shear force
 
-t = 1.5
+t = 2
 h = 356.09999999999997
 w = 1068.3
 
@@ -207,7 +208,7 @@ Q = A*y
 
 
 #%%--------------------Determine number of ribs required------------------
-for i in range(x,Mtab_fin
+#for i in range(x,Mtab_fin
 
 
 

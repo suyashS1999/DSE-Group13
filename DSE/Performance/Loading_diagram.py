@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 #Aircraft dimensions
 lmac = 1.501                            # MAC [m]
 l_fuse = 42.6                           # Fuselage length [m]
-xlemac = 4 + (32.05*0.55)    # X position of LEMAC from nose (quarter MAC at 50% of cabin (SEAD rough approximation))
+xlemac = 4 + (32.05*0.5)    # X position of LEMAC from nose (LEMAC at 55% of cabin)
 l_t = 17.75                             # Tail moment arm [m], distance between 1/4 chords of wing + tail (for now V_tail)
 
 #CG locations in X direction from the nose (Assumptions/Justification in brackets)
@@ -140,19 +140,23 @@ middle_frw = pcmac(middle_potato[0])
 middle_aft = pcmac(middle_potato[1])
 x_cg_shift_fuel = pcmac(x_cg_shift_fuel)
 
-plt.plot(cargo_frw, cargo_potato_mass[0], label = "Cargo", color = "purple")
-plt.plot(cargo_aft, cargo_potato_mass[1],  color = "purple")
-plt.plot(window_frw, window_potato[2], label = "Window", color = "green")
-plt.plot(window_aft, window_potato[2], color = "green")
-plt.plot(aisle_frw, aisle_potato[2], label = "Aisle", color = "blue")
-plt.plot(aisle_aft, aisle_potato[2], color = "blue")
-plt.plot(middle_frw, middle_potato[2], label = "Middle", color = "red")
-plt.plot(middle_aft, middle_potato[2], color = "red")
-plt.plot(x_cg_shift_fuel, fuel_mass_shift, label = "Fuel", color = "orange")
-plt.title("Loading diagram of Aircraft")
-plt.legend()
-plt.xlabel("x_cg [mac]")
-plt.ylabel("Mass [kg]")
-plt.show()
+if __name__ == "__main__":
+    plt.plot(cargo_frw, cargo_potato_mass[0], label = "Cargo", color = "purple")
+    plt.plot(cargo_aft, cargo_potato_mass[1],  color = "purple")
+    plt.plot(window_frw, window_potato[2], label = "Window", color = "green")
+    plt.plot(window_aft, window_potato[2], color = "green")
+    plt.plot(aisle_frw, aisle_potato[2], label = "Aisle", color = "blue")
+    plt.plot(aisle_aft, aisle_potato[2], color = "blue")
+    plt.plot(middle_frw, middle_potato[2], label = "Middle", color = "red")
+    plt.plot(middle_aft, middle_potato[2], color = "red")
+    plt.plot(x_cg_shift_fuel, fuel_mass_shift, label = "Fuel", color = "orange")
+    plt.title("Loading diagram of Aircraft")
+    plt.legend()
+    plt.xlabel("x_cg [mac]")
+    plt.ylabel("Mass [kg]")
+    plt.show()
 
-cg_frw = np.min([np.min(cargo_frw), np.min(window_frw), np.min(aisle_frw), np.min(middle_frw), np.min(x_cg_shift_fuel)])
+cg_frw_mac = np.min([np.min(cargo_frw), np.min(window_frw), np.min(aisle_frw), np.min(middle_frw), np.min(x_cg_shift_fuel)])
+cg_aft_mac = np.max([np.max(cargo_aft), np.max(window_aft), np.max(aisle_aft), np.max(middle_aft), np.max(x_cg_shift_fuel)])
+cg_frw = xlemac + cg_frw_mac*lmac
+cg_aft = xlemac + cg_aft_mac*lmac

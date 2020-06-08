@@ -46,7 +46,7 @@ h_h = 0.9*b_v           #height of horizontal stabiliser
 
 T_TO = 211545.862   #Take off thrust [N] (From wing/thrust loading)
 N_e = 2             #number of engine [-]
-W_engine =  2550    #Total engine weight [kg]
+W_engine =  2305.990439    #Total engine weight [kg]
 W_BLI = 700
 #%% ------------------------ Functions ------------------------ 
 #Functions weight estimations

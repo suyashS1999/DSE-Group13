@@ -12,11 +12,12 @@ import numpy as np
 
 #%% ---------------------- Inputs ----------------------
 #Geometric things
+from Loading_diagram import cg_frw, cg_aft, xlemac
 lmac = 1.501            # Mean aerodynamic chord [m]
-L0_angle = 0.1          # Zero lift angle, see the input Perf-23 for clarity [rad]
+#L0_angle = 0.1          # Zero lift angle, see the input Perf-23 for clarity [rad]
 h_h = 3.6               # Height of the horizontal tail from the top of fuselage [m]
 c_r = 4.021             # Root chord [m]
-l_t = 20                # Moment arm of horizontal tail [m]
+l_t = 42.6-6*0.75-xlemac                # Moment arm of horizontal tail [m]
 b = 139.1               # Wing span [m]
 Lamda_qc = 0.696        # Quarter chord sweep angle [rad]
 CL_alpha_w = 6.446      # (dummy) Cl_alpha of wing AND struts combined
@@ -32,7 +33,7 @@ def stablimit(ShS):
     xcg_app = (xac_app + (CL_alpha_h_app/CL_alpha_Ah_app)*(1 - downwash)*ShS*(l_t/lmac) - 0.05)
     xcg_cru = (xac_cru   + (CL_alpha_h_cru/CL_alpha_Ah_cru)*(1 - downwash)*ShS*(l_t/lmac) - 0.05)
         
-    plt.plot(xcg_app, ShS, label = "Stability Approach")
+#    plt.plot(xcg_app, ShS, label = "Stability Approach")
     plt.plot(xcg_cru, ShS, label = "Stability Cruise")
     return (xcg_app, xcg_cru)
 
@@ -45,7 +46,7 @@ def contlimit(ShS):
     xcg_app = (xac_app - (Cm_ac_app/CL_Ah_app) + (CL_h/CL_Ah_app)*ShS*(l_t/lmac)*0.85)
     xcg_cru = (xac_cru - (Cm_ac_cru/CL_Ah_cru) + (CL_h/CL_Ah_cru)*ShS*(l_t/lmac)*0.85)
         
-    plt.plot(xcg_app, ShS, label = "Controllability Approach")
+#    plt.plot(xcg_app, ShS, label = "Controllability Approach")
     plt.plot(xcg_cru, ShS, label = "Controllability Cruise")
     return (xcg_app, xcg_cru)
 
@@ -59,21 +60,25 @@ def downwash(zero_lift_angle):
     return downwash
 
 ShS = np.linspace(0, 0.4, 2)
-xac_app = 0
-xac_cru = 0.3
+xac_app = 0.15
+xac_cru = 0.15
 CL_alpha_h_app = 5
-CL_alpha_h_cru = 5.3
-downwash = 0.3
+CL_alpha_h_cru = 3.28
+downwash = 0.1
 CL_alpha_Ah_app = 4
-CL_alpha_Ah_cru = 4.3
+CL_alpha_Ah_cru = 4.694
 
 Cm_ac_app = -0.02
 Cm_ac_cru = -0.03
 
-CL_Ah_app = 1/9
+CL_Ah_app = 1.9
 CL_Ah_cru = 0.5
 
 CL_h = -0.1
 
 stablimit(ShS)
 contlimit(ShS)
+frw = (cg_frw-xlemac)/lmac
+aft = (cg_aft-xlemac)/lmac
+plt.vlines(x = frw, ymin = 0, ymax = ShS[-1], linestyles = "--")
+plt.vlines(x = aft, ymin = 0, ymax = ShS[-1], linestyles = "--")
