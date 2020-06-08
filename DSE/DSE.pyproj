@@ -24,6 +24,7 @@
   <ItemGroup>
     <Compile Include="Aerodynamics\Aero_tools.py" />
     <Compile Include="Aerodynamics\Airfoil_Nozzle.py" />
+    <Compile Include="Aerodynamics\critical_mach_calc.py" />
     <Compile Include="Aerodynamics\HLDsizing.py">
       <SubType>Code</SubType>
     </Compile>
@@ -130,6 +131,23 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".DS_Store" />
+    <Content Include="Aerodynamics\OpenVSPSimData\AircraftLessTailCruise0.78.adb" />
+    <Content Include="Aerodynamics\OpenVSPSimData\AircraftLessTailCruise0.78.adb.cases" />
+    <Content Include="Aerodynamics\OpenVSPSimData\AircraftLessTailCruise0.78.csv" />
+    <Content Include="Aerodynamics\OpenVSPSimData\AircraftLessTailCruise0.78.fem" />
+    <Content Include="Aerodynamics\OpenVSPSimData\AircraftLessTailCruise0.78.group.1" />
+    <Content Include="Aerodynamics\OpenVSPSimData\AircraftLessTailCruise0.78.history" />
+    <Content Include="Aerodynamics\OpenVSPSimData\AircraftLessTailCruise0.78.lod" />
+    <Content Include="Aerodynamics\OpenVSPSimData\AircraftLessTailCruise0.78.polar" />
+    <Content Include="Aerodynamics\OpenVSPSimData\AircraftLessTailCruise0.78.vspaero" />
+    <Content Include="Aerodynamics\OpenVSPSimData\AircraftLessTailIncomp.adb" />
+    <Content Include="Aerodynamics\OpenVSPSimData\AircraftLessTailIncomp.adb.cases" />
+    <Content Include="Aerodynamics\OpenVSPSimData\AircraftLessTailIncomp.csv" />
+    <Content Include="Aerodynamics\OpenVSPSimData\AircraftLessTailIncomp.fem" />
+    <Content Include="Aerodynamics\OpenVSPSimData\AircraftLessTailIncomp.group.1" />
+    <Content Include="Aerodynamics\OpenVSPSimData\AircraftLessTailIncomp.history" />
+    <Content Include="Aerodynamics\OpenVSPSimData\AircraftLessTailIncomp.lod" />
+    <Content Include="Aerodynamics\OpenVSPSimData\AircraftLessTailIncomp.polar" />
     <Content Include="Aerodynamics\OpenVSPSimData\iter1CompFlow0.78_Cruise.adb" />
     <Content Include="Aerodynamics\OpenVSPSimData\iter1CompFlow0.78_Cruise.adb.cases" />
     <Content Include="Aerodynamics\OpenVSPSimData\iter1CompFlow0.78_Cruise.csv" />
