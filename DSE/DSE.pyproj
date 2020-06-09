@@ -31,6 +31,7 @@
     <Compile Include="Aerodynamics\Input_parm.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Aerodynamics\Noise_tools.py" />
     <Compile Include="Aerodynamics\Smooth_airfoil_func.py" />
     <Compile Include="Aerodynamics\Tail_planform.py" />
     <Compile Include="Aerodynamics\WingPlanform.py">
@@ -171,6 +172,30 @@
     <Content Include="Aerodynamics\OpenVSPSimData\iter1IncompFlow_SeaLevel.polar" />
     <Content Include="Aerodynamics\OpenVSPSimData\iter1IncompFlow_SeaLevel.slc" />
     <Content Include="Aerodynamics\OpenVSPSimData\iter1IncompFlow_SeaLevel.vspaero" />
+    <Content Include="Aerodynamics\OpenVSPSimData\newSCwing.adb" />
+    <Content Include="Aerodynamics\OpenVSPSimData\newSCwing.adb.cases" />
+    <Content Include="Aerodynamics\OpenVSPSimData\newSCwing.csv" />
+    <Content Include="Aerodynamics\OpenVSPSimData\newSCwing.fem" />
+    <Content Include="Aerodynamics\OpenVSPSimData\newSCwing.group.1" />
+    <Content Include="Aerodynamics\OpenVSPSimData\newSCwing.history" />
+    <Content Include="Aerodynamics\OpenVSPSimData\newSCwing.lod" />
+    <Content Include="Aerodynamics\OpenVSPSimData\newSCwing.polar" />
+    <Content Include="Aerodynamics\OpenVSPSimData\wigletsWing.adb" />
+    <Content Include="Aerodynamics\OpenVSPSimData\wigletsWing.adb.cases" />
+    <Content Include="Aerodynamics\OpenVSPSimData\wigletsWing.csv" />
+    <Content Include="Aerodynamics\OpenVSPSimData\wigletsWing.fem" />
+    <Content Include="Aerodynamics\OpenVSPSimData\wigletsWing.group.1" />
+    <Content Include="Aerodynamics\OpenVSPSimData\wigletsWing.history" />
+    <Content Include="Aerodynamics\OpenVSPSimData\wigletsWing.lod" />
+    <Content Include="Aerodynamics\OpenVSPSimData\wigletsWing.polar" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Winglets.adb" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Winglets.adb.cases" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Winglets.csv" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Winglets.fem" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Winglets.group.1" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Winglets.history" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Winglets.lod" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Winglets.polar" />
     <Content Include="Aerodynamics\Polars.txt" />
     <Content Include="Aerodynamics\Polars2.txt" />
     <Content Include="Aerodynamics\x_col.txt" />
