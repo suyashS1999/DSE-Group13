@@ -4,7 +4,7 @@ from Input_parm import *
 import time as time
 
 #%% ------------------ Main ----------------------
-t_s = time.time();
+
 
 sweep_half_c = tl.sweep_x(0.5, sweep_LE, C_r_m, C_t_m, span);			# Half chord sweep
 sweep_quart = tl.sweep_x(0.25, sweep_LE, C_r_m, C_t_m, span);			# Quarter chord sweep
@@ -129,6 +129,28 @@ if wing_type==2:
 	
 elif wing_type==1:
 	
+	Alpha0_full = -2.4       # Zero lift aoa inboard airfoil [deg]
+
+	d_alpha_clmax = 3.5					# [deg]
+
+# ----- Reading graphs from NACA tests ------
+
+	V_M02 = 59.01;							# [m/s]
+	kin_visc = 1.46e-05						# kinematic viscoty at sea level
+	MAC = MAC[0];							# Mean aerodynamic chord [m]	
+	ReM02 = (V_M02*MAC)/kin_visc			# Reynolds number at MAC
+	
+	Clmax_M02_wing = 1.5               # Check
+
+# ----- Lift Calculations -------
+# INBOARD
+	CL_alp = tl.CL_alpha_DATCOM(AR, M_cruise, a0_full, sweep_half_c);
+
+	CL_alp_M02 = tl.CL_alpha_DATCOM(AR, 0.2 , a0_full, sweep_half_c);
+
+	CLmax_M02 = CLmax_Clmax*Clmax_M02;				 # M = 0.2
+
+	alpha_stall = np.degrees(CLmax_M02/CL_alp_M02 + np.radians(Alpha0_full) + np.radians(d_alpha_clmax));
 	
 	
 
