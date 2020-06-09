@@ -14,7 +14,7 @@ def power(K,M,a,G):
 
     p = K*(M**a)*G
 
-    return p
+    return pgit
 
 #--------------------------------------------------------------------------------
 
@@ -213,5 +213,5 @@ def dimensionless_empirical_spectral_func(S, number_of_wheels, noise_source):
         F = 0
 
     return F
-    
+
     #--------------------------------------------------------------------------------

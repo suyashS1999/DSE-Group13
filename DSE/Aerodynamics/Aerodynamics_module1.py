@@ -15,6 +15,8 @@ class ExtractData_OpenVSP():
 		self.Polar_Dict = dict();							# Global dictionary for all the polars
 		self.Load_Dict = dict();							# Global dictionary for all the load files
 		self.Cp_Dict = dict();								# Global dictionary for all the slc files
+		self.C_ref = None;
+		self.X_cg = None;
 		os.chdir(dir);
 		print("Found files:");
 		for file_type in self.file_types:
@@ -50,10 +52,11 @@ class ExtractData_OpenVSP():
 				CDtot = self.Polar_Dict[name]["CDtot"];
 				L_D = self.Polar_Dict[name]["L/D"];
 				Cm = self.Polar_Dict[name]["CMy"];
+				centre_press = Cm + CL*self.X_cg/self.C_ref;
 
 				label = name[len(self.file_types[0][1:]) :];
 				ax1 = plt.subplot(2, 2, 1);									ax2 = plt.subplot(2, 2, 2);
-				ax1.plot(alpha, CL, label = label);							ax2.plot(alpha, Cm, label = label);
+				ax1.plot(alpha, CL, label = label);							ax2.plot(alpha, Cm, label = label);		ax2.plot(alpha, centre_press, label = "Centre of pressure");
 				ax1.set_xlabel("alpha [degrees]");							ax2.set_xlabel("alpha [degrees]");
 				ax1.set_ylabel("CL [-]");									ax2.set_ylabel("Cm [-]");
 				ax1.grid(True);												ax2.grid(True);
@@ -68,6 +71,7 @@ class ExtractData_OpenVSP():
 				ax2.legend();
 				ax3.legend();
 				ax4.legend();
+				print("Centre of Pressure Position for {}: {}".format(name[len(self.file_types[0][1:]) :], mean(centre_press)*self.C_ref), "m from LE root");
 		return 0;
 
 	def Sort_LoadDistribution(self):
@@ -94,6 +98,7 @@ class ExtractData_OpenVSP():
 								except: 
 									secDict[data[count].split()[k]] = ([float(d[k])]);
 					self.subDict[secDict["AoA_"]] = secDict;
+		self.C_ref = self.subDict[secDict["AoA_"]]["Cref_"]; self.X_cg = self.subDict[secDict["AoA_"]]["Xcg_"];
 
 
 	def plot_LoadDistribution(self, AOA, write_dir, write_dir1):
@@ -166,6 +171,7 @@ class ExtractData_OpenVSP():
 				print("Test Case:", name[len(self.file_types[0][1:]) :])
 				print("CL(alpha) = %f + %f alpha" %(a_CL[0], a_CL[1]), "\n R^2 = {}".format(R2_CL));
 				print("Cm(alpha) = %f + %f alpha" %(a_Cm[0], a_Cm[1]), "\n R^2 = {}".format(R2_Cm));
+				print("Aerodynamic Centre = %f" %((a_CL[1]*self.X_cg/self.C_ref - a_Cm[1])*self.C_ref), "m from LE root");
 				print("\n")
 		return 0;
 

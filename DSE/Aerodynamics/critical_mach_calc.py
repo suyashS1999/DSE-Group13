@@ -11,10 +11,10 @@ import numpy as np
 
 # Cp_min = -0.43
 
-gam = 1.4
-M_crit = 0.72
+#gam = 1.4
+#M_crit = 0.5857
 
-cpm = -0.43
+#cpm = -0.43
 
 
 # def M_cr_calc(M_cr):
@@ -30,8 +30,8 @@ cpm = -0.43
 
 
 
-err = 1
-count = 0
+#err = 1
+#count = 0
 
 
 # while abs(err)>1e-3:
@@ -93,7 +93,7 @@ def M_cr_calc(M_cr):
 	
 	gam = 1.4
 	
-	cpm = -0.43  # min cp for airfoil
+	cpm = -0.364  # min cp for airfoil
 	
 	p1 = ((2+((gam-1)*(M_cr**2)))/(gam+1))**(gam/(gam-1))
 	
