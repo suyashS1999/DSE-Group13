@@ -13,7 +13,7 @@ AR = 17;									# Wing Aspect ratio [-]
 S = 139.1091985;								# Wing surface area [m^2]
 span = 48.62978895;							# Wing span [m]
 ave_chord = S/span;							# Average chord lenght [m]
-taper_ratio = 0.44;							# Taper ratio [-]
+taper_ratio = 0.3;							# Taper ratio [-]
 # Inboard Wing
 span_inboard = 36;							# Span of inboard wing [m]
 span_outboard = span - span_inboard;		# Span of outboard wing [m]
@@ -26,12 +26,12 @@ S_wet_ratio = 2.14         #-
 
 C_r_m, C_t_m = planf.Calc_root_tip_chordMain(span, AR, taper_ratio)
 
-sweep_LE = np.radians(40.63) 
+sweep_LE = np.radians(30) 
 
 MAC = planf.Compute_MAC(C_r_m,C_t_m, sweep_LE, span)
 
 # e  = e(AR,sweep_LE)
-e = 0.7
+e = 0.8
 
 rho_cruise = 0.3636     # kg/m^3
 V_cruise   = 230.13     # m/s
@@ -88,7 +88,16 @@ laminar_flow_outb  = 0.1
 turb_flow_outb = 0.9  
 
 
-#print(Outb_params)
-#print(Inb_params)
-#print(MAC)
-#print(span_outboard)
+# If full wing Airfoil
+
+
+a0_full = 0.10853430292060387*180/np.pi  # lift slope for airfoil (in 1/rad)
+t_c_avg_full = 0.14 
+x_c_m_full = 0.3636  # position of max thickness
+laminar_flow_full = 0.1
+turb_flow_full = 0.9
+
+t_c_stream_full = 0.14
+M_crit_airfoil_full = 0.5956992
+
+

@@ -10,7 +10,7 @@ sweep_half_c = tl.sweep_x(0.5, sweep_LE, C_r_m, C_t_m, span);			# Half chord swe
 sweep_quart = tl.sweep_x(0.25, sweep_LE, C_r_m, C_t_m, span);			# Quarter chord sweep
 CLmax_Clmax = 0.73;
 
-wing_type = 2
+wing_type = 1
 
 if wing_type==2:
 	
@@ -140,7 +140,7 @@ elif wing_type==1:
 	MAC = MAC[0];							# Mean aerodynamic chord [m]	
 	ReM02 = (V_M02*MAC)/kin_visc			# Reynolds number at MAC
 	
-	Clmax_M02_wing = 1.5               # Check
+	Clmax_M02  = 1.5               # Check
 
 # ----- Lift Calculations -------
 # INBOARD
@@ -152,6 +152,24 @@ elif wing_type==1:
 
 	alpha_stall = np.degrees(CLmax_M02/CL_alp_M02 + np.radians(Alpha0_full) + np.radians(d_alpha_clmax));
 	
+# ----- Drag Calculation -------
+	CD_misc = 5				# % of total CD0
+	
+	CD_0_cruise_full = (1 + (CD_misc/100))*tl.CD0_wing(S_wet_ratio, t_c_avg_full, x_c_m_full, sweep_LE, C_r_m, C_t_m, 
+												   C_r_m, span, rho_cruise, V_cruise, mu_cruise, k_wing, M_cruise, laminar_flow_full, turb_flow_full);
+
+	delta_CD_full = tl.delta_wave_drag(M_cruise, t_c_stream_full, sweep_LE, CL_cruise, M_crit_airfoil_full);
+
+	CD_induced_full = (CL_cruise**2)/(np.pi*AR*e);
+
+	Total_CD_full = CD_0_cruise_full + delta_CD_full + CD_induced_full
+	
+	
+	print(" Results ..... \n \n");
+	print("CL_alpha  = ", CL_alp, "\n");
+	print("Total_CD  = ", Total_CD_full  ,"\n");
+	print("CL_max    = ", CLmax_M02,"  \n ");
+	print("Stall angle =", alpha_stall ,"   \n \n \n ");
 	
 
 
