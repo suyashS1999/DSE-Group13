@@ -13,8 +13,8 @@ M_cruise = 0.78
 # Horizontal Tail
 
 a0_h = 0.1071233*180/np.pi   #1/rad4.49
-S_h = 32    #m^2
-CL_h_design = -0.13
+S_h = 35    #m^2
+CL_h_design = 0.3
 M_crit_a_h = tl.bisection(tl.M_cr_calc_h,0.2,0.99,100)
 # print(M_crit_a_h)
 A_h =  3           # Design Choice
@@ -24,7 +24,7 @@ sweep_le_h = np.radians(41)     # deg
 # Vertical Tail
 
 a0_v = 6.195564526     #1/rad
-S_v =  18.4     # m^2
+S_v = 13.46     # m^2
 CL_v_design = 0.1613575552564497
 M_crit_a_v = tl.bisection(tl.M_cr_calc_v,0.2,0.99,100)
 # print(M_crit_a_v)
