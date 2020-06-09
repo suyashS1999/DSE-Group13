@@ -62,7 +62,7 @@ class ExtractData_OpenVSP():
 				ax1.grid(True);												ax2.grid(True);
 
 				ax3 = plt.subplot(2, 2, 3);									ax4 = plt.subplot(2, 2, 4);
-				ax3.plot(CDtot, CL, label = label);							ax4.plot(alpha, L_D, label = label);
+				ax3.plot(CDtot, CL, label = label);							ax4.plot(alpha, CL/CDtot, label = label);	#ax4.plot(alpha, CL/CDtot);
 				ax3.set_xlabel("CD [-]");									ax4.set_xlabel("alpha [degrees]");
 				ax3.set_ylabel("CL [-]");									ax4.set_ylabel("CL/CD [-]");
 				ax3.grid(True);												ax4.grid(True);
