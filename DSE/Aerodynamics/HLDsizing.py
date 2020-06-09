@@ -85,7 +85,7 @@ class HighLiftDevices():
 		plt.xlabel("alpha [deg]");
 		plt.ylabel("CL [-]");
 		plt.legend();
-		plt.show();
+		#plt.show();
 		return 0;
 
 #%% ------------------ Main ------------------
