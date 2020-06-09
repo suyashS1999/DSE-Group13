@@ -146,20 +146,23 @@ class ExtractData_OpenVSP():
 		return 0;
 
 
-	def Cm_CL_alpha_calc(self, precision = 25):
+	def Cm_CL_alpha_calc(self):
 		""" Function to compute the Cm-alpha and CL-alpha curves.
 		It uses linear regression to compute the curves. The precision is input does
 		not need to be changed
 		"""
 		least_sq_Matrix = lambda x: vstack((ones(shape(x)), x));
+		least_sq_Matrix_d = lambda x: vstack((ones(shape(x)), x**2));
 		for name in self.names:
 			if name.startswith(self.file_types[0][1:]):
 				alpha = self.Polar_Dict[name]["AoA"];
 				CL = self.Polar_Dict[name]["CL"];
+				CD = self.Polar_Dict[name]["CDtot"];
 				Cm = self.Polar_Dict[name]["CMy"];
-				idx = asarray(range(0, len(alpha), int(precision/len(alpha))));
+				idx = asarray(range(0, len(alpha), 1));
 				alpha_i = alpha[idx];
 				CL_i = CL[idx];
+				CD_i = CD[idx];
 				Cm_i = Cm[idx];
 				LSM = least_sq_Matrix(alpha_i);
 				A = LSM.dot(LSM.T);
@@ -171,7 +174,16 @@ class ExtractData_OpenVSP():
 				print("Test Case:", name[len(self.file_types[0][1:]) :])
 				print("CL(alpha) = %f + %f alpha" %(a_CL[0], a_CL[1]), "\n R^2 = {}".format(R2_CL));
 				print("Cm(alpha) = %f + %f alpha" %(a_Cm[0], a_Cm[1]), "\n R^2 = {}".format(R2_Cm));
-				print("Aerodynamic Centre = %f" %((a_CL[1]*self.X_cg/self.C_ref - a_Cm[1])*self.C_ref), "m from LE root");
+				print("Aerodynamic Centre = %f" %((a_CL[1]*self.X_cg/self.C_ref - a_Cm[1])*self.C_ref/a_CL[1]), "m from LE root");
+				
+
+				LSM_d = least_sq_Matrix_d(CL_i);
+				A_d = LSM_d.dot(LSM_d.T);
+				d_CD = inv(A_d).dot(LSM_d.dot(CD_i));
+				R2_d = 1 - norm(LSM_d.T.dot(d_CD) - CD_i);
+				print("CD(CL) = %f + %f CL^2" %(d_CD[0], d_CD[1]), "\n R^2 = {}".format(R2_d));
+				print("L/D cruise = %f" %(3/4*sqrt((1/d_CD[1])/(3*d_CD[0]))));
+				print("L/D loiter = %f" %(1/2*sqrt((1/d_CD[1])/(d_CD[0]))));
 				print("\n")
 		return 0;
 

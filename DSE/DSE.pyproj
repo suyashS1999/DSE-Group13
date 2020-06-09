@@ -31,6 +31,7 @@
     <Compile Include="Aerodynamics\Input_parm.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Aerodynamics\Smooth_airfoil_func.py" />
     <Compile Include="Aerodynamics\Tail_planform.py" />
     <Compile Include="Aerodynamics\WingPlanform.py">
       <SubType>Code</SubType>
