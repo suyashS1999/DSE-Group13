@@ -103,7 +103,8 @@ plt.show()
 #Calculate Area between the airfoils
 
 darea = np.zeros(451)
-add = np.where(naca[:,0] == cw*0.15)[0][0]
+
+add = np.where(np.round_(naca[:,0],6) == round(cw*0.15,6))[0][0]
 print(nasasc[0])
 
 for i in range(451):
