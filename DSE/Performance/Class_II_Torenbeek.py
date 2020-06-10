@@ -13,9 +13,9 @@ b_ref = 1.905   #Span constant for wing sizing
 k_h = 1.0       #Correction factor, h tail (fixed stabiliser)
 k_wf = 0.23     #Correction factor, fuselage
 k_uc = 1.08     #Correction factor, undercarriage due to high wing configuration
-k_sc = 0.64*(1+0.2+0.15)*0.768     #Correction factor, undercarriage (with LE flap or slat controls + lift dumper controls assumed) (0.768 to correct for SI units)
+k_sc = 0.64*(1+0.2+0.15)*0.768     #Correction factor, surface control (with LE flap or slat controls + lift dumper controls assumed) (0.768 to correct for SI units)
 k_pg = 1.15     #Correction factor, propulsion group, as podded-engine jet transports
-k_thr = 1.0     #Correction factor, thrust (no thrust reverser hence 1.00)
+k_thr = 1.0     #Correction factor, thrust reverser (no thrust reverser hence 1.00)
 
 #%% ------------------------ INPUTS ------------------------
 #Inputs
@@ -24,7 +24,7 @@ MTOW = 74616.9829   #[kg]
 MF = 12471.21232    #Fuel mass [kg]
 
 V_D = 156.7297      #dive speed in EAS [m/s]
-l_t = 12              #Length between quarter chords of wing and h tail [m]
+l_t = 13.9              #Length between quarter chords of wing and h tail [m]
 
 b_f = 4.2              #width fuselage [m]
 h_f = 4.2             #height fuselage [m]
@@ -46,8 +46,8 @@ h_h = 0.9*b_v           #height of horizontal stabiliser
 
 T_TO = 211545.862   #Take off thrust [N] (From wing/thrust loading)
 N_e = 2             #number of engine [-]
-W_engine =  2305.990439    #Total engine weight [kg]
-W_BLI = 700
+W_engine =  2500#2305.990439    #Total engine weight [kg]
+W_BLI = 1700
 #%% ------------------------ Functions ------------------------ 
 #Functions weight estimations
 #Airframe structure

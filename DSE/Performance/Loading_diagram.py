@@ -9,24 +9,28 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 #%% ---------------------- Inputs ----------------------
+#From Class II weight estimation google sheet
+x_cg_oew = 20.10876114 #[m] from nose
+OEW = 45666.07 #[kg]
+
 #Aircraft dimensions
 lmac = 1.501                            # MAC [m]
 l_fuse = 42.6                           # Fuselage length [m]
-xlemac = 4 + (32.05*0.5)    # X position of LEMAC from nose (LEMAC at 55% of cabin)
-l_t = 17.75                             # Tail moment arm [m], distance between 1/4 chords of wing + tail (for now V_tail)
+xlemac = 4 + (32.05*0.45)    # X position of LEMAC from nose (LEMAC at 50% of cabin)
+l_t = 42.6-6*0.75-1-xlemac+0.3                             # Tail moment arm [m], distance between 1/4 chords of wing + tail (for now V_tail)
 
 #CG locations in X direction from the nose (Assumptions/Justification in brackets)
-x_cargo_frw = 10                      # forward cargo [m] (from concept 3 midterm side view) 
-x_cargo_aft = 37.7                      # aft cargo [m] (from concept 3 midterm side view)
+x_cargo_frw = 7                        # forward cargo [m] (from concept 3 midterm side view) 
+x_cargo_aft = 32                      # aft cargo [m] (from concept 3 midterm side view)
 x_cg_fuel = xlemac                      # fuel [m] (approximated to be at the LEMAC, forward of approximate CG of wing since there will be no fuel at the tips)
-x_cg_wing = xlemac+lmac*0.25            # wing, as function of MAC [m] (For now assumed to be quarter chord MAC)
-x_cg_tail = l_t+x_cg_wing               # tail [m] (cg wing + tail arm)
+x_cg_wing = xlemac-10.58+9            # wing, as function of MAC [m] (For now assumed to be quarter chord MAC)
+x_cg_tail = l_t+xlemac               # tail [m] (cg wing + tail arm)
 x_cg_body = l_fuse*0.5                  # body/fuselage [m] (midpoint of fuselage length)
 x_cg_undercarriage_main = 0.53*l_fuse   # main landing gear [m] (relative to fuselage length of A320)
 x_cg_undercarriage_nose = 0.095*l_fuse  # nose landing gear [m] (relative to fuselage length of A320)
 x_cg_surfcont = x_cg_wing               # surface control [m] (assumed to be same as wing cg)
-x_cg_nacelle = xlemac                   # nacelle + pylons [m] (assumed to be at LEMAC)
-x_cg_engine = xlemac                    # engines [m] (assumed to be at LEMAC)
+x_cg_nacelle = xlemac-10.58+9                   # nacelle + pylons [m] (assumed to be at LEMAC)
+x_cg_engine = xlemac-10.58+9                    # engines [m] (assumed to be at LEMAC)
 x_cg_equip = x_cg_body                  # equipment e.g. APU and all that stuff [m] (assumed to be equally spread along the body)
 x_cg_furnish = x_cg_body
 x_cg_BLI = l_fuse
@@ -38,10 +42,10 @@ middle_row = 2
 aisle_row = 2
 total_row = window_row+middle_row+aisle_row
 pax_per_row = int(total_pax/total_row)
-seat_pitch = 812.8e-3                   # seating pitch [m] (from mid-term)
+seat_pitch = 812.8e-3                  # seating pitch [m] (from mid-term)
 l_cabin = 30.25                         # length of cabin [m] (from mid-term)
 l_cockpit = 4                           # length of cockpit [m] (from mid-term)
-x_seat_mostfrw = l_cockpit+(l_cabin-(seat_pitch*total_pax/(total_row)))/2 # Position of most forward seat from nose [m] (Assume all seat at the middle of cabin with the seating pitch)
+x_seat_mostfrw = l_cockpit+(l_cabin-(seat_pitch*total_pax/(total_row)))/2+1 # Position of most forward seat from nose [m] (Assume all seat at the middle of cabin with the seating pitch)
 pax_weight = 95*194/192                 # weight per pax [kg] (assumed 95, but corrected to 192 pax from 194 pax)
 
 # Aircraft weights
@@ -52,9 +56,8 @@ m_fuel = 12471.21232                            # Fuel weight [kg]
 #Verified that PL mass indeed equals PAX+cargofrw+cargoaft
 #%% ---------------------- Main ----------------------
 #Compile CGs
-from Class_II_Torenbeek import *
-x_cg_oew = (W_wing*x_cg_wing + W_tail*x_cg_tail + W_body*x_cg_body + W_undercarriage_main*x_cg_undercarriage_main + W_undercarriage_nose*x_cg_undercarriage_nose + W_surfcont*x_cg_surfcont + W_nacelle*x_cg_nacelle + W_engine*x_cg_engine + W_equip*x_cg_equip + W_furnish*x_cg_furnish + W_BLI*x_cg_BLI)/OEW
-
+#from Class_II_Torenbeek import *
+#x_cg_oew = (W_wing*x_cg_wing + W_tail*x_cg_tail + W_body*x_cg_body + W_undercarriage_main*x_cg_undercarriage_main + W_undercarriage_nose*x_cg_undercarriage_nose + W_surfcont*x_cg_surfcont + W_nacelle*x_cg_nacelle + W_engine*x_cg_engine + W_equip*x_cg_equip + W_furnish*x_cg_furnish + W_BLI*x_cg_BLI)/OEW
 
 def cargo_component_cg(m_frw, m_aft, x_frw, x_aft):
     frw_aft = [[],[]]
@@ -106,6 +109,11 @@ def potato(frw_aft, aft_frw, m_initial, x_cg_initial):
         mlst.append(mlst[i]+frw_aft[0][i])
     return x_cg_frw, x_cg_aft, mlst #For cargo, mlst frw and aft are different it is just reverse of each other
 
+#Convert into percentage of the mac from lemac
+def pcmac(lst):
+    lst = (np.array(lst)-xlemac)/lmac
+    return lst
+
 
 ###Main part --- plotting everything###
 cargo = cargo_component_cg(m_cargo_frw, m_cargo_aft, x_cargo_frw, x_cargo_aft)
@@ -124,12 +132,6 @@ cargo_potato_mass = [cargo_potato[2], [cargo_potato[2][0], cargo_potato[2][0]+m_
 fuel_mass_shift = [middle_potato[2][-1], middle_potato[2][-1]+m_fuel]
 x_cg_shift_fuel = [middle_potato[0][-1], (middle_potato[0][-1]*middle_potato[2][-1]+x_cg_fuel*m_fuel)/(middle_potato[2][-1]+m_fuel)]
 
-
-#Convert into percentage of the mac from lemac
-def pcmac(lst):
-    lst = (np.array(lst)-xlemac)/lmac
-    return lst
-
 cargo_frw = pcmac(cargo_potato[0])
 cargo_aft = pcmac(cargo_potato[1])
 window_frw = pcmac(window_potato[0])
@@ -140,7 +142,7 @@ middle_frw = pcmac(middle_potato[0])
 middle_aft = pcmac(middle_potato[1])
 x_cg_shift_fuel = pcmac(x_cg_shift_fuel)
 
-if __name__ == "__main__":
+def loading_diagram():
     plt.plot(cargo_frw, cargo_potato_mass[0], label = "Cargo", color = "purple")
     plt.plot(cargo_aft, cargo_potato_mass[1],  color = "purple")
     plt.plot(window_frw, window_potato[2], label = "Window", color = "green")
@@ -155,6 +157,11 @@ if __name__ == "__main__":
     plt.xlabel("x_cg [mac]")
     plt.ylabel("Mass [kg]")
     plt.show()
+    return 
+    
+
+if __name__ == "__main__":
+    loading_diagram()
 
 cg_frw_mac = np.min([np.min(cargo_frw), np.min(window_frw), np.min(aisle_frw), np.min(middle_frw), np.min(x_cg_shift_fuel)])
 cg_aft_mac = np.max([np.max(cargo_aft), np.max(window_aft), np.max(aisle_aft), np.max(middle_aft), np.max(x_cg_shift_fuel)])
