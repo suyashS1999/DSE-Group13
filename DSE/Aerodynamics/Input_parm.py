@@ -10,8 +10,8 @@ import Aerodynamics.WingPlanform as planf
 #Global Wing
 
 AR = 17;									# Wing Aspect ratio [-]
-S = 139.1091985;								# Wing surface area [m^2]
-span = 48.62978895;							# Wing span [m]
+S = 150.7210057 #139.1091985;								# Wing surface area [m^2]
+span = 48.62978895+2;							# Wing span [m]
 ave_chord = S/span;							# Average chord lenght [m]
 taper_ratio = 0.44;							# Taper ratio [-]
 # Inboard Wing
