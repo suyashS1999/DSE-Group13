@@ -4,17 +4,22 @@ from Input_parm import *
 
 #Import Airfoils
 
-naca = np.genfromtxt("NACA 63(2)-615.dat", dtype=str, skip_header=25, skip_footer=0, delimiter="")
+naca = np.genfromtxt("NASA SC(2)-0414.dat", dtype=str, skip_header=102, skip_footer=0, delimiter="")
 naca = naca.astype(np.float)
 
-nasasc = np.genfromtxt("NASA SC(2)-0010.dat", dtype=str, skip_header=102, skip_footer=0, delimiter="")
+nasasc = np.genfromtxt("NASA SC(2)-0410.dat", dtype=str, skip_header=102, skip_footer=0, delimiter="")
 nasasc = nasasc.astype(np.float)
 
 #Determine chord lengths
 
-mach_area = 0.11965 #from aero textbook, M=0.59
+mach_area = 0.1110 #from aero textbook, M=0.59
 pcw = 0.7 #percentage of span where the strut attaches
 y = pcw*span
+if y >= 36:
+	y = 36
+else:
+	y = y
+print(y)
 
 def Chord_at_y_inb(y,taper_inb,b_inb,S_inb):
 	chord_at_y = ((2*S_inb)/((1+taper_inb)*b_inb))*(1-((1-taper_inb)/b_inb)*(y))
@@ -119,6 +124,7 @@ print("Throat location x/y of Strut (NASA SC)",nasasc[indloc])
 throat = biig/mach_area #throat where M=1
 print("Throat =", throat)
 print(naca[add])
+print(cs)
 
 #verification
 deltaA = loc[1] - naca[add,1]
