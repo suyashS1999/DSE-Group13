@@ -10,8 +10,8 @@ import Aerodynamics.WingPlanform as planf
 #Global Wing
 
 AR = 17;									# Wing Aspect ratio [-]
-S = 139.1091985;								# Wing surface area [m^2]
-span = 48.62978895;							# Wing span [m]
+S = 150.7210057#;							# Wing surface area [m^2]
+span = 50.61874255;							# Wing span [m]
 ave_chord = S/span;							# Average chord lenght [m]
 taper_ratio = 0.44;							# Taper ratio [-]
 # Inboard Wing
@@ -20,7 +20,7 @@ span_outboard = span - span_inboard;		# Span of outboard wing [m]
 t_c_avg  = 0.15         # Aver. t/c
 x_c_m    = 0.1          # location of max thickness
 # t_c_stream =           #-
-CL_cruise  = 0.566     #-
+CL_cruise  = 0.4545     #-
 
 S_wet_ratio = 2.14         #- 
 
@@ -56,14 +56,14 @@ AR_inb = Inb_params[3]
 taper_ratio_inb = Inb_params[4]
 
 a0_inb = 6.445775195   #1/rad
-Cl0_inb = 0.4
-Cl_max_inb = 1.67
-Cd_inb  = 0.005
-alp_max_airf_inb = 15
-t_c_avg_inb = 0.15
+Cl0_inb = 0.314
+Cl_max_inb = 2.26
+Cd_inb  =0.006
+alp_max_airf_inb = 22.5
+t_c_avg_inb = 0.14
 x_c_m_inb = 0.3
-t_c_stream_inb = 0.15
-M_crit_airfoil_inb = 0.592   #- 
+t_c_stream_inb = 0.14
+M_crit_airfoil_inb = 0.5956992   #- 
 laminar_flow_inb  = 0.1
 turb_flow_inb = 0.9 
 
