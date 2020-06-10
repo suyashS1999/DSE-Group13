@@ -16,16 +16,17 @@ CL_max_TO = 2.0
 dtheta_dt = 4       # Torenbeek correction factor (rotation right after LOF) [deg/sec]
 V_min = 65.6        # V_min with CL_max_TO
 V_LOF = 1.05*V_min  # Lift off velocity [m/s]
-X = 2.1             # Length of the LG struts [m] (from bottom of fuselage to bottom of tires)
+X = 1.9             # Length of the LG struts [m] (from bottom of fuselage to bottom of tires)
 H_fuse = 4.2
-Y_LG = 3.3
+Y_LG = 3.2
 Z_cg = X + H_fuse*0.5
+W_S = 5262
 
 #Position of landing gears from nose
-x_mlg = 21.8    # main [m]
-x_nlg = 3.2     # nose [m]
+x_mlg = 22.1    # main [m]
+x_nlg = 3.8     # nose [m]
 from Loading_diagram import cg_frw, cg_aft #import most frw and aft cg positions
-
+from Class_II_Torenbeek import MTOW
 #%% Functions
 def th_LOF(theta):
     """
@@ -69,3 +70,29 @@ def lateral_LG():
     return phi
 nose_load()
 lateral_LG()
+
+def static_load():
+    l_n = cg_aft-x_nlg
+    l_m = x_mlg-cg_aft
+    P_m = l_n/(l_m+l_n)*MTOW
+    return P_m
+#
+##def min_leg():
+#    w = 0.9*(5262)**0.25
+#    lamda = 2 #or 2.5
+#    eta_s = 0.6 #or 0.65
+#    eta_t = 0.47
+#    Dt = 46 #or 49
+#    bt = 16 #or 19
+#    S_t = lamda*MTOW*0.92/4/(p*np.sqrt(Dt*bt))
+#    S = 1/eta_s*(w**2/(1.84*9.81*lamda)-eta_t*S_t)
+#    return S
+
+w = 0.9*(5262/9.81)**0.25
+lamda = 2.5 #or 2.5
+eta_s = 0.6 #or 0.65
+eta_t = 0.47
+Dt = 46/100 #or 49
+bt = 16/100 #or 19
+S_t = lamda*MTOW*0.92/4/(p*np.sqrt(Dt*bt))
+S = 1/eta_s*(w**2/(1.84*9.81*lamda)-eta_t*S_t)

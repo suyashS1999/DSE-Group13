@@ -19,13 +19,13 @@ ca_c             = 0.4          # ratio chords, range 0.24-0.3
 
 Clalpha = 6.446      # lift curve slope [1/rad]
 Cd0     = 0.005       # zero lift coefficient NEEDS TO BE CHANGED
-cr      = 4.021      # root chord [m]
-cm      = 1.769      # mid chord  [m]
+cr      = 3.973      # root chord [m]
+cm      = 2.326      # mid chord  [m]
 Sin     = 115.1      # surfcace area inboard [m^2]
 tpin    = 0.59       # taper ratio inboard   [-]
 
 # chord equation c(y)
-a = 1/(36/(cm-cr))
+a = 1/(b/(cm-cr))
 r = cr
 def c(y):
     c = a*y + r

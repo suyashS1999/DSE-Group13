@@ -7,8 +7,9 @@ import time as time
 
 
 sweep_half_c = tl.sweep_x(0.5, sweep_LE, C_r_m, C_t_m, span);			# Half chord sweep
-sweep_quart = tl.sweep_x(0.25, sweep_LE, C_r_m, C_t_m, span);			# Quarter chord sweep
+sweep_quart = tl.sweep_x(0.25, np.radians(26), C_r_m, C_t_m, span);			# Quarter chord sweep
 CLmax_Clmax = 0.73;
+print(sweep_quart)
 
 wing_type = 1
 
