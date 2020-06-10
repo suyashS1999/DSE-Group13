@@ -117,8 +117,8 @@ def Generate_MomentShear_Diagram(F, F_args, y0, y1, DOP):
 
 
 #%% --------------- Main -----------------------
-dir_CL = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\liftdistribution.txt";			# Chnage to your path
-dir_Cm = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\troquedistribution.txt";
+dir_CL = r"D:\DSE\Git\DSE-Group13\DSE\Structures\liftdistribution.txt";			# Chnage to your path
+dir_Cm = r"D:\DSE\Git\DSE-Group13\DSE\Structures\troquedistribution.txt";
 data_CL = genfromtxt(dir_CL);
 data_Cm = genfromtxt(dir_Cm);
 CL = data_CL[1, :];													# CL values
@@ -139,6 +139,47 @@ Cm_rbf, _ = RBF_1DInterpol(span_location, Moment_dist, y);			# Interpolate Distr
 y_half = span_location[int(len(span_location)/2):len(span_location)];
 M, V, y_m = Generate_MomentShear_Diagram(RBF_1DInterpol, [span_location, Lift_dist, coeff], y_half[0], y_half[-1], 11);
 
+#%% ------------------- FBD Solve ----------------
+print(len(span_location))
+y_test = linspace(0,span_location[-1],1000)
+V_test, lala = RBF_1DInterpol(y_m,V,y_test)
+
+T_e = 106000
+W_e = 2000*9.81
+L = -min(V_test)
+M_L = max(M)
+
+LE_sweep = radians(30)
+
+y_e = 4.893 # engine distance from fuselage
+x_e = y_e*tan(LE_sweep)-1.768 #engine distance from root start
+z_e = 1.434 #engine thrust location under wing
+y_s = 17.720
+x_s = y_s*tan(LE_sweep)
+z_s = 0.732
+degree_strut = radians(13.26)
+
+S_z = (W_e*y_e - M_L)/((z_s/tan(degree_strut))-y_s)
+S_y = S_z/tan(degree_strut)
+A_z = L - W_e - S_z
+A_y = -S_y
+
+V_new= [0] * len(y_test)
+
+for i in range(len(y_test)):
+	if y_test[i]<y_e and y_test[i]>0:
+		V_new[i] = S_z + W_e
+	if y_test[i]<y_s and y_test[i]>y_e:
+		V_new[i] = S_z
+	if y_test[i]==0:
+	 	V_new[i] = S_z  + A_z + W_e
+V_new = array(V_new)
+#V_new = V_new[::-1]
+V = V_new + V_test
+
+
+#%% ------------------ Plotting ------------------------
+
 plt.figure(figsize = (18, 8));
 plt.plot(span_location, Lift_dist, "x");
 plt.plot(y, CL_lag, label = "Lagrange Interpolation");
@@ -158,7 +199,8 @@ plt.legend();
 #plt.legend();
 
 plt.figure(figsize = (18, 8));
-plt.plot(y_m, M, label = "Internal Moment [Nm]");
+#plt.plot(y_m, M, label = "Internal Moment [Nm]");
+y_m = y_test
 plt.plot(y_m, V, label = "Shear [N]");
 plt.ylabel("Interal Load Distributed");
 plt.xlabel("y [m]");
@@ -168,4 +210,4 @@ plt.legend();
 
 plt.show();
 
-print(M)
+#print(M)
