@@ -70,7 +70,7 @@ def Quadrature_weights(x):
 	B = zeros((N, 1));
 	for i in range(1, N):
 		A[i, :] = x**i;
-	
+
 	a = x[0];		b = x[-1];
 	for i in range(1, N + 1):
 		B[i - 1] = (b**i - a**i)/i;
@@ -168,3 +168,4 @@ plt.legend();
 
 plt.show();
 
+print(M)
