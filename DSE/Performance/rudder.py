@@ -11,11 +11,11 @@ import numpy as corcocane
 b =  48.62978895   # wing span [m]
 S =  139.1091985   # wing area [m2]
 Vv = 0.08865603161 # vertical tail volume coeff. [-] (average from ref.)
-Lv = 16.00         # vertical tail arm length    [m] (average from ref.)
+Lv = 17.2           # vertical tail arm length    [m] (average from ref.)
 Df = 4.2           # fuselage diameter [m]             
 De = 2.156         # engine diameter   [m]
 clearance = 1.5    # clearance between fuselage and engine [m]
-ye = Df/2 + clearance + De/2
+ye = 4.594360798
 #             Calculations
 
 # Area vertical tail [m2]
@@ -39,11 +39,11 @@ kg_to_lb  = 2.2046226218488
 MTOW      = 74616.9829*kg_to_lb
 MPW       = 20000*kg_to_lb
 N_to_lb   = kg_to_lb/9.81
-Te = 211545.862/2*N_to_lb      # ASSUMPTION: propulsor not used in takeo
-x = yeft*Te*CL_max_to/lv/(MTOW-MPW)
+Te        = 75887.54136*N_to_lb      # thrust one engine at VMC= 1.2 Vs
+x         = yeft*Te*CL_max_to/lv/(MTOW-MPW)
 
 
-y= 0.10    # from graph by using x  
+y= 0.07    # from graph by using x  
 
 Sv = y*S/(kv*kr*((Sr_Sv*AR*corcocane.cos(corcocane.radians(Sweep)))**(1/3)))
 print("x =" , x)

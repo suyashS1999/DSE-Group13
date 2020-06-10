@@ -65,7 +65,7 @@ ge     = 1 - (1-1.32*h/b)/(1.05+7.4*h/b)
 CDiIGE = ge*CDiOGE
 Llof   = 1/2*rho*((Vlof/np.sqrt(2))**2)*CLto*S
 Dlof   = Llof*CDto/CLto
-Tlof   = Tto
+Tlof   = 86055.43*2
 mugnd  = 0.05    # ground friction coefficient 0.03-0.05 brakes off, otherwise 0.3-0.5 with braking
 
 
@@ -92,25 +92,20 @@ CDv2 = 0.08399
 CDtr = 0.0247 + (CLtr**2)/(np.pi*AR*eto)
 Dtr  = MTOW*CDtr/CLtr
 Dv2  = 1/2*rho*(V2**2)*CDv2*S
-Tc   =  #Tto*(1-2*V2/np.sqrt(1.4*287*288.15)*(1+BPR)/(3+2*BPR))
+Tc   = 78.64817030101452*2    #Tto*(1-2*V2/np.sqrt(1.4*287*288.15)*(1+BPR)/(3+2*BPR))
 thetaclimb = np.arcsin((Tc-Dtr)/MTOW)   # radians
 htr        = R*(1-np.cos(thetaclimb))
-Str        = R*np.sin(thetaclimb)
+Str        = np.sqrt((R**2)-(R-htr)**2)
 
-print("Str = ",Str," m")
+#print("Str = ",Str," m")
 
+Sobst = np.sqrt((R**2)-(R-hto)**2)
 
-# climb
-
-Sc = (hto-htr)/np.tan(thetaclimb)
-
-
-print("Sc = ",Sc," m")
-
+print("Sobst = ",Sobst," m")
 
 # overall takeoff distance
 
-Sto = Sg + Sr + Str + Sc
+Sto = Sg + Sr + Sobst 
 
 print("Sto = ",Sto," m")
 
