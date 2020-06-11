@@ -111,6 +111,7 @@
     <Compile Include="Structures\InterpolationandIntegration.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Structures\main_wingbox_design.py" />
     <Compile Include="Structures\Set-up_Box_Dimensions.py" />
     <Compile Include="Structures\structures_foldingwingtip_loads.py" />
     <Compile Include="Structures\Structures_module.py">
