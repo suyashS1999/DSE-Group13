@@ -117,10 +117,10 @@ def Generate_MomentShear_Diagram_Dist_Lift(F, F_args, y0, y1, DOP):
 
 def Generate_MomentShear_Diagram_Engine_strut(M_lift, V_lift, y, T_e, W_e, LE_sweep, degree_strut, y_e, z_e, y_s, z_s):
 	L = -min(V_lift);
-	M_L = max(M_lift); 
+	M_L = max(M_lift);
 
 	x_e = y_e*tan(LE_sweep) - 1.768;									# engine distance from root start
-	x_s = y_s*tan(LE_sweep);											# 
+	x_s = y_s*tan(LE_sweep);											#
 
 	#2D FBD based on FBD in discord channel
 	#S_z = (W_e*y_e - M_L)/((z_s/tan(degree_strut)) - y_s);
@@ -154,8 +154,8 @@ def Generate_MomentShear_Diagram_Engine_strut(M_lift, V_lift, y, T_e, W_e, LE_sw
 
 
 #%% ----------------- Main -----------------------
-dir_CL = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\liftdistribution.txt";			# Chnage to your path
-dir_Cm = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\troquedistribution.txt";
+dir_CL = r"liftdistribution.txt";			# Chnage to your path
+dir_Cm = r"troquedistribution.txt";
 data_CL = genfromtxt(dir_CL);
 data_Cm = genfromtxt(dir_Cm);
 CL = data_CL[1, :];													# CL values
