@@ -6,6 +6,7 @@ Created on Sun Jun  7 16:48:51 2020
 """
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 #%% Inputs
 CL_a = 4.0          #CL_alpha (more critical out of in- outboard)
@@ -16,15 +17,15 @@ CL_max_TO = 2.0
 dtheta_dt = 4       # Torenbeek correction factor (rotation right after LOF) [deg/sec]
 V_min = 65.6        # V_min with CL_max_TO
 V_LOF = 1.05*V_min  # Lift off velocity [m/s]
-X = 1.9             # Length of the LG struts [m] (from bottom of fuselage to bottom of tires)
+X = 1.6             # Length of the LG struts [m] (from bottom of fuselage to bottom of tires)
 H_fuse = 4.2
 Y_LG = 3.2
 Z_cg = X + H_fuse*0.5
 W_S = 5262
 
 #Position of landing gears from nose
-x_mlg = 22.1    # main [m]
-x_nlg = 3.8     # nose [m]
+x_mlg = 22.3    # main [m]
+x_nlg = 4     # nose [m]
 from Loading_diagram import cg_frw, cg_aft #import most frw and aft cg positions
 from Class_II_Torenbeek import MTOW
 #%% Functions
@@ -76,7 +77,17 @@ def static_load():
     l_m = x_mlg-cg_aft
     P_m = l_n/(l_m+l_n)*MTOW
     return P_m
-#
+
+def illust(theta):
+    fig = plt.figure(figsize = (12, 6))
+    plt.ylim(-3, 6)
+    plt.plot([0, 4.2, 42.6, 35, 0], [0, 4.2, 4.2, 0, 0])
+    plt.plot([42.6, 42.6+1.7, 42.6+1.7, 42.6, 42.6], [4.2+3.5/2, 4.2+3.5/2, 4.2-3.5/2, 4.2-3.5/2, 4.2+3.5/2])
+    plt.scatter([cg_frw, cg_aft], [2.1, 2.1])
+    plt.plot([cg_aft, 42], [2.1, 2.1+(42-cg_aft)/-np.tan(theta/180*np.pi)])
+    plt.plot([42.6+1.7, 10], [4.2-3.5/2, 4.2-3.5/2+np.tan(theta/180*np.pi)*(10- 42.6+1.7) ])
+    return
+
 ##def min_leg():
 #    w = 0.9*(5262)**0.25
 #    lamda = 2 #or 2.5
