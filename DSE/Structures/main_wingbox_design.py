@@ -69,6 +69,15 @@ def calc_sigma(Mx,Ixx,z):
 	sigma = Mx*z/Ixx
 	return sigma
 
+def calc_buckling(n_stations, c, n_stif_top, n_stif_bot, t_top, t_bot, sigma_top, sigma_bot):
+	"""
+	Outputs the maximum stiffener spacing
+	"""
+	C = 4 # plates are pinned on 4 sides
+	for i in range(n_stations):
+		s_top = c[i]/(n_stif_top[i]+1)
+		b_max = sqrt(C*pi*pi*E*t*t/(12*(1-v*v)*sigma))
+
 def vonmises(sigma,tau):
 	"""
 	Returns the combined loading stress according to von Misses yeild criterion.

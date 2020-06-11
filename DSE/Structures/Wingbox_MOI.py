@@ -87,19 +87,19 @@ def calc_MOI(c, h, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_
 
 # ------------------------  TEST CASE   ------------------------
 
-c = np.array([4,2,2])
-h = np.array([4,2,2])
-t_top = np.array([0.004,0.002,0.002])
-t_bot = np.array([0.004,0.002,0.002])
-t_spar = np.array([0.04,0.02,0.002])
-n_stif_top = np.array([20,5,5])
-n_stif_bot = np.array([10,5,5])
-A_stif = 0.00045
-A_spar_cap = 0.004
+# c = np.array([4,2,2])
+# h = np.array([4,2,2])
+# t_top = np.array([0.004,0.002,0.002])
+# t_bot = np.array([0.004,0.002,0.002])
+# t_spar = np.array([0.04,0.02,0.002])
+# n_stif_top = np.array([20,5,5])
+# n_stif_bot = np.array([10,5,5])
+# A_stif = 0.00045
+# A_spar_cap = 0.004
 
 
-centroid = calc_centroid(c, h, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_cap)
-Ixx, Izz = calc_MOI(c, h, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_cap,centroid)
+# centroid = calc_centroid(c, h, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_cap)
+# Ixx, Izz = calc_MOI(c, h, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_cap,centroid)
 
-print("centroid equals", centroid)
-print("Ixx, Izz", Ixx, Izz)
+# print("centroid equals", centroid)
+# print("Ixx, Izz", Ixx, Izz)
