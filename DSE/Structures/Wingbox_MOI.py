@@ -16,7 +16,7 @@ from math import *
 def calc_centroid(c, h, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_cap):
 	"""Return the z coordinate of the centroid. (z points upward)"""
 
-	sumAreaZ = n_stif_top*A_stif*h/2 + n_stif_bot*A_stif*(-h/2)
+	sumAreaZ = n_stif_top*A_stif*h/2 + n_stif_bot*A_stif*(-h/2) + c*t_top*h/2 + c*t_bot*(-h/2)
 	sumArea = n_stif_top*A_stif + n_stif_bot*A_stif+ 2*t_spar*h + t_top*c + t_bot*c
 	z_centroid = sumAreaZ/sumArea
 

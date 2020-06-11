@@ -25,6 +25,7 @@
     <Compile Include="Aerodynamics\Aero_tools.py" />
     <Compile Include="Aerodynamics\Airfoil_Nozzle.py" />
     <Compile Include="Aerodynamics\Airframe_Noise.py" />
+    <Compile Include="Aerodynamics\BL_velocity.py" />
     <Compile Include="Aerodynamics\critical_mach_calc.py" />
     <Compile Include="Aerodynamics\HLDsizing.py">
       <SubType>Code</SubType>
@@ -32,6 +33,7 @@
     <Compile Include="Aerodynamics\Input_parm.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Aerodynamics\Mastersheet.py" />
     <Compile Include="Aerodynamics\Noise_tools.py" />
     <Compile Include="Aerodynamics\Smooth_airfoil_func.py" />
     <Compile Include="Aerodynamics\Tail_planform.py" />
@@ -108,6 +110,10 @@
     <Compile Include="Propulsion\Turbo_fan\fan_equations.py" />
     <Compile Include="Propulsion\Turbo_fan\Turbofan.py" />
     <Compile Include="Propulsion\__init__.py" />
+    <Compile Include="Structures\Calculate_Bending_Stresses.py" />
+    <Compile Include="Structures\Calculate_Shear_Stresses.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Structures\InterpolationandIntegration.py">
       <SubType>Code</SubType>
     </Compile>

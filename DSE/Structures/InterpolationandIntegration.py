@@ -192,38 +192,38 @@ V_new, M_new, V, M = Generate_MomentShear_Diagram_Engine_strut(M_lift, V_lift, y
 
 
 #%% ------------------ Plotting ------------------------
-plt.figure(figsize = (18, 8));
-plt.plot(span_location, Lift_dist, "x");
-plt.plot(y, CL_lag, label = "Lagrange Interpolation");
-plt.plot(y, CL_rbf, label = "RBF Interpolation");
-plt.ylabel("Distributed Lift Load [N/m]");
-plt.xlabel("Span [m]");
-plt.grid(True);
-plt.legend();
+#plt.figure(figsize = (18, 8));
+#plt.plot(span_location, Lift_dist, "x");
+#plt.plot(y, CL_lag, label = "Lagrange Interpolation");
+#plt.plot(y, CL_rbf, label = "RBF Interpolation");
+#plt.ylabel("Distributed Lift Load [N/m]");
+#plt.xlabel("Span [m]");
+#plt.grid(True);
+#plt.legend();
 
-plt.figure(figsize = (8, 5));
-plt.plot(y_half, M_lift, label = "Internal Moment due to lift [Nm]");
-plt.plot(y_half, V_lift, label = "Internal Shear due to lift [N]");
-plt.ylabel("Interal Load Distributed");
-plt.xlabel("y [m]");
-plt.grid(True);
-plt.legend();
+#plt.figure(figsize = (8, 5));
+#plt.plot(y_half, M_lift, label = "Internal Moment due to lift [Nm]");
+#plt.plot(y_half, V_lift, label = "Internal Shear due to lift [N]");
+#plt.ylabel("Interal Load Distributed");
+#plt.xlabel("y [m]");
+#plt.grid(True);
+#plt.legend();
 
 
-plt.figure(figsize = (8, 5));
-plt.plot(y_half, M_new, label = "Internal Moment due to engine and strut [Nm]");
-plt.plot(y_half, V_new, label = "Internal Shear due to engine and strut [N]");
-plt.ylabel("Interal Load Distributed");
-plt.xlabel("y [m]");
-plt.grid(True);
-plt.legend();
+#plt.figure(figsize = (8, 5));
+#plt.plot(y_half, M_new, label = "Internal Moment due to engine and strut [Nm]");
+#plt.plot(y_half, V_new, label = "Internal Shear due to engine and strut [N]");
+#plt.ylabel("Interal Load Distributed");
+#plt.xlabel("y [m]");
+#plt.grid(True);
+#plt.legend();
 
-plt.figure(figsize = (18, 8));
-plt.plot(y_half, M, label = "Internal Moment (total) [Nm]");
-plt.plot(y_half, V, label = "Internal Shear (total) [N]");
-plt.ylabel("Interal Load Distributed");
-plt.xlabel("y [m]");
-plt.grid(True);
-plt.legend();
+#plt.figure(figsize = (18, 8));
+#plt.plot(y_half, M, label = "Internal Moment (total) [Nm]");
+#plt.plot(y_half, V, label = "Internal Shear (total) [N]");
+#plt.ylabel("Interal Load Distributed");
+#plt.xlabel("y [m]");
+#plt.grid(True);
+#plt.legend();
 
-plt.show();
+#plt.show();
