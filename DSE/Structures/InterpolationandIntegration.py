@@ -137,7 +137,7 @@ Cm_lag, _ = Lagrange_Basis(span_location, Moment_dist, y);			# Interpolate Distr
 Cm_rbf, _ = RBF_1DInterpol(span_location, Moment_dist, y);			# Interpolate Distributed pitching moment with radial basis functions
 
 y_half = span_location[int(len(span_location)/2):len(span_location)];
-M, V, y_m = Generate_MomentShear_Diagram(RBF_1DInterpol, [span_location, Lift_dist, coeff], y_half[0], y_half[-1], 11);
+M, V, y_m = Generate_MomentShear_Diagram(RBF_1DInterpol, [span_location, Lift_dist, coeff], y_half[0], y_half[-1], 9);
 
 #%% ------------------- FBD Solve ----------------
 y_test = linspace(0, span_location[-1], 1000);
@@ -167,7 +167,7 @@ A_y = -S_y;
 
 M_e = S_z*(y_s - y_e);												# moment at engine
 M_engine = W_e*y_e;
-M_r = S_z*(y_s) + M_engine;											# moment at root, should be equal to M_L, but isn't
+M_r = S_z*(y_s) + M_engine - S_y*z_s;											# moment at root, should be equal to M_L, but isn't
 
 V_new = zeros(len(y_test));
 M_new = zeros(len(y_test));
@@ -178,10 +178,10 @@ for i in range(len(y_test)):
 		M_new[i] = -M_r;											# moment check, doesn't work
 	if y_test[i] < y_e and y_test[i] > 0:
 		V_new[i] = S_z + W_e;
-		M_new[i] = (M_engine)/y_e*(y_test[i] - y_e) + (M_e)/(y_s - y_e)*(y_test[i] - y_s);
+		M_new[i] = (M_engine)/y_e*(y_test[i] - y_e) + (M_e)/(y_s - y_e)*(y_test[i] - y_s) + S_y*z_s;
 	if y_test[i] < y_s and y_test[i] > y_e:
 		V_new[i] = S_z;
-		M_new[i] = (M_e)/(y_s - y_e)*(y_test[i] - y_s);
+		M_new[i] = (M_e)/(y_s - y_e)*(y_test[i] - y_s) + S_y*z_s;
 
 V = V_new + V_test;													# adding wing, strut and engine shear
 
