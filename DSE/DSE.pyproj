@@ -24,6 +24,7 @@
   <ItemGroup>
     <Compile Include="Aerodynamics\Aero_tools.py" />
     <Compile Include="Aerodynamics\Airfoil_Nozzle.py" />
+    <Compile Include="Aerodynamics\Airframe_Noise.py" />
     <Compile Include="Aerodynamics\critical_mach_calc.py" />
     <Compile Include="Aerodynamics\HLDsizing.py">
       <SubType>Code</SubType>
@@ -79,12 +80,20 @@
     <Compile Include="GenericGlobal_module1.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Performance\aileron.py" />
     <Compile Include="Performance\Class_II_Torenbeek.py" />
+    <Compile Include="Performance\Climb_Performance.py" />
+    <Compile Include="Performance\Flight_envelope.py" />
     <Compile Include="Performance\h tail.py" />
+    <Compile Include="Performance\Landing gear positioning.py" />
     <Compile Include="Performance\Loading_diagram.py" />
     <Compile Include="Performance\Performance_module.py" />
     <Compile Include="Performance\Performance_module1.py" />
     <Compile Include="Performance\Performance_module2.py" />
+    <Compile Include="Performance\Preliminary_performance_analysis.py" />
+    <Compile Include="Performance\rudder.py" />
+    <Compile Include="Performance\Take-off_Performance.py" />
+    <Compile Include="Performance\X_plot.py" />
     <Compile Include="Performance\__init__.py" />
     <Compile Include="Propulsion\Propulsion_module.py">
       <SubType>Code</SubType>
@@ -200,6 +209,7 @@
     <Content Include="Aerodynamics\Polars2.txt" />
     <Content Include="Aerodynamics\x_col.txt" />
     <Content Include="git_tutorial.txt" />
+    <Content Include="Performance\Torenbeek class II tail graph.PNG" />
     <Content Include="PreviewOfFolderOrganization.png" />
     <Content Include="Propulsion\Thrust_Requirement\Thrust.m" />
     <Content Include="Structures\liftdistribution.txt" />
