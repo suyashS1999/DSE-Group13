@@ -10,6 +10,7 @@ each spanwise station
 import numpy as np
 from matplotlib import pyplot as plt
 from Wingbox_MOI import calc_centroid, calc_MOI
+from InterpolationandIntegration import *
 
 # ------------------------  DESIGN INPUTS   ------------------------
 
@@ -21,25 +22,39 @@ t_inboard = 0.15 #t/c
 t_outboard = 0.18 #t/c
 airfoilchange = 18 #m
 
+#material properties
+E = 72.4*10**9
+G = 28*10**9
+v = 0.33 #poisson ratio
+
+
 #wingbox dimensions
 wingbox_start = 0.15
 wingbox_end = 0.60
 wingbox_height = 0.685 #h/t_airfoil
-n_stations = 3
+n_stations = 10
 
 #design parameters
-# /!\ make sure each array contains n_station values
-t_top = np.array([0.004,0.002,0.002])
-t_bot = np.array([0.004,0.002,0.002])
-t_spar = np.array([0.04,0.02,0.002])
-n_stif_top = np.array([20,5,5])
-n_stif_bot = np.array([10,5,5])
+#/!\ make sure each array contains n_station values
+# t_top = np.array([0.004,0.004,0.004,0.004,0.004,0.004,0.004,0.004,0.002,0.002])
+# t_bot = np.array([0.004,0.004,0.004,0.004,0.004,0.004,0.004,0.004,0.002,0.002])
+# t_spar = np.array([0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.02,0.002])
+# n_stif_top = np.array([5,8,12,15,12,8,5,7,7,2])
+# n_stif_bot = np.array([10,16,20,24,15,8,5,5,5,2])
+# A_stif = 0.00045
+# A_spar_cap = 0.004
+
+t_top = np.array([0.004,0.004,0.004,0.004,0.004,0.004,0.004,0.004,0.002,0.002])
+t_bot = np.array([0.004,0.004,0.004,0.004,0.004,0.004,0.004,0.004,0.002,0.002])
+t_spar = np.array([0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.02,0.002])
+n_stif_top = np.array([4,4,4,4,4,4,4,4,4,4])
+n_stif_bot = np.array([4,4,4,4,4,4,4,4,4,4])
 A_stif = 0.00045
 A_spar_cap = 0.004
 
 #load case
-Mx = np.array([500000,200000,10000])
-Vy = np.array([200000,50000,20000])
+#Mx = np.array([500000,200000,10000])
+#Vy = np.array([200000,50000,20000])
 
 
 # ------------------------  FUNCTIONS   ------------------------
@@ -69,14 +84,32 @@ def calc_sigma(Mx,Ixx,z):
 	sigma = Mx*z/Ixx
 	return sigma
 
-def calc_buckling(n_stations, c, n_stif_top, n_stif_bot, t_top, t_bot, sigma_top, sigma_bot):
+def calc_buckling(n_stations, c, n_stif_top, n_stif_bot, t_top, t_bot, sigma_top, sigma_bot, E, v):
 	"""
 	Outputs the maximum stiffener spacing
 	"""
 	C = 4 # plates are pinned on 4 sides
+	print()
+	print("checking for skin buckling...")
+
+	#top skin
 	for i in range(n_stations):
-		s_top = c[i]/(n_stif_top[i]+1)
-		b_max = sqrt(C*pi*pi*E*t*t/(12*(1-v*v)*sigma))
+		if sigma_top[i] < 0:
+			s_top = c[i]/(n_stif_top[i]+1)
+			b_max_top = sqrt(C*pi*pi*E*t_top[i]**2/(12*(1-v*v)*abs(sigma_top[i])))
+			if s_top > b_max_top:
+				print("The top skin buckles at station", i+1,". Increase stiffeners from",n_stif_top[i],"to",np.ceil(c[i]/b_max_top-1))
+
+
+	#bottom skin
+	for j in range(n_stations):
+		if sigma_bot[j] < 0:
+			s_bot = c[j]/(n_stif_bot[j]+1)
+			b_max_bot = sqrt(C*pi*pi*E*t_bot[j]**2/(12*(1-v*v)*abs(sigma_bot[j])))
+			if s_bot > b_max_bot:
+				print("The bottom skin buckles at station", j+1,". Increase stiffeners from",n_stif_bot[j],"to",np.ceil(c[j]/b_max_bot-1))
+
+	return print("Buckling checked")
 
 def vonmises(sigma,tau):
 	"""
@@ -98,20 +131,27 @@ h = wingbox_height * h_airfoil
 centroid = calc_centroid(c, h, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_cap)
 Ixx, Izz = calc_MOI(c, h, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_cap,centroid)
 
+
+Mx, coeff = RBF_1DInterpol(y_half, M, b)
+#print(Mx)
+
+
 sigma_top = -calc_sigma(Mx,Ixx,h/2-centroid)
 sigma_bot = calc_sigma(Mx,Ixx,h/2+centroid)
 
+buckling = calc_buckling(n_stations, c, n_stif_top, n_stif_bot, t_top, t_bot, sigma_top, sigma_bot, E, v)
 
 # verification
+print()
 print("wingbox widths =",np.round(c,2))
 print("spanwise station locations =",b)
 print("centroid =", centroid)
 print("Ixx, Izz =", Ixx, Izz)
-
+print("Internal Moment =", Mx)
 
 # ------------------------  PLOTS   ------------------------
-plt.plot(b, sigma_top, "r--", label = "Compressive stress")
-plt.plot(b, sigma_bot, "g", label = "Tensile stress")
+plt.plot(b, sigma_top, "r--", label = "Normal Stress Top Skin")
+plt.plot(b, sigma_bot, "g", label = "Normal Stress Bottom Skin")
 plt.ylabel("Stress [N/m^2]")
 plt.xlabel("Span [m]")
 plt.grid()
