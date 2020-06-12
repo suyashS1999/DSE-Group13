@@ -22,11 +22,14 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Aerodynamics\Aeroelas_analysis.py" />
+    <Compile Include="Aerodynamics\Aero_elas_tools.py" />
     <Compile Include="Aerodynamics\Aero_tools.py" />
     <Compile Include="Aerodynamics\Airfoil_Nozzle.py" />
     <Compile Include="Aerodynamics\Airframe_Noise.py" />
     <Compile Include="Aerodynamics\BL_velocity.py" />
     <Compile Include="Aerodynamics\critical_mach_calc.py" />
+    <Compile Include="Aerodynamics\Crosssection_drawer.py" />
     <Compile Include="Aerodynamics\HLDsizing.py">
       <SubType>Code</SubType>
     </Compile>
@@ -85,13 +88,12 @@
     <Compile Include="Performance\aileron.py" />
     <Compile Include="Performance\Class_II_Torenbeek.py" />
     <Compile Include="Performance\Climb_Performance.py" />
+    <Compile Include="Performance\Cruise_Performance.py" />
     <Compile Include="Performance\Flight_envelope.py" />
     <Compile Include="Performance\h tail.py" />
     <Compile Include="Performance\Landing gear positioning.py" />
+    <Compile Include="Performance\Landing_Performance.py" />
     <Compile Include="Performance\Loading_diagram.py" />
-    <Compile Include="Performance\Performance_module.py" />
-    <Compile Include="Performance\Performance_module1.py" />
-    <Compile Include="Performance\Performance_module2.py" />
     <Compile Include="Performance\Preliminary_performance_analysis.py" />
     <Compile Include="Performance\rudder.py" />
     <Compile Include="Performance\Take-off_Performance.py" />
@@ -149,6 +151,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".DS_Store" />
+    <Content Include="Aerodynamics\Crosssection" />
+    <Content Include="Aerodynamics\Crosssection.fxs" />
+    <Content Include="Aerodynamics\NACA 63%282%29-615.dat" />
+    <Content Include="Aerodynamics\NACA 65%283%29-418.dat" />
+    <Content Include="Aerodynamics\NASA SC%282%29-0010.dat" />
+    <Content Include="Aerodynamics\NASA SC%282%29-0410.dat" />
+    <Content Include="Aerodynamics\NASA SC%282%29-0414.dat" />
+    <Content Include="Aerodynamics\NASA SC%282%29-0606.dat" />
     <Content Include="Aerodynamics\OpenVSPSimData\NonTested\AircraftLessTailCruise0.78.adb" />
     <Content Include="Aerodynamics\OpenVSPSimData\NonTested\AircraftLessTailCruise0.78.adb.cases" />
     <Content Include="Aerodynamics\OpenVSPSimData\NonTested\AircraftLessTailCruise0.78.csv" />
