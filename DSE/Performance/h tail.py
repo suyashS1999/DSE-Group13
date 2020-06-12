@@ -25,12 +25,6 @@ dh = dH_mostaft
 CL_cruise = 5.66E-01
 
 
-
-#Tail volume from M. Sadraey
-#CL_H = (Cm_ac+CL_w*0.2*MAC)/(V_H)
-#l_h = K_c*(4*lmac*S*V_h/(np.pi*D_f))**(1/2)
-#S_h = V_h*lmac*S/l_h
-#CMac = Cm_af*(AR*(np.cos(lamda_LE))**2/(AR+2*np.cos(lamda_LE)))
 S_h = 0.25*S
 CMac = -0.261601
 CL_h = (CMac + CL_cruise*dh)/(0.25*l_t/lmac)
