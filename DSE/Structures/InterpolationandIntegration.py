@@ -129,7 +129,7 @@ def Generate_MomentShear_Diagram_Engine_strut(M_lift, V_lift, y, T_e, W_e, LE_sw
 	S_y = S_z/tan(degree_strut);
 	A_z = L - W_e - S_z;
 	A_y = -S_y;
-
+	print(S_y, S_z);
 	M_e = S_z*(y_s - y_e);												# moment at engine
 	M_engine = W_e*y_e;
 	M_r = S_z*(y_s) + M_engine;											# moment at root, should be equal to M_L, but isn't

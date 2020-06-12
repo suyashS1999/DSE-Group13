@@ -11,23 +11,34 @@ import numpy as np
 from Loading_diagram import cg_frw, cg_aft, xlemac, lmac
 ymac = 11.01426343              #y position of mac from fuselage centre line [m]
 Lamda_LE = 0.5235987756         #sweep angle LE [rad]
-CL_cru = 0.566               #CL during cruise [-]
+CL_cru = 0.4545               #CL during cruise [-]
 CL_app = 2.0               #CL during approach [-]
 S = 150.7                       #Surface area wing
+
+#l_t = 42.6-6*0.75-1-xlemac+0.3 
+AR = 17
+h_h = 2.6
+c_r = 4.135518182
+b = 50.62
+Lamda_qc = 0.4351399017
 #%% ---------------------- Inputs ----------------------
 #Aerodynamic parameters (from aero department)
-xac_app_LERC = 10.263099                #position of ac during approach from the root chord leading edge [m]
-xac_cru_LERC = 10.098687                #position of ac during approach from the root chord leading edge [m]
-CL_alpha_Ah_app = 0.065757*180/np.pi    #lift coeff gradient of aircraft-lesstail during approach [/rad]
-CL_alpha_Ah_cru = 0.083393*180/np.pi    #lift coeff gradient of aircraft-lesstail during cruise [/rad]
-Cm_ac_app = -0.564400                   #pitching moment coefficient at aero-centre during approach [-]
-Cm_ac_cru = -0.722830                   #pitching moment coefficient at aero-centre during approach [-]
-CL_alpha_h_app = 2.94719                #lift coeff gradient of horizontal tail during approach [/rad]
-CL_alpha_h_cru = 3.28587154             #lift coeff gradient of horizontal tail during approach [/rad]
-downwash = 0                            #No disturbance from wing downwash (d epsilon/ d alpha = 0) [-]
-Vh_V = 0.95                             #efficiency factor of H tail (or 1 if we opt for T-tail) [-]
+xac_app_LERC = 6.446274                 # position of ac during approach from the root chord leading edge [m]
+xac_cru_LERC = 6.859900                 # position of ac during approach from the root chord leading edge [m]
+CL_alpha_Ah_app = 0.066582*180/np.pi    # lift coeff gradient of aircraft-lesstail during approach [/rad]
+CL_alpha_Ah_cru = 0.089685*180/np.pi    # lift coeff gradient of aircraft-lesstail during cruise [/rad]
+Cm_ac_app = -0.352639                   # pitching moment coefficient at aero-centre during approach [-]
+Cm_ac_cru = -0.457408                   # pitching moment coefficient at aero-centre during approach [-]
+CL_alpha_h_app = 2.94719                # lift coeff gradient of horizontal tail during approach [/rad]
+CL_alpha_h_cru = 3.28587154             # lift coeff gradient of horizontal tail during approach [/rad]
+Vh_V = 1                                # efficiency factor of H tail (or 1 if we opt for T-tail) [-]
 
-Sh_S = 0.25
+Sh_S = 0.131
+
+xlerc = xlemac - np.tan(Lamda_LE)*ymac     # X position of root chord LE
+xac_app = (xlerc + xac_app_LERC-xlemac)/lmac
+xac_cru = (xlerc + xac_cru_LERC-xlemac)/lmac
+l_t = 42.6-6*0.75-1-(xlerc + xac_app_LERC)+3                # Moment arm of horizontal tail [m]
 
 #%% ---------------------- Functions ----------------------
 def stablimit(ShS): 
@@ -39,9 +50,9 @@ def stablimit(ShS):
     xcg_app = (xac_app + (CL_alpha_h_app/CL_alpha_Ah_app)*(1 - downwash)*ShS*(l_t/lmac)*Vh_V**2 - 0.05)
     xcg_cru = (xac_cru + (CL_alpha_h_cru/CL_alpha_Ah_cru)*(1 - downwash)*ShS*(l_t/lmac)*Vh_V**2 - 0.05)
         
-    plt.plot(xcg_app, ShS, label = "Stability Approach")
+#    plt.plot(xcg_app, ShS, label = "Stability Approach")
     plt.plot(xcg_cru, ShS, label = "Stability Cruise")
-    return (xcg_app, xcg_cru)
+    return xcg_app, xcg_cru
 
 def contlimit(ShS):
     """
@@ -49,12 +60,12 @@ def contlimit(ShS):
     Only input is the ShS, which should be a numpy array with length of 2, like [0, 0.5]
     Other inputs are implicitly taken, which should all be computed before this function is ran
     """
-    xcg_app = (xac_app - (Cm_ac_app/CL_Ah_app) + (CL_h/CL_Ah_app)*ShS*(l_t/lmac))
-    xcg_cru = (xac_cru - (Cm_ac_cru/CL_Ah_cru) + (CL_h/CL_Ah_cru)*ShS*(l_t/lmac))
+    xcg_app = (xac_app - (Cm_ac_app/CL_Ah_app) + (CL_h_app/CL_Ah_app)*ShS*(l_t/lmac)*Vh_V**2)
+    xcg_cru = (xac_cru - (Cm_ac_cru/CL_Ah_cru) + (CL_h_cru/CL_Ah_cru)*ShS*(l_t/lmac)*Vh_V**2)
         
-    plt.plot(xcg_app, ShS, label = "Controllability Approach")
+#    plt.plot(xcg_app, ShS, label = "Controllability Approach")
     plt.plot(xcg_cru, ShS, label = "Controllability Cruise")
-    return (xcg_app, xcg_cru)
+    return xcg_app, xcg_cru
 
 def req_CLh():
     """
@@ -62,22 +73,30 @@ def req_CLh():
     """
     Cm_ac = [Cm_ac_app, Cm_ac_cru]
     CL = [CL_app, CL_cru]
-    CL_h_app = (Cm_ac[0] + CL[0]*(cg_frw-xac_app))/(Sh_S*l_t/lmac), (Cm_ac[0] + CL[0]*(cg_aft-xac_app))/(Sh_S*l_t/lmac)
-    CL_h_cru = (Cm_ac[1] + CL[1]*(cg_frw-xac_app))/(Sh_S*l_t/lmac), (Cm_ac[1] + CL[1]*(cg_aft-xac_app))/(Sh_S*l_t/lmac)
+    CL_h_app = -(Cm_ac[0] + CL[0]*(cg_frw-(xlerc + xac_app_LERC)))/(Vh_V**2*Sh_S*l_t/lmac), -(Cm_ac[0] + CL[0]*(cg_aft-(xlerc + xac_app_LERC)))/(Sh_S*l_t/lmac)
+    CL_h_cru = -(Cm_ac[1] + CL[1]*(cg_frw-(xlerc + xac_cru_LERC)))/(Vh_V**2*Sh_S*l_t/lmac), -(Cm_ac[1] + CL[1]*(cg_aft-(xlerc + xac_cru_LERC)))/(Sh_S*l_t/lmac)
     return CL_h_app, CL_h_cru
+
+def downwash_tail(zero_lift_angle):
+    mtv = np.cos(zero_lift_angle)*(h_h + (l_t-3/4*c_r)*np.tan(zero_lift_angle))*2/b
+    r = 2*l_t/b
+    K1 = (0.1124+0.1265*Lamda_qc+0.1766*Lamda_qc**2)/r**2+0.1024/r+2
+    K2 = 0.1124/r**2+0.1024/r+2
+    downwash = K1/K2*(r/(r**2+mtv**2)*0.4876/np.sqrt(r**2+0.6319+mtv**2)+(1+(r**2/(r**2+0.7915+5.0734*mtv**2))**0.3113)*(1-np.sqrt(mtv**2/(1+mtv**2))))*CL_alpha_Ah_cru/(np.pi*AR)
+    return downwash
 
 #%% ---------------------- Main ----------------------
 
 
-xlerc = xlemac - np.tan(Lamda_LE)*ymac     # X position of root chord LE
-xac_app = (xlerc + xac_app_LERC-xlemac)/lmac
-xac_cru = (xlerc + xac_cru_LERC-xlemac)/lmac
-l_t = 42.6-6*0.75-1.2-xac_app                # Moment arm of horizontal tail [m]
+downwash = downwash_tail(2)                            #No disturbance from wing downwash (d epsilon/ d alpha = 0) [-]
+downwash = 0
 
-CL_h_app, CL_h_cru = req_CLh()
+CL_h_app, CL_h_cru = np.average(req_CLh()[0]), np.average(req_CLh()[1])
+#CL_h_app, CL_h_cru = max(CL_h_app, key=abs), max(CL_h_cru, key=abs)
 
-CL_Ah_app = CL_app - CL_h_app[1]        #toggle between [0] and [1] to see which is more critical
-CL_Ah_cru = CL_cru - CL_h_cru[1]
+
+CL_Ah_app = CL_app - CL_h_app
+CL_Ah_cru = CL_cru - CL_h_cru
 
 #Making the plot below
 ShS = np.linspace(0, 0.4, 2)

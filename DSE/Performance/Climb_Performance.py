@@ -112,6 +112,9 @@ def ROC_st_f(h):
     plt.plot(Vr,ROC_st)
     return ROC_st
 
+<<<<<<< HEAD
+altitude = np.arange(0,35000,20000)
+=======
 
 
 
@@ -157,6 +160,7 @@ def ROC_unst_f(h):
 
 '''
 altitude = np.arange(0,40000,5000)
+>>>>>>> 92af3e55e454a052bcc51b7911b02db3a2b9b71c
 
 for j in range(len(altitude)):
     ROC_st_f(0.3048*altitude[j])
@@ -165,7 +169,6 @@ for j in range(len(altitude)):
 
     
 plt.grid(True)
-plt.title('Steady Rate of Climb')
 plt.ylabel('ROC [ft/min]')
 plt.xlabel('Velocity [m/s]')    
 plt.show()
