@@ -52,7 +52,7 @@ class ExtractData_OpenVSP():
 				CDtot = self.Polar_Dict[name]["CDtot"];
 				L_D = self.Polar_Dict[name]["L/D"];
 				Cm = self.Polar_Dict[name]["CMy"];
-				centre_press = Cm + CL*self.X_cg/self.C_ref;
+				centre_press = Cm*self.C_ref/CL + self.X_cg;
 
 				label = name[len(self.file_types[0][1:]) :];
 				ax1 = plt.subplot(2, 2, 1);									ax2 = plt.subplot(2, 2, 2);
@@ -71,7 +71,7 @@ class ExtractData_OpenVSP():
 				ax2.legend();
 				ax3.legend();
 				ax4.legend();
-				print("Centre of Pressure Position for {}: {}".format(name[len(self.file_types[0][1:]) :], mean(centre_press)*self.C_ref), "m from LE root");
+				#print("Centre of Pressure Position for {}: {}".format(name[len(self.file_types[0][1:]) :], mean(centre_press)*self.C_ref), "m from LE root");
 		return 0;
 
 	def Sort_LoadDistribution(self):
@@ -120,7 +120,7 @@ class ExtractData_OpenVSP():
 					span = asarray(self.subDict[alpha]["Yavg"]);
 					sort_idx = argsort(span);
 					span = span[sort_idx];		CL = CL[sort_idx];		CD = CD[sort_idx];		Cm = Cm[sort_idx];
-					Centre_pressure = CL*self.subDict[alpha]["Xcg_"] - Cm;
+					Centre_pressure = self.subDict[alpha]["Xcg_"] - Cm/CL*self.subDict[alpha]["Chord"];
 					if alpha == AOA:
 						if c == 0: CL_w = span; Cm_w = span; c += 1;
 						CL_w = vstack((CL_w, CL));
