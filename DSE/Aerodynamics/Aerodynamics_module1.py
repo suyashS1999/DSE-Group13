@@ -120,7 +120,7 @@ class ExtractData_OpenVSP():
 					span = asarray(self.subDict[alpha]["Yavg"]);
 					sort_idx = argsort(span);
 					span = span[sort_idx];		CL = CL[sort_idx];		CD = CD[sort_idx];		Cm = Cm[sort_idx];
-					Centre_pressure = CL*self.subDict[alpha]["Xcg_"] - Cm;
+					Centre_pressure = self.subDict[alpha]["Xcg_"] - Cm/CL*self.subDict[alpha]["Cref_"]; print(Centre_pressure);
 					if alpha == AOA:
 						if c == 0: CL_w = span; Cm_w = span; c += 1;
 						CL_w = vstack((CL_w, CL));
@@ -188,10 +188,10 @@ class ExtractData_OpenVSP():
 		return 0;
 
 #%% ------------------- Input data -------------------
-dir = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Aerodynamics\OpenVSPSimData";				# Path to directory, this is for my PC, you can use the lower one
+dir = r"C:\Users\miksw\Documents\VSP\Iteration 1";				# Path to directory, this is for my PC, you can use the lower one
 #dir = r"\Aerodynamics\OpenVSPSimData";														# Path to directory, Comment the top line and use this one
-write_dir = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\liftdistribution.txt"		# Write directory
-write_dir1 = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\troquedistribution.txt"	# Write directory
+write_dir = r"C:\Users\miksw\Desktop\DSE\DSE-Group13\DSE\Structures\liftdistribution.txt"		# Write directory
+write_dir1 = r"C:\Users\miksw\Desktop\DSE\DSE-Group13\DSE\Structures\troquedistribution.txt"	# Write directory
 #%% ------------------- Main -------------------
 vsp_data = ExtractData_OpenVSP(dir);
 AOA = 14;

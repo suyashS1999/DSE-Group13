@@ -16,24 +16,26 @@ OEW = 45666.07 #[kg]
 #Aircraft dimensions
 lmac = 1.501                            # MAC [m]
 l_fuse = 42.6                           # Fuselage length [m]
-xlemac = 4 + (32.05*0.45)    # X position of LEMAC from nose (LEMAC at 50% of cabin)
+xlemac = 0.35*l_fuse    # X position of LEMAC from nose (LEMAC at 50% of cabin)
 l_t = 42.6-6*0.75-1-xlemac+0.3                             # Tail moment arm [m], distance between 1/4 chords of wing + tail (for now V_tail)
 
 #CG locations in X direction from the nose (Assumptions/Justification in brackets)
 x_cargo_frw = 7                        # forward cargo [m] (from concept 3 midterm side view) 
 x_cargo_aft = 32                      # aft cargo [m] (from concept 3 midterm side view)
 x_cg_fuel = xlemac                      # fuel [m] (approximated to be at the LEMAC, forward of approximate CG of wing since there will be no fuel at the tips)
-x_cg_wing = xlemac-10.58+9            # wing, as function of MAC [m] (For now assumed to be quarter chord MAC)
-x_cg_tail = l_t+xlemac               # tail [m] (cg wing + tail arm)
-x_cg_body = l_fuse*0.5                  # body/fuselage [m] (midpoint of fuselage length)
-x_cg_undercarriage_main = 0.53*l_fuse   # main landing gear [m] (relative to fuselage length of A320)
-x_cg_undercarriage_nose = 0.095*l_fuse  # nose landing gear [m] (relative to fuselage length of A320)
-x_cg_surfcont = x_cg_wing               # surface control [m] (assumed to be same as wing cg)
-x_cg_nacelle = xlemac-10.58+9                   # nacelle + pylons [m] (assumed to be at LEMAC)
-x_cg_engine = xlemac-10.58+9                    # engines [m] (assumed to be at LEMAC)
-x_cg_equip = x_cg_body                  # equipment e.g. APU and all that stuff [m] (assumed to be equally spread along the body)
-x_cg_furnish = x_cg_body
-x_cg_BLI = l_fuse
+
+#Commented out, because this is calculated now in excel
+#x_cg_wing = xlemac-10.58+9            # wing, as function of MAC [m] (For now assumed to be quarter chord MAC)
+#x_cg_tail = l_t+xlemac               # tail [m] (cg wing + tail arm)
+#x_cg_body = l_fuse*0.5                  # body/fuselage [m] (midpoint of fuselage length)
+#x_cg_undercarriage_main = 0.53*l_fuse   # main landing gear [m] (relative to fuselage length of A320)
+#x_cg_undercarriage_nose = 0.095*l_fuse  # nose landing gear [m] (relative to fuselage length of A320)
+#x_cg_surfcont = x_cg_wing               # surface control [m] (assumed to be same as wing cg)
+#x_cg_nacelle = xlemac-10.58+9                   # nacelle + pylons [m] (assumed to be at LEMAC)
+#x_cg_engine = xlemac-10.58+9                    # engines [m] (assumed to be at LEMAC)
+#x_cg_equip = x_cg_body                  # equipment e.g. APU and all that stuff [m] (assumed to be equally spread along the body)
+#x_cg_furnish = x_cg_body
+#x_cg_BLI = l_fuse
 
 #Passenger arrangement (input value)
 total_pax = 192                         # Number of passengers [-] (ITS 194 BUT MODIFIED SO THAT ROWS FIT NICELY)

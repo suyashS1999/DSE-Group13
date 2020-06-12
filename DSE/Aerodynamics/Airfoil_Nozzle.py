@@ -10,6 +10,52 @@ naca = naca.astype(np.float)
 nasasc = np.genfromtxt("NASA SC(2)-0410.dat", dtype=str, skip_header=102, skip_footer=0, delimiter="")
 nasasc = nasasc.astype(np.float)
 
+#Sharpness factor---------------------------------------------
+#Wing
+dy_nacafunc = np.polyfit(naca[:,0],naca[:,1],12)
+dy_x = np.linspace(0,1,10001)
+
+def reconstruct_f(coeff, plot_nodes):
+	F = 0;
+	coeff = coeff[::-1];
+	for i in range(len(coeff)):
+		F += coeff[i]*plot_nodes**i;
+	return F;
+
+dy_y = reconstruct_f(dy_nacafunc,dy_x)
+
+#plt.plot(naca[:,0],naca[:,1])
+#plt.plot(dy_x,dy_y)
+#plt.show()
+dy_naca = np.ones((10001,2))
+dy_naca[:,0] = dy_x
+dy_naca [:,1] = -dy_y
+
+#Strut
+sdy_nacafunc = np.polyfit(nasasc[:,0],nasasc[:,1],12)
+sdy_x = np.linspace(0,1,10001)
+
+def reconstruct_f(coeff, plot_nodes):
+	F = 0;
+	coeff = coeff[::-1];
+	for i in range(len(coeff)):
+		F += coeff[i]*plot_nodes**i;
+	return F;
+
+sdy_y = reconstruct_f(sdy_nacafunc,sdy_x)
+
+#plt.plot(nasasc[:,0],nasasc[:,1])
+#plt.plot(sdy_x,sdy_y)
+#plt.show()
+sdy_naca = np.ones((10001,2))
+sdy_naca[:,0] = sdy_x
+sdy_naca [:,1] = -sdy_y
+
+dy_wing = dy_naca [600,1] - dy_naca [15,1]
+dy_strut = sdy_naca [600,1] - sdy_naca [15,1]
+print(dy_wing,dy_strut)
+
+#-----------------------------------------------------
 #Determine chord lengths
 
 mach_area = 0.1110 #from aero textbook, M=0.59
