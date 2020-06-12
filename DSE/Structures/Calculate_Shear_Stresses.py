@@ -26,7 +26,7 @@ def Compute_sect_maxShear(V, T, tau_allow, t_c, c_arr, t_arr, n_stif_top, n_stif
 						q3 = q1 - V[chord]/Ixx*(t2*(-(0.5*h - centroid)*h + (h**2)/2));
 						#print((2*Quadrature_Integral(array([q1[0], q2[0], q3[0]]), w, "1D") - V[chord])/V[chord]);				# Quadrature integral for verfication
 						q1 = abs(q1) + abs(T[chord]/(2*c*h));		q2 = abs(q2) + abs(T[chord]/(2*c*h));		q3 = abs(q3) + abs(T[chord]/(2*c*h));
-					
+
 						tau1 = abs(q1/t1);		tau2 = abs(q2/t2);		tau3 = abs(q3/t3);
 						if tau1 < tau_allow and tau2 < tau_allow and tau3 < tau_allow:
 							t_sec.append(max(t1, t2, t3));
@@ -124,36 +124,36 @@ torque_load_f, coeff_T = RBF_1DInterpol(y, torque_load, y);
 internal_torque, y_t = Generate_Torque_diagram(RBF_1DInterpol, [y, torque_load_f, coeff_T], y[0], y[-1], 9);
 internal_torque = internal_torque[::-1];									# Internal torque distribution
 
-t_top = 0.001*ones_like(chord);
-t_bot = t_top;
-t_spar = t_top
-n_stif_top = array([10, 5, 5, 5, 4, 7, 3, 8, 4, 10]);
-n_stif_bot = array([10, 5, 5, 5, 4, 7, 3, 8, 4, 10]);
-A_stif = 0.00045;
-A_spar_cap = 0.004;
-tau_max = Compute_sect_maxShear(V_, internal_torque, 200e6, 0.14*0.8, chord, vstack((t_top, t_bot, t_spar)), n_stif_top, n_stif_bot, A_stif, A_spar_cap, iter = False);
+t_top = np.array([0.0005,0.0005,0.001,0.0015,0.002,0.0015,0.0005,0.0025,0.0015,0.0010])
+t_bot = np.array([0.001,0.0025,0.0025,0.0025,0.0025,0.0025,0.0015,0.0015,0.0005,0.0005])
+t_spar = np.array([0.002,0.003,0.004,0.005,0.005,0.004,0.003,0.002,0.001,0.001])
+n_stif_top = np.array([4,4,4,4,4,4,4,21,17,11])
+n_stif_bot = np.array([4,16,19,20,19,17,20,10,4,2])
+A_stif = 0.002*0.05*0.04
+A_spar_cap = 0.002*0.07*0.05
+#tau_max = Compute_sect_maxShear(V_, internal_torque, 200e6, 0.14*0.8, chord, vstack((t_top, t_bot, t_spar)), n_stif_top, n_stif_bot, A_stif, A_spar_cap, iter = False);
 
 
 #%%
-fig = plt.figure(figsize = (15, 5));
-ax1 = plt.subplot(1, 3, 1);
-ax1.plot(y, tau_max/1e6);
-ax1.grid(True);
-ax1.set_xlabel("Span location [m]");
-ax1.set_ylabel("max Shear Stree [MPa]");
+# fig = plt.figure(figsize = (15, 5));
+# ax1 = plt.subplot(1, 3, 1);
+# ax1.plot(y, tau_max/1e6);
+# ax1.grid(True);
+# ax1.set_xlabel("Span location [m]");
+# ax1.set_ylabel("max Shear Stree [MPa]");
 
-ax2 = plt.subplot(1, 3, 2);
-ax2.plot(y, V_/1000);
-ax2.grid(True);
-ax2.set_xlabel("Span location [m]");
-ax2.set_ylabel("Shear force [kN]");
+# ax2 = plt.subplot(1, 3, 2);
+# ax2.plot(y, V_/1000);
+# ax2.grid(True);
+# ax2.set_xlabel("Span location [m]");
+# ax2.set_ylabel("Shear force [kN]");
 
-ax3 = plt.subplot(1, 3, 3);
-ax3.plot(y, internal_torque/1000);
-ax3.grid(True);
-ax3.set_xlabel("Span location [m]");
-ax3.set_ylabel("Torque [kNm]");
-plt.show();
+# ax3 = plt.subplot(1, 3, 3);
+# ax3.plot(y, internal_torque/1000);
+# ax3.grid(True);
+# ax3.set_xlabel("Span location [m]");
+# ax3.set_ylabel("Torque [kNm]");
+# plt.show();
 
 
 

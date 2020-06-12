@@ -11,6 +11,7 @@ This stress should remain below the material's yield stress
 import numpy as np
 from matplotlib import pyplot as plt
 from Wingbox_MOI import calc_centroid, calc_MOI
+from Calculate_Shear_Stresses import Compute_sect_maxShear, V_ , internal_torque
 from InterpolationandIntegration import *
 
 # ------------------------  DESIGN INPUTS   ------------------------
@@ -19,8 +20,8 @@ from InterpolationandIntegration import *
 wingspan = 50.64/2
 c_root = 4.13551818218954
 c_tip = 1.81962800016339
-t_inboard = 0.15 #t/c
-t_outboard = 0.18 #t/c
+t_inboard = 0.14 #t/c
+t_outboard = 0.14 #t/c
 airfoilchange = 18 #m
 
 #material properties
@@ -28,6 +29,7 @@ E = 72.4*10**9
 G = 28*10**9
 rho_material = 2800 #kg/m^3
 v = 0.33 #poisson ratio
+tau_allow = 200*10**6
 
 
 #wingbox dimensions
@@ -114,12 +116,12 @@ def calc_buckling(n_stations, c, n_stif_top, n_stif_bot, t_top, t_bot, sigma_top
 
 	return print("Buckling checked")
 
-def vonmises(sigma,tau):
+def calc_vonmises(sigma,tau_max):
 	"""
 	Returns the combined loading stress according to von Misses yeild criterion.
 	"""
 	A = np.power(sigma,2)
-	B = np.power(tau,2)
+	B = np.power(tau_max,2)
     #sigm zz and sigma_yy are zero
 	return np.sqrt(A/2 + 3*B)
 
@@ -134,6 +136,13 @@ def calc_mass(c, h, wingspan, n_stations, t_top, t_bot, t_spar, n_stif_top, n_st
 		Volume[i] = Area*wingspan/n_stations
 	return rho_material*np.sum(Volume)
 
+def calc_fuelvolume(c,h,wingspan,airfoilchange):
+	Fuelvol = np.zeros(len(c))
+	for i in range(len(c)):
+		if i * wingspan/len(c) < airfoilchange:
+			Fuelvol[i] = c[i]*h[i]*wingspan/len(c)
+	return np.sum(Fuelvol)
+
 # ------------------------  MAIN   ------------------------
 
 #Compute wingbox geometry
@@ -144,20 +153,28 @@ h = wingbox_height * h_airfoil
 # bending stresses
 centroid = calc_centroid(c, h, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_cap)
 Ixx, Izz = calc_MOI(c, h, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_cap,centroid)
-
-
 Mx, coeff = RBF_1DInterpol(y_half, M, b)
-#print(Mx)
-
-
 sigma_top = -calc_sigma(Mx,Ixx,h/2-centroid)
 sigma_bot = calc_sigma(Mx,Ixx,h/2+centroid)
 
+# shear stress
+t_arr = zeros((3,n_stations))
+t_arr[0,:] = t_top
+t_arr[1,:] = t_bot
+t_arr[2,:] = t_spar
+tau_max = Compute_sect_maxShear(V, internal_torque, tau_allow, t_inboard, c, t_arr, n_stif_top, n_stif_bot, A_stif, A_spar_cap, iter=False)
+print(tau_max)
+
+#vonmises
+#vonmises_top = calc_vonmises(sigma_top,tau_max)
+#vonmises_bot = calc_vonmises(sigma_bot,tau_max)
+
+#buckling,mass and volume
 buckling = calc_buckling(n_stations, c, n_stif_top, n_stif_bot, t_top, t_bot, sigma_top, sigma_bot, E, v)
 Mass_wingbox = calc_mass(c, h, wingspan, n_stations, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_cap, rho_material)
+Fuelvolume = calc_fuelvolume(c,h,wingspan,airfoilchange)
 
-
-# verification
+#print outputs
 print()
 #print("wingbox widths =",np.round(c,2))
 #print("spanwise station locations =",b)
@@ -166,74 +183,43 @@ print()
 #print("Internal Moment =", Mx)
 print("Normal Stress Top Skin [MPa]",np.round(sigma_top/10**6))
 print("Normal Stress Bottom Skin [MPa]",np.round(sigma_bot/10**6))
-print("Wingbox mass =",round(Mass_wingbox),"kg")
+print("Wingbox mass =",round(Mass_wingbox),"kg (halfwing)")
+print("Fuel Volume =",round(Fuelvolume,1),"m^3 (halfwing)")
 
 # ------------------------  PLOTS   ------------------------
-# plt.plot(b, sigma_top, "r--", label = "Normal Stress Top Skin")
-# plt.plot(b, sigma_bot, "g", label = "Normal Stress Bottom Skin")
-# plt.ylabel("Stress [N/m^2]")
-# plt.xlabel("Span [m]")
-# plt.grid()
-# plt.yticks(np.arange(-5e8, 5e8, 0.5e8))
-# plt.legend()
 
-#plt.savefig("Figures/vonmises.png")
-#plt.show()
-#plt.clf()
-#plt.close()
-
-
-# plt.plot(b, t_top*1000, "r", label = "Upper skin thickness")
-# plt.plot(b, t_bot*1000, "g", label = "Lower skin thickness")
-# plt.ylabel("Thickness [mm]")
-# plt.xlabel("Span [m]")
-# plt.grid()
-# plt.yticks(arange(0, 3, 0.5))
-# plt.legend()
-# #plt.savefig("Figures/Thickness.png")
-
-# plt.plot(b, n_stif_top, "r--", label = "Top skin")
-# plt.plot(b, n_stif_bot, "g--", label = "Bottom skin")
-# plt.ylabel("Number of stiffeners")
-# plt.xlabel("Span [m]")
-# plt.grid()
-# plt.yticks(arange(0, 30, 2))
-# plt.legend()
-
-
-# fig, ax1 = plt.subplots()
 
 ax1 = plt.subplot(221)
-ax1.set_title("Thickness Distribution")
+#ax1.set_title("Thickness Distribution")
 ax1.set_ylabel("Thickness [mm]")
 ax1.set_xlabel("Span [m]")
-ax1.plot(b, t_top*1000, "r", label = "Upper skin thickness")
-ax1.plot(b, t_bot*1000, "g", label = "Lower skin thickness")
+ax1.step(b, t_top*1000, "r", label = "Top skin")
+ax1.step(b, t_bot*1000, "b", label = "Bottom skin")
+ax1.step(b, t_spar*1000, "g", label = "Spar")
 ax1.grid()
+ax1.set_yticks(arange(0, 6, 1))
 ax1.tick_params(axis='y')
-ax1.legend()
+ax1.legend(loc='upper left')
 
 ax2 = plt.subplot(222)
-ax2.set_title("Stiffener Distribution")
+#ax2.set_title("Stiffener Distribution")
 ax2.set_ylabel("Number of stiffeners")
 ax2.set_xlabel("Span [m]")
-ax2.plot(b, n_stif_top, "r", label = "Top skin")
-ax2.plot(b, n_stif_bot, "g", label = "Bottom skin")
+ax2.step(b, n_stif_top, "r", label = "Top skin")
+ax2.step(b, n_stif_bot, "b", label = "Bottom skin")
 ax2.grid()
-ax2.set_yticks(arange(0, 25, 5))
+ax2.set_yticks(arange(0, 30, 5))
 ax2.tick_params(axis='y')
-ax2.legend()
+ax2.legend(loc='upper left')
 
 ax3 = plt.subplot(212)
-ax3.set_title("Stress Distribution")
+#ax3.set_title("Stress Distribution")
 ax3.set_ylabel("Stress [MPa]")
 ax3.set_xlabel("Span [m]")
-ax3.plot(b, sigma_top/10**6, "r", label = "Normal Stress Top Skin")
-ax3.plot(b, sigma_bot/10**6, "g", label = "Normal Stress Bottom Skin")
+ax3.plot(b, sigma_top/10**6, "r", label = "Top Skin")
+ax3.plot(b, sigma_bot/10**6, "b", label = "Bottom Skin")
 ax3.grid()
 ax3.set_yticks(arange(-500, 500, 100))
 ax3.tick_params(axis='y')
-ax3.legend()
+ax3.legend(loc='upper left')
 
-# #fig.tight_layout()  # otherwise the right y-label is slightly clipped
-# plt.show()
