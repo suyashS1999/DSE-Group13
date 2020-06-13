@@ -112,6 +112,9 @@ def ROC_st_f(h):
     plt.plot(Vr,ROC_st)
     return ROC_st
 
+<<<<<<< HEAD
+altitude = np.arange(0,35000,20000)
+=======
 
 
 
@@ -157,6 +160,7 @@ def ROC_unst_f(h):
 
 '''
 altitude = np.arange(0,40000,5000)
+>>>>>>> 92af3e55e454a052bcc51b7911b02db3a2b9b71c
 
 for j in range(len(altitude)):
     ROC_st_f(0.3048*altitude[j])
@@ -165,7 +169,6 @@ for j in range(len(altitude)):
 
     
 plt.grid(True)
-plt.title('Steady Rate of Climb')
 plt.ylabel('ROC [ft/min]')
 plt.xlabel('Velocity [m/s]')    
 plt.show()
@@ -195,8 +198,8 @@ Thrustf = sp.interp2d(Mach,Altitude,Values,kind='cubic')
 step = 5000 #ft
 altitude = np.arange(0,40000,step)*0.3048
 
-def ROC_st_true(h):
-    global MTOW
+def ROC_st_true(h,MTOW):
+    
     
     #h = array containing all altitudes
     
@@ -224,8 +227,11 @@ def ROC_st_true(h):
             if CL >= CLmax_clean:
                 continue
             CD = CD0 + k1*(CL**2)
+            
             D  = 1/2*(ISA_trop(height)[2])*(V[k]**2)*CD*S
+            
             T  = 2*Thrust[i,k]
+            
             Pa.append(T*V[k])
             Pr.append(D*V[k])
             Vr.append(V[k])
@@ -234,15 +240,20 @@ def ROC_st_true(h):
         Pr = np.array(Pr)
         Tr = np.array(Tr)
         ROC_st = (Pa-Pr)/MTOW*196.85
+        '''
         if np.amax(ROC_st) < 0:
             plt.plot(Vr,ROC_st)
             continue
-        FW = TSFC*Tr[np.where(ROC_st == np.amax(ROC_st))[0]]*step*0.3048/(np.amax(ROC_st)/196.85)
+        '''
+        
+        FW = TSFC*Tr[np.where(ROC_st == np.amax(ROC_st))[0]][0]*step*0.3048/(np.amax(ROC_st)/196.85)
         MTOW -= FW
+        print(MTOW,FW)
+        
         plt.plot(Vr,ROC_st)
     
 
-ROC_st_true(altitude)
+ROC_st_true(altitude,MTOW)
 plt.grid()
 plt.xlabel("Velocity [m/s]")
 plt.ylabel("ROC steady [ft/min]")

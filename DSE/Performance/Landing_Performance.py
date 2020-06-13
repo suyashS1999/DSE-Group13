@@ -5,12 +5,18 @@ Created on Thu Jun 11 15:15:46 2020
 
 @author: youssef
 """
-
-hscr = 50    # screen height [ft]
+import numpy as np
+hscr = 50*0.3048    # screen height [m]
 G    = 9.81
 mu_free  = 0.03  # friction coefficient free rolling (0.03-0.05)
 mu_brake =  0.3  # friction coefficient braking (0.3-0.5)
-
+CLmaxland  = 2.4
+MTOW = 73593.64093*9.81        # maximum take off weight [N]
+MLW = 0.98*MTOW
+rho = 1.225 
+g   = 9.81
+S = 150.7210057
+CD0 = 0.02005                 # zero lift drag coefficient
 # estimate drag contribution due to flap deflection
 
 Rf = 0.25   # flap chord/wing chord
@@ -24,15 +30,61 @@ delta2 = (-3.9877*10**-12)*defl**6 + (1.1685*10**-9)*defl**5 + (-1.2846*10**-7)*
 deltaCDflap = delta1*delta2*Sflap_to_Sref
 
 
+# ground effect
+
+k    = 0.046881         # 1/(pi*AR*eto) from simulation
+b    = 50.61874255      # wing span [m]
+df   = 4.2              # fuselage diameter [m]
+hlg  = 1.9              # clearance between surface and bottom fuselage due to landing gear [m]
+e    = 0.7              # oswald efficiency factor at takeoff [-]
+AR   = 17               # Aspect Ratio [-]
+
+#calculations
+Vsland   = np.sqrt((2/rho)*(MLW/S)*(1/CLmaxland))
+
+
+
+
 
 
 # APPROACH DISTANCE
+Vapp   = 1.3*Vsland
+theta_app = 3 #degrees
+
+n   = 1/2*rho*(Vapp**2)*0.9*CLmaxland*S/MLW #1.521
+R   = Vapp**2/(g*(n-1))
+hf  = R*(1-np.cos(np.radians(theta_app)))
+
+Sa  = (hscr-hf)/np.tan(np.radians(theta_app))
+
 
 
 # FLARE DISTANCE
+Vfr = Vapp
 
-
+Sf  = 0.1512*(Vsland**2)*np.sin(np.radians(theta_app))
 # FREE-ROLL DISTANCE
+Vtd = 1.1*Vsland
+
+Sfr = 3*Vtd
+
 
 # BRAKING DISTANCE
+Vbr    = 1.1*Vsland
+Vg     = Vbr/np.sqrt(2)
+CLbr  = CLmaxland/(1.1**2)  
+CDiOGE = k*(CLbr**2)
+h      = df + hlg
+ge     = 1 - (1-1.32*h/b)/(1.05+7.4*h/b)
+CDiIGE = ge*CDiOGE
+CDbr  = CD0 + CDiIGE + deltaCDflap
+Lg     = 1/2*rho*(Vg**2)*CLbr*S
+Dg     = 1/2*rho*(Vg**2)*CDbr*S
+Tg     = 0  # thrust at Vbr/sqrt(2) assumed to be zero
+mugnd  = 0.05         # ground friction coefficient 0.03-0.05 brakes off, otherwise 0.3-0.5 with braking
+
+Sg     = -(Vbr**2)*MLW/(2*g*(Tg-Dg-mu_brake*(MLW-Lg)))
+
+
+Sland= Sg + Sfr + Sf + Sa
 

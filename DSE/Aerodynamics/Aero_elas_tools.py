@@ -78,7 +78,17 @@ def lamb(rho,V,ec,cl_a,G,J):
 	return res
 
 
+def cl_d(a0,E):
 	
+	val = (a0/np.pi)*((np.arccos(1-(2*E))) + (2*np.sqrt(E*(1-E))))	
+	
+	return val
+
+def cm_d(a0,E):
+	
+	val = -(a0/np.pi)*(1-E)*(np.sqrt(E*(1-E)))
+	
+	return val
 
 def diverg_speed_straight(CL_alp,G,J,rho,ec,half_span):
 	
@@ -89,8 +99,45 @@ def diverg_speed_straight(CL_alp,G,J,rho,ec,half_span):
 	return vel
 
 
-			   
-   
+def A_matrix(m,half_span,c,x_f):
+	
+	A = np.zeros((2,2))
+	
+	A[0,0] = half_span*c/5
+	A[0,1] = (half_span/4)*(((c**2)*0.5)-(c*x_f))
+	A[1,0] = (half_span/4)*(((c**2)*0.5)-(c*x_f))
+	A[1,1] = (half_span/3)*(((c**3)/3) - ((c**2)*x_f) + (c*(x_f**2)))
+	
+	return A*m
 
+def B_matrix(c,half_span,aw,e,M_theta_dot):
+	
+	B = np.zeros((2,2))
+	B[0,0] = (c*half_span*aw)/10
+	B[1,0] = -((c**2)*half_span*e*aw)/8
+	B[1,1] = -((c**3)*half_span*M_theta_dot)/24
+
+	return B
+
+def C_matrix(c,half_span,aw,e):
+	C = np.zeros((2,2))	
+	
+	C[0,1] = (c*half_span*aw)/8
+	C[1,1] = -((c**2)*half_span*e*aw)/6
+	
+	return C
+
+def E_matrix(EI,GJ,half_span):
+	E= np.zeros((2,2))
+	
+	E[0,0] = (4*EI)/(half_span**3)
+	E[1,1] = (GJ)/half_span
+	
+	return E
+
+
+	
+		   
+   
 
 

@@ -7,8 +7,14 @@ Created on Fri Jun  5 15:27:07 2020
 """
 import numpy as np
 
-V                = 143*0.514444 # V2 A320-200 [m/s]
-b                = 36/2         # wing span inboard [m]
+S         = 150.865002   # wing area [m2]
+MTOW      = 79584.74877
+rho0      = 1.225
+CL_max_to = 2.1
+Vs        = np.sqrt((2/rho0)*(MTOW*9.81/S)*(1/CL_max_to))
+VMCA      = 1.2*Vs
+V2               = 1.1*VMCA # V2 A320-200 [m/s]
+b                = 18           # wing span inboard [m]
 bi_b2            = 0.6          # inboard span, range 0.6-0.67   [-] ref
 bo_b2            = 0.92         # outboard span, range 0.92-0.92 [-] ref
 delta_a_up       = 25           # max upward deflection,   range 25-30 [deg] ref
@@ -57,7 +63,7 @@ P = np.radians(60)/11    # 60 degrees roll in not more than 11 seconds [deg/s]
 
 pi = 0.6      # aileron effectiveness (graph, depends on chord ratio)
 
-Pr = Clalpha*pi/(Clalpha+Cd0)*I*delta_a*V
+Pr = Clalpha*pi/(Clalpha+Cd0)*I*delta_a*V2
 
 print("P required =",P ) 
 print("P actual   =",Pr)
