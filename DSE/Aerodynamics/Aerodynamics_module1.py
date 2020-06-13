@@ -188,10 +188,10 @@ class ExtractData_OpenVSP():
 		return 0;
 
 #%% ------------------- Input data -------------------
-dir = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Aerodynamics\OpenVSPSimData";				# Path to directory, this is for my PC, you can use the lower one
+dir = r"C:\Users\miksw\Desktop\DSE\DSE-Group13\DSE\Aerodynamics\Iteration4";				# Path to directory, this is for my PC, you can use the lower one
 #dir = r"\Aerodynamics\OpenVSPSimData";														# Path to directory, Comment the top line and use this one
-write_dir = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\liftdistribution.txt"		# Write directory
-write_dir1 = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\troquedistribution.txt"	# Write directory
+write_dir = r"C:\Users\miksw\Desktop\DSE\DSE-Group13\DSE\Structures\liftdistribution.txt"		# Write directory
+write_dir1 = r"C:\Users\miksw\Desktop\DSE\DSE-Group13\DSE\Structures\troquedistribution.txt"	# Write directory
 #%% ------------------- Main -------------------
 vsp_data = ExtractData_OpenVSP(dir);
 AOA = 14;
