@@ -141,8 +141,8 @@ class ExtractData_OpenVSP():
 
 					ax1.legend(loc = "upper right");
 					ax2.legend(loc = "upper right");
-		savetxt(write_dir, CL_w);
-		savetxt(write_dir1, Cm_w);
+		#savetxt(write_dir, CL_w);
+		#savetxt(write_dir1, Cm_w);
 		return 0;
 
 
@@ -179,7 +179,7 @@ class ExtractData_OpenVSP():
 
 				LSM_d = least_sq_Matrix_d(CL_i);
 				A_d = LSM_d.dot(LSM_d.T);
-				d_CD = inv(A_d).dot(LSM_d.dgit ot(CD_i));
+				d_CD = inv(A_d).dot(LSM_d.dot(CD_i));
 				R2_d = 1 - norm(LSM_d.T.dot(d_CD) - CD_i);
 				print("CD(CL) = %f + %f CL^2" %(d_CD[0], d_CD[1]), "\n R^2 = {}".format(R2_d));
 				print("L/D cruise = %f" %(3/4*sqrt((1/d_CD[1])/(3*d_CD[0]))));
@@ -188,10 +188,10 @@ class ExtractData_OpenVSP():
 		return 0;
 
 #%% ------------------- Input data -------------------
-dir = r"C:\Users\miksw\Desktop\DSE\DSE-Group13\DSE\Aerodynamics\Iteration4";				# Path to directory, this is for my PC, you can use the lower one
+dir = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Aerodynamics\OpenVSPSimData";				# Path to directory, this is for my PC, you can use the lower one
 #dir = r"\Aerodynamics\OpenVSPSimData";														# Path to directory, Comment the top line and use this one
-write_dir = r"C:\Users\miksw\Desktop\DSE\DSE-Group13\DSE\Structures\liftdistribution.txt"		# Write directory
-write_dir1 = r"C:\Users\miksw\Desktop\DSE\DSE-Group13\DSE\Structures\troquedistribution.txt"	# Write directory
+write_dir = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\liftdistribution.txt"		# Write directory
+write_dir1 = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\troquedistribution.txt"	# Write directory
 #%% ------------------- Main -------------------
 vsp_data = ExtractData_OpenVSP(dir);
 AOA = 14;
