@@ -24,7 +24,7 @@ sweep_le_h = np.radians(35)     # deg
 # Vertical Tail
 
 a0_v = 6.195564526     #1/rad
-S_v = 16.9     # m^2
+S_v = 18.92     # m^2
 CL_v_design = 0.3986
 M_crit_a_v = tl.bisection(tl.M_cr_calc_v,0.2,0.99,100)
 # print(M_crit_a_v)
