@@ -43,15 +43,16 @@ def Compute_sect_maxShear(V, T, tau_allow, t_c, c_arr, t_arr, n_stif_top, n_stif
 		centroid = calc_centroid(c_arr, h_arr, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_cap);
 		Ixx, _ = calc_MOI(c_arr, h_arr, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_cap, centroid);
 		tau = zeros((len(c_arr), 4));
+		print(centroid);
 		for i in range(len(c_arr)):
 			c = c_arr[i];		h = h_arr[i];
 			t1 = t_top[i];		t2 = t_spar[i];			t3 = t_bot[i];
 			q1 = -V[i]/Ixx[i]*(-t1*(0.5*h - centroid[i])*0.5*c);
 			q2 = q1 - V[i]/Ixx[i]*(t2*(-(0.5*h - centroid[i])**2 + ((0.5*h - centroid[i])**2)/2));
 			q3 = q1 - V[i]/Ixx[i]*(t2*(-(0.5*h - centroid[i])*h + (h**2)/2));
-			q1 = abs(q1) + abs(T[i]/(2*c*h));		q2 = abs(q2) + abs(T[i]/(2*c*h));		q3 = abs(q3) + abs(T[i]/(2*c*h));
+			q1 -= (T[i]/(2*c*h));		q2 -= (T[i]/(2*c*h));		q3 -= (T[i]/(2*c*h));
 			tau1 = abs(q1/t1);		tau2 = abs(q2/t2);		tau3 = abs(q3/t3);
-			tau[i, :] = asarray([max(tau1, tau2, tau3), tau1, tau3, tau2]);
+			tau[i, :] = asarray([max(tau1, tau2, tau3), tau1, tau2, tau3]);
 		return tau;
 
 
