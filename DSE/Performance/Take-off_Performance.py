@@ -15,14 +15,15 @@ S    = 150.7210057            # wing surface area
 rho  = 1.225                  # air density [kg/m^3]
 g    = 9.81                   # gravitational acceleration [m/s^2]
 CLto = 2.0                    # Clmax at take off [-]
-hto  = 10.7                   # obstacle height [m], 35 ft for jetliners
+hto  = 11                   # obstacle height [m], 35 ft for jetliners
 Tto  = 189873.8014             # thrust at take off [N]
 y2m  = 0.024                  # some weird parameter for 2 engines
 BPR  = 15                     # bypass ratio
 CD0 = 0.02005                   # drag coefficient at takeoff ASSUMED
 Sto  = 200                    # inertia distance
-rho0 = 1.225                  # air density surface level [kg/m^3]
-CL0  = 0.214772               # lift coefficient at zero angle of attack
+rho0 = 1.225               # air density surface level [kg/m^3]
+CL0  = 0.601               # lift coefficient at zero angle of attack
+k    = 0.046881         # 1/(pi*AR*eto) from simulation
 
 # calculations
 
@@ -31,7 +32,7 @@ V2   = 1.2*Vs
 CL2  = 0.694*CLto
 Tavg = 0.75*Tto*(5+BPR)/(4+BPR)
 mu   = 0.01*CLto + 0.02
-D2   = 1/2*rho*(V2**2)*CDto*S
+D2   = 1/2*rho*(V2**2)*(CD0 + k*(CLto**2))*S
 TOEI = Tto/2
 y2   = np.arcsin((TOEI-D2)/MTOW)
 dy2  = y2 - y2m
@@ -56,26 +57,25 @@ df  = 4.2              # fuselage diameter [m]
 hlg = 1.9              # clearance between surface and bottom fuselage due to landing gear [m]
 eto = 0.75             # oswald efficiency factor at takeoff [-]
 AR  = 17               # Aspect Ratio [-]
-k   = 0.046881         # 1/(pi*AR*eto) from simulation
 
 #calculations
 
 
 Vlof   = 1.1*Vs
-Vg     = Vlof/np.sqrt(2)
-CLg    = 2*MTOW/(rho*(Vg**2)*S)
-Lg     = 
-CDiOGE = k
+CLlof  = 2*MTOW/(rho*(Vlof**2)*S)   
+CDiOGE = k*(CLlof**2)
 h      = df + hlg
 ge     = 1 - (1-1.32*h/b)/(1.05+7.4*h/b)
 CDiIGE = ge*CDiOGE
+Vg     = Vlof/np.sqrt(2)
+Lg     = 1/2*rho*(Vg**2)*CL0*S
 CDg    = CD0 + CDiIGE
 Dg     = 1/2*rho*(Vg**2)*CDg*S
-Tg   = 86055.43*2   # thrust at VLOF/sqrt(2)
+Tg     = 86055.43*2   # thrust at VLOF/sqrt(2)
 mugnd  = 0.05         # ground friction coefficient 0.03-0.05 brakes off, otherwise 0.3-0.5 with braking
 
 
-Sg     = (Vlof**2)*MTOW/(2*g*(Tg-Dg-mugnd*(MTOW-Llof)))
+Sg     = (Vlof**2)*MTOW/(2*g*(Tg-Dg-mugnd*(MTOW-Lg)))
 
 print("Sg  = ", Sg, " m")
 
@@ -89,13 +89,15 @@ print("Sr  = ", Sr, " m")
 #1 average vertical acceleration in terms of weight factor
 
 n    = 1.1903
-Vtr  = 1.15*Vs
-R    = (Vtr**2)/(g*(n-1))
-V2   = 1.2*Vs
+VMCA = 1.2*Vs
+V2   = 1.1*VMCA
+Vtr  = (Vlof +V2)/2
+nu   = (Vtr/Vs)**2
+R    = (Vtr**2)/(g*(nu-1))
 CLtr = 2*MTOW/(rho*(Vtr**2)*S)
 CLv2 = CLto/(1.2**2)
 CDv2 = 0.08399
-CDtr = 0.0247 + (CLtr**2)/(np.pi*AR*eto)
+CDtr = 0.0247 + (CLtr**2)/k
 Dtr  = MTOW*CDtr/CLtr
 Dv2  = 1/2*rho*(V2**2)*CDv2*S
 Tc   = 67208.43989*2    # thrust at V2Tto*(1-2*V2/np.sqrt(1.4*287*288.15)*(1+BPR)/(3+2*BPR))
