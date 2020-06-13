@@ -86,7 +86,7 @@ class HighLiftDevices():
 		plt.xlabel("alpha [deg]");
 		plt.ylabel("CL [-]");
 		plt.legend();
-		#plt.show();
+		plt.show();
 		return 0;
 
 def chord_y(c_root, c_tip, span, LE_sweep, y):
@@ -104,9 +104,9 @@ def ComputeHLD_Dim(b0, Swf_S, S, sweep_LE, sweep_TE, root_c, tip_c):
 	return S_f, bf;
 
 #%% ------------------ Main ------------------
-span = 52.64000;							# Wing span
-root_c = 4.2;								# Root chord
-tip_c = 1.7;								# Tip chord
+span = 50.64;								# Wing span
+root_c = 4.135518182;						# Root chord
+tip_c = 1.819628;							# Tip chord
 S = span*(root_c + tip_c)/2;				# Wing area
 sweep_LE = pi/6;							# LE sweep
 sweep_TE = sweep_x(1, sweep_LE, root_c, tip_c, span);
@@ -117,14 +117,14 @@ HLD = HighLiftDevices();
 #HLD.plot_Delta_CL_alpha0("LE", 0.25);
 #HLD.plot_Delta_CL_alpha0("TE", 0.25);
 #plt.show();
-ori_CL_alpha = 0.072215;					# Original Clean CL-alpha
-ori_CL0 = 0.304192;							# Original Clean CL at zero aoa
-ori_CL_max = 1.35;							# Original Clean CL max
+ori_CL_alpha = 0.08772433428;				# Original Clean CL-alpha
+ori_CL0 = 0.258847;							# Original Clean CL at zero aoa
+ori_CL_max = 1.753;							# Original Clean CL max
 LE_HLD = "KrugerFlap";						# Choose leading edge HLD. Choose between ["FixedSlot", "LEFlap", "KrugerFlap"]
-TE_HLD = "DoubleFowlerFlap";				# Choose trailing edge HLD. Choose between ["PlainFlap", "SingleSlottedFlap", "SingleFowlerFlap", "DoubleFowlerFlap", "TripleFowlerFlap"]
+TE_HLD = "SingleFowlerFlap";				# Choose trailing edge HLD. Choose between ["PlainFlap", "SingleSlottedFlap", "SingleFowlerFlap", "DoubleFowlerFlap", "TripleFowlerFlap"]
 c_f_c = 0.25;								# fraction of the chord that is the HLD
-Swf_S_TE = 0.65;							# Flapped (TE) area ratio
-Swf_S_LE = 0.8;								# Flapped (LE) area ratio
+Swf_S_TE = 0.6;								# Flapped (TE) area ratio
+Swf_S_LE = 0.75;							# Flapped (LE) area ratio
 lambda_hingeLn_LE = sweep_LE;				# Sweep of hinge line LE
 lambda_hingeLn_TE = sweep_TE;				# Sweep of hinge line TE
 HLD.Adjust_CL_alpha(ori_CL_alpha, ori_CL0, ori_CL_max, LE_HLD, TE_HLD, c_f_c, Swf_S_TE, Swf_S_LE, lambda_hingeLn_LE, lambda_hingeLn_TE);
