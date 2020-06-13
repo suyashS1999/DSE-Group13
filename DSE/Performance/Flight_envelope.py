@@ -19,7 +19,7 @@ h = h_cruise
 #%% ---------------------- Inputs ----------------------
 MTOW = 71311.11553                   # MTOW - fuel used in ascend [kg]
 S_ref =  139.1                 # Reference wing area [m^2]
-CL_max_clean = 1.35                # Max CL with clean configuration [-]
+CL_max_clean = 1.736                # Max CL with clean configuration [-]
 CL_min_clean = -CL_max_clean        # Assumed same magnitude, negative Max CL with clean configuration [-] (not so critical)
 CL_max_flap = 2.4                   # MAX CL with LANDING CONFIGURATION [-]
 n_max = 2.5                         # Positive limit maneuvering load factor [-]
