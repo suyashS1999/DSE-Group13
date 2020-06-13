@@ -179,7 +179,7 @@ class ExtractData_OpenVSP():
 
 				LSM_d = least_sq_Matrix_d(CL_i);
 				A_d = LSM_d.dot(LSM_d.T);
-				d_CD = inv(A_d).dot(LSM_d.dot(CD_i));
+				d_CD = inv(A_d).dot(LSM_d.dgit ot(CD_i));
 				R2_d = 1 - norm(LSM_d.T.dot(d_CD) - CD_i);
 				print("CD(CL) = %f + %f CL^2" %(d_CD[0], d_CD[1]), "\n R^2 = {}".format(R2_d));
 				print("L/D cruise = %f" %(3/4*sqrt((1/d_CD[1])/(3*d_CD[0]))));
