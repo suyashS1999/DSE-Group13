@@ -31,7 +31,7 @@ sweep_LE = np.radians(30)
 MAC = planf.Compute_MAC(C_r_m,C_t_m, sweep_LE, span)
 
 # e  = e(AR,sweep_LE)
-e = 0.8
+# e = 0.8
 
 rho_cruise = 0.3636     # kg/m^3
 V_cruise   = 230.13     # m/s
