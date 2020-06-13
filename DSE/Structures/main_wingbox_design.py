@@ -11,7 +11,7 @@ This stress should remain below the material's yield stress
 import numpy as np
 from matplotlib import pyplot as plt
 from Wingbox_MOI import calc_centroid, calc_MOI
-from Calculate_Shear_Stresses import Compute_sect_maxShear, V_ , internal_torque
+from Calculate_Shear_Stresses import Compute_sect_maxShear
 from InterpolationandIntegration import *
 
 # ------------------------  DESIGN INPUTS   ------------------------
@@ -23,6 +23,8 @@ c_tip = 1.81962800016339
 t_inboard = 0.14 #t/c
 t_outboard = 0.14 #t/c
 airfoilchange = 18 #m
+LE_sweep = pi/6;															# Leading edge sweep
+
 
 #material properties
 E = 72.4*10**9
@@ -122,7 +124,7 @@ def calc_vonmises(sigma,tau_max):
 	"""
 	A = np.power(sigma,2)
 	B = np.power(tau_max,2)
-    #sigm zz and sigma_yy are zero
+	#sigm zz and sigma_yy are zero
 	return np.sqrt(A/2 + 3*B)
 
 def calc_mass(c, h, wingspan, n_stations, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_cap, rho_material):
@@ -149,21 +151,30 @@ def calc_fuelvolume(c,h,wingspan,airfoilchange):
 c_airfoil, b, h_airfoil = calc_geometry(wingspan,c_root,c_tip,t_inboard,t_outboard,n_stations)
 c = (wingbox_end-wingbox_start) * c_airfoil
 h = wingbox_height * h_airfoil
+centre_pressure = b*tan(LE_sweep) + 0.25*c_airfoil;								# Centre of pressure
 
 # bending stresses
 centroid = calc_centroid(c, h, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_cap)
-Ixx, Izz = calc_MOI(c, h, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_cap,centroid)
-Mx, coeff = RBF_1DInterpol(y_half, M, b)
+Ixx, Izz = calc_MOI(c, h, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_cap, centroid)
+Mx, _ = RBF_1DInterpol(y_half, M, b)
 sigma_top = -calc_sigma(Mx,Ixx,h/2-centroid)
 sigma_bot = calc_sigma(Mx,Ixx,h/2+centroid)
 
 # shear stress
-t_arr = zeros((3,n_stations))
-t_arr[0,:] = t_top
-t_arr[1,:] = t_bot
-t_arr[2,:] = t_spar
-tau_max = Compute_sect_maxShear(V, internal_torque, tau_allow, t_inboard, c, t_arr, n_stif_top, n_stif_bot, A_stif, A_spar_cap, iter=False)
-print(tau_max)
+V, _ = RBF_1DInterpol(y_half, V, b);										# Shear force at the span locations, inputs are from InterpolationandIntegration.py
+CL, _ = RBF_1DInterpol(span_location, Lift_dist, b, reconstruct = coeff);	# Total lift distribution, inputs are from InterpolationandIntegration.py
+SC = b*tan(LE_sweep) + wingbox_start*c_airfoil + 0.5*c;						# Location of shear centre, assuming midpoint of box
+torque_load = CL*(SC - centre_pressure);									# Distributed torque Nm/m
+torque_load_f, coeff_T = RBF_1DInterpol(b, torque_load, b);
+internal_torque, y_t = Generate_Torque_diagram(RBF_1DInterpol, [b, torque_load_f, coeff_T], b[0], b[-1], 9);
+internal_torque = internal_torque[::-1];									# Internal torque distribution
+T, _ = RBF_1DInterpol(y_t, internal_torque, b);								# Interpolated torque
+t_arr = zeros((3, n_stations));
+t_arr[0,:] = t_top;
+t_arr[1,:] = t_bot;
+t_arr[2,:] = t_spar;
+tau_max = Compute_sect_maxShear(V, T, tau_allow, t_inboard, c, t_arr, n_stif_top, n_stif_bot, A_stif, A_spar_cap, iter = False);
+print(tau_max);
 
 #vonmises
 #vonmises_top = calc_vonmises(sigma_top,tau_max)
@@ -188,8 +199,8 @@ print("Fuel Volume =",round(Fuelvolume,1),"m^3 (halfwing)")
 
 # ------------------------  PLOTS   ------------------------
 
-
-ax1 = plt.subplot(221)
+plt.figure(figsize = (11, 8))
+ax1 = plt.subplot(2, 2, 1)
 #ax1.set_title("Thickness Distribution")
 ax1.set_ylabel("Thickness [mm]")
 ax1.set_xlabel("Span [m]")
@@ -201,7 +212,7 @@ ax1.set_yticks(arange(0, 6, 1))
 ax1.tick_params(axis='y')
 ax1.legend(loc='upper left')
 
-ax2 = plt.subplot(222)
+ax2 = plt.subplot(2, 2, 2)
 #ax2.set_title("Stiffener Distribution")
 ax2.set_ylabel("Number of stiffeners")
 ax2.set_xlabel("Span [m]")
@@ -212,14 +223,27 @@ ax2.set_yticks(arange(0, 30, 5))
 ax2.tick_params(axis='y')
 ax2.legend(loc='upper left')
 
-ax3 = plt.subplot(212)
+ax3 = plt.subplot(2, 2, 3)
 #ax3.set_title("Stress Distribution")
 ax3.set_ylabel("Stress [MPa]")
 ax3.set_xlabel("Span [m]")
 ax3.plot(b, sigma_top/10**6, "r", label = "Top Skin")
 ax3.plot(b, sigma_bot/10**6, "b", label = "Bottom Skin")
 ax3.grid()
-ax3.set_yticks(arange(-500, 500, 100))
+#ax3.set_yticks(arange(-500, 500, 100))
 ax3.tick_params(axis='y')
 ax3.legend(loc='upper left')
 
+ax4 = plt.subplot(2, 2, 4)
+ax4.set_ylabel("Max Shear Stress [MPa]")
+ax4.set_xlabel("Span [m]")
+#ax4.plot(b, tau_max[:, 0]/10**6, "r", label = "Maximum Shear Stress")
+ax4.plot(b, tau_max[:, 1]/10**6, "r", label = "Maximum Shear Stress top skin")
+ax4.plot(b, tau_max[:, 2]/10**6, "g", label = "Maximum Shear Stress bottom skin")
+ax4.plot(b, tau_max[:, 3]/10**6, "b", label = "Maximum Shear Stress spar")
+ax4.grid()
+#ax4.set_yticks(arange(-500, 500, 100))
+ax4.tick_params(axis='y')
+ax4.legend(loc='upper left')
+
+plt.show();

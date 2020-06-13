@@ -169,8 +169,8 @@ def Generate_Torque_diagram(torque_dist_f, f_args, y0, y1, DOP):
 
 
 #%% ----------------- Main -----------------------
-dir_CL = r"liftdistribution.txt";			# Chnage to your path
-dir_Cm = r"troquedistribution.txt";
+dir_CL = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\liftdistribution.txt";			# Chnage to your path
+dir_Cm = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\troquedistribution.txt";
 data_CL = genfromtxt(dir_CL);
 data_Cm = genfromtxt(dir_Cm);
 CL = data_CL[1, :];													# CL values
