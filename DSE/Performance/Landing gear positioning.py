@@ -9,23 +9,23 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 #%% Inputs
-CL_a = 4.0          #CL_alpha (more critical out of in- outboard)
-CL_max_clean = 1.35 
-CL_cruise = 0.566   
-p = 0.15            #Correction factor Torenbeek (0.15 - 0.20 range)
-CL_max_TO = 2.0     
+CL_a = 5.03          #CL_alpha (more critical out of in- outboard)
+CL_max_clean = 1.736 
+CL_cruise = 0.455   
+CL_max_TO = 2.1     
 dtheta_dt = 4       # Torenbeek correction factor (rotation right after LOF) [deg/sec]
 V_min = 65.6        # V_min with CL_max_TO
 V_LOF = 1.05*V_min  # Lift off velocity [m/s]
-X = 1.6             # Length of the LG struts [m] (from bottom of fuselage to bottom of tires)
+X = 2.40             # Length of the LG struts [m] (from bottom of fuselage to bottom of tires)
 H_fuse = 4.2
-Y_LG = 3.2
+Y_LG = 3.55
 Z_cg = X + H_fuse*0.5
-W_S = 5262
+W_S = 4958
+p = 0.15            #Correction factor Torenbeek (0.15 - 0.20 range)
 
 #Position of landing gears from nose
-x_mlg = 22.3    # main [m]
-x_nlg = 4     # nose [m]
+x_mlg = 21.55    # main [m]
+x_nlg = 1     # nose [m]
 from Loading_diagram import cg_frw, cg_aft #import most frw and aft cg positions
 from Class_II_Torenbeek import MTOW
 #%% Functions
@@ -79,31 +79,35 @@ def static_load():
     return P_m
 
 def illust(theta):
-    fig = plt.figure(figsize = (12, 6))
+    fig = plt.figure(figsize = (16, 4))
     plt.ylim(-3, 6)
-    plt.plot([0, 4.2, 42.6, 35, 0], [0, 4.2, 4.2, 0, 0])
-    plt.plot([42.6, 42.6+1.7, 42.6+1.7, 42.6, 42.6], [4.2+3.5/2, 4.2+3.5/2, 4.2-3.5/2, 4.2-3.5/2, 4.2+3.5/2])
+    plt.plot([0, 4.2, 36.2, 42.6, 29, 0], [0, 4.2, 4.2, 3, 0, 0])
+    plt.plot([42.6, 42.6+1.2, 42.6+1.2, 42.6, 42.6], [3+0.45, 3+0.45, 3-0.45, 3-0.45, 3+0.45])
     plt.scatter([cg_frw, cg_aft], [2.1, 2.1])
     plt.plot([cg_aft, 42], [2.1, 2.1+(42-cg_aft)/-np.tan(theta/180*np.pi)])
-    plt.plot([42.6+1.7, 10], [4.2-3.5/2, 4.2-3.5/2+np.tan(theta/180*np.pi)*(10- 42.6+1.7) ])
+    plt.plot([42.6+1.2, 10], [3-0.45, 3-0.45+np.tan(theta/180*np.pi)*(10- 42.6+1.2) ])
+    plt.scatter([x_mlg, x_nlg],[-X, -X])
+    plt.grid()
     return
 
-##def min_leg():
+#def min_leg():
 #    w = 0.9*(5262)**0.25
 #    lamda = 2 #or 2.5
 #    eta_s = 0.6 #or 0.65
 #    eta_t = 0.47
-#    Dt = 46 #or 49
-#    bt = 16 #or 19
+#    
+#    Dt = 460 #or 49
+#    bt = 160 #or 19
 #    S_t = lamda*MTOW*0.92/4/(p*np.sqrt(Dt*bt))
 #    S = 1/eta_s*(w**2/(1.84*9.81*lamda)-eta_t*S_t)
 #    return S
 
-w = 0.9*(5262/9.81)**0.25
-lamda = 2.5 #or 2.5
+w = 0.9*(4790/9.81)**0.25
+lamda = 2 #or 2.5
 eta_s = 0.6 #or 0.65
 eta_t = 0.47
-Dt = 46/100 #or 49
-bt = 16/100 #or 19
-S_t = lamda*MTOW*0.92/4/(p*np.sqrt(Dt*bt))
-S = 1/eta_s*(w**2/(1.84*9.81*lamda)-eta_t*S_t)
+Dt = 46 #or 49
+bt = 16 #or 19
+pres = 200
+S_t = lamda*MTOW*2.20462*0.92/8/(pres*np.sqrt(Dt*bt))
+S = 1/eta_s*(w**2/(1.84*lamda)-eta_t*S_t)

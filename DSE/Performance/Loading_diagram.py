@@ -9,20 +9,29 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 #%% ---------------------- Inputs ----------------------
-#From Class II weight estimation google sheet
-x_cg_oew = 20.10876114 #[m] from nose
-OEW = 45666.07 #[kg]
+
 
 #Aircraft dimensions
-lmac = 1.501                            # MAC [m]
+lmac = 1.543926788                            # MAC [m]
 l_fuse = 42.6                           # Fuselage length [m]
-xlemac = 0.35*l_fuse    # X position of LEMAC from nose (LEMAC at 50% of cabin)
-l_t = 42.6-6*0.75-1-xlemac+0.3                             # Tail moment arm [m], distance between 1/4 chords of wing + tail (for now V_tail)
+xlemac = 0.4*l_fuse    # X position of LEMAC from nose (LEMAC at 50% of cabin)
+x_cg_wing = xlemac-0.294            # wing cg from nose, assumed same as average aerodynamic centre
+#l_t = 42.6-6*0.75-1-x_cg_wing+3.5              # Tail moment arm [m], distance between 1/4 chords tail to xac (for now V_tail)
+W_wing = 9443.119122                        # Wing and strut mass combined
+W_engine = 6034.38476 + 357.3777225 + 1159.625545     # Engine + generator + nacelle
+x_cg_engine = xlemac - 6.639                # assumed to be same as pylons
 
 #CG locations in X direction from the nose (Assumptions/Justification in brackets)
 x_cargo_frw = 7                        # forward cargo [m] (from concept 3 midterm side view) 
-x_cargo_aft = 32                      # aft cargo [m] (from concept 3 midterm side view)
-x_cg_fuel = xlemac                      # fuel [m] (approximated to be at the LEMAC, forward of approximate CG of wing since there will be no fuel at the tips)
+x_cargo_aft = 27                      # aft cargo [m] (from concept 3 midterm side view)
+x_cg_fuel = x_cg_wing                      # fuel [m] (approximated to be at the LEMAC, forward of approximate CG of wing since there will be no fuel at the tips)
+
+#From Class II weight estimation google sheet
+x_cg_oew_lesswing = 22.04503547 #[m] from nose
+OEW_lesswing = 27526.1656
+OEW = OEW_lesswing+W_wing+W_engine #[kg]
+x_cg_oew = (x_cg_oew_lesswing*OEW_lesswing + x_cg_wing*W_wing + x_cg_engine*W_engine)/OEW
+#Verify OEW matches
 
 #Commented out, because this is calculated now in excel
 #x_cg_wing = xlemac-10.58+9            # wing, as function of MAC [m] (For now assumed to be quarter chord MAC)
