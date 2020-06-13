@@ -46,10 +46,11 @@ delta_a = np.radians(0.5*(delta_a_up + delta_a_down))    # radians
 
 # b1 and b2
 
-b1 = bi_b2*b
-b2 = bo_b2*b
+# b1 = bi_b2*b
+# b2 = bo_b2*b
 
-
+b1 = 16
+b2 = 17
 
 # integral ratio
 
