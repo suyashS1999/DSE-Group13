@@ -20,7 +20,7 @@ span_outboard = span - span_inboard;		# Span of outboard wing [m]
 t_c_avg  = 0.14         # Aver. t/c
 x_c_m    = 0.1          # location of max thickness
 # t_c_stream =           #-
-CL_cruise  = 0.478     #-
+CL_cruise  = 0.4890523925     #-
 
 S_wet_ratio = 2.14         #- 
 
