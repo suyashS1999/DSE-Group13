@@ -1,6 +1,7 @@
 from numpy import*
 from matplotlib import pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+from Aero_tools import sweep_x
 
 class HighLiftDevices():
 	def __init__(self):
@@ -88,7 +89,30 @@ class HighLiftDevices():
 		#plt.show();
 		return 0;
 
+def chord_y(c_root, c_tip, span, LE_sweep, y):
+	f1 = tan(LE_sweep)*y;
+	TE_sweep = sweep_x(1, LE_sweep, c_root, c_tip, span);
+	f2 = c_root + tan(TE_sweep)*y;
+	chord = f2 - f1;
+	return chord;
+
+def ComputeHLD_Dim(b0, Swf_S, S, sweep_LE, sweep_TE, root_c, tip_c):
+	chord_b0 = chord_y(root_c, tip_c, span, sweep_LE, b0);
+	bf = (-2*chord_b0 + sqrt((2*chord_b0)**2 - 4*(tan(sweep_TE) - tan(sweep_LE))*(-Swf_S*S)))/(2*(tan(sweep_TE) - tan(sweep_LE)));
+	chord_b1 = chord_y(root_c, tip_c, span, sweep_LE, bf + b0);
+	S_f = bf*(chord_b0 + chord_b1);
+	return S_f, bf;
+
 #%% ------------------ Main ------------------
+span = 52.64000;							# Wing span
+root_c = 4.2;								# Root chord
+tip_c = 1.7;								# Tip chord
+S = span*(root_c + tip_c)/2;				# Wing area
+sweep_LE = pi/6;							# LE sweep
+sweep_TE = sweep_x(1, sweep_LE, root_c, tip_c, span);
+fuselage_d = 4.2;							# Fuselage diameter
+fuselage_clear_TE = 1.5;					# Where the TE hld starts
+fuselage_clear_LE = 0.5;					# Where the LE hld starts
 HLD = HighLiftDevices();
 #HLD.plot_Delta_CL_alpha0("LE", 0.25);
 #HLD.plot_Delta_CL_alpha0("TE", 0.25);
@@ -101,9 +125,21 @@ TE_HLD = "DoubleFowlerFlap";				# Choose trailing edge HLD. Choose between ["Pla
 c_f_c = 0.25;								# fraction of the chord that is the HLD
 Swf_S_TE = 0.65;							# Flapped (TE) area ratio
 Swf_S_LE = 0.8;								# Flapped (LE) area ratio
-lambda_hingeLn_LE = 0.70912;				# Sweep of hinge line LE
-lambda_hingeLn_TE = 0.653;					# Sweep of hinge line TE
+lambda_hingeLn_LE = sweep_LE;				# Sweep of hinge line LE
+lambda_hingeLn_TE = sweep_TE;				# Sweep of hinge line TE
 HLD.Adjust_CL_alpha(ori_CL_alpha, ori_CL0, ori_CL_max, LE_HLD, TE_HLD, c_f_c, Swf_S_TE, Swf_S_LE, lambda_hingeLn_LE, lambda_hingeLn_TE);
+
+b0_TE = fuselage_d/2 + fuselage_clear_TE;
+b0_LE = fuselage_d/2 + fuselage_clear_LE;
+HLD_LE_S, bf_LE = ComputeHLD_Dim(b0_LE, Swf_S_LE, S, sweep_LE, sweep_TE, root_c, tip_c);
+HLD_TE_S, bf_TE = ComputeHLD_Dim(b0_TE, Swf_S_TE, S, sweep_LE, sweep_TE, root_c, tip_c);
+print("# -------- LE HLD ----------#");
+print("Half span = %f m \nFlapped area = %f m^2 \nHLD start span = %f m from fuselage centerline \nHLD end span = %f m from fuselage centerline" %(bf_LE, HLD_LE_S, b0_LE, b0_LE + bf_LE));
+print("\n# -------- TE HLD ----------#");
+print("Half span = %f m \nFlapped area = %f m^2 \nHLD start span = %f m from fuselage centerline \nHLD end span = %f m from fuselage centerline" %(bf_TE, HLD_TE_S, b0_TE, b0_TE + bf_TE));
+
+
+
 
 
 		
