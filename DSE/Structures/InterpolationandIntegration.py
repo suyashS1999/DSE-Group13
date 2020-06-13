@@ -129,7 +129,7 @@ def Generate_MomentShear_Diagram_Engine_strut(M_lift, V_lift, y, T_e, W_e, LE_sw
 	S_y = S_z/tan(degree_strut);
 	A_z = L - W_e - S_z;
 	A_y = -S_y;
-
+	print(S_y, S_z);
 	M_e = S_z*(y_s - y_e);												# moment at engine
 	M_engine = W_e*y_e;
 	M_r = S_z*(y_s) + M_engine;											# moment at root, should be equal to M_L, but isn't
@@ -152,6 +152,21 @@ def Generate_MomentShear_Diagram_Engine_strut(M_lift, V_lift, y, T_e, W_e, LE_sw
 	M = M_new + M_lift;													# adding wing, strut and engine moments #does not work
 	return V_new, M_new, V, M;
 
+def Generate_Torque_diagram(torque_dist_f, f_args, y0, y1, DOP):
+	y_intg_std = linspace(-1, 1, DOP + 1);
+	_, w_intg_std = Quadrature_weights(y_intg_std);
+
+	y = linspace(y0, y1, DOP + 1);
+	T = zeros_like(y);
+	for i in range(len(y)):
+		y_out, w_out = Transform_Quadrature(y_intg_std, w_intg_std, y[len(y) - 1 - i], y1);
+		g = zeros_like(y);
+		for j in range(len(y_out)):
+			eta_in, w_in = Transform_Quadrature(y_intg_std, w_intg_std, y_out[len(y_out) - 1 - j], y1);
+			g[j] = Quadrature_Integral(-torque_dist_f(f_args[0], f_args[1], eta_in, f_args[2])[0], w_in, "1D");
+		T[i] = g[-1];
+	return T, y[::-1];
+
 
 #%% ----------------- Main -----------------------
 dir_CL = r"liftdistribution.txt";			# Chnage to your path
@@ -173,6 +188,7 @@ CL_lag, _ = Lagrange_Basis(span_location, Lift_dist, y);			# Interpolate Distrib
 CL_rbf, coeff = RBF_1DInterpol(span_location, Lift_dist, y);		# Interpolate Distributed lift with radial basis functions
 Cm_lag, _ = Lagrange_Basis(span_location, Moment_dist, y);			# Interpolate Distributed pitching moment with Lagrange basis functions
 Cm_rbf, _ = RBF_1DInterpol(span_location, Moment_dist, y);			# Interpolate Distributed pitching moment with radial basis functions
+centre_pressure, coeff_cp = RBF_1DInterpol(span_location, centre_pressure, y);
 
 y_half = linspace(0, span_location[-1], 100);
 M, V, y_m = Generate_MomentShear_Diagram_Dist_Lift(RBF_1DInterpol, [span_location, Lift_dist, coeff], y_half[0], y_half[-1], 9);

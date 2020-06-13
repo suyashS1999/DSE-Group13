@@ -10,17 +10,17 @@ import Aerodynamics.WingPlanform as planf
 #Global Wing
 
 AR = 17;									# Wing Aspect ratio [-]
-S = 150.7210057#;							# Wing surface area [m^2]
-span = 50.61874255;							# Wing span [m]
+S = 150.8519904;							# Wing surface area [m^2]
+span = 50.64073298;							# Wing span [m]
 ave_chord = S/span;							# Average chord lenght [m]
 taper_ratio = 0.44;							# Taper ratio [-]
 # Inboard Wing
 span_inboard = 36;							# Span of inboard wing [m]
 span_outboard = span - span_inboard;		# Span of outboard wing [m]
-t_c_avg  = 0.15         # Aver. t/c
+t_c_avg  = 0.14         # Aver. t/c
 x_c_m    = 0.1          # location of max thickness
 # t_c_stream =           #-
-CL_cruise  = 0.4545     #-
+CL_cruise  = 0.4890523925     #-
 
 S_wet_ratio = 2.14         #- 
 
@@ -31,7 +31,7 @@ sweep_LE = np.radians(30)
 MAC = planf.Compute_MAC(C_r_m,C_t_m, sweep_LE, span)
 
 # e  = e(AR,sweep_LE)
-e = 0.8
+# e = 0.8
 
 rho_cruise = 0.3636     # kg/m^3
 V_cruise   = 230.13     # m/s

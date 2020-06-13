@@ -1,20 +1,22 @@
 import numpy as np
 from Noise_tools import *
 from HLDsizing import *
+from Input_parm import *
 
 pe0 = 2e-5
 
 f = np.array([1.25,1.6,2,2.5,3.15,4,5,6.3,8,10,12.5,16,20,25,31.5,40,50,63,80,100,125,160,200,250,315,400,500,630,800,1000,1250,1600,2000,2500,3150,4000,5000,6300,8000,10000,12500,16000,20000])
 
 #Inputs
-Aw = 139.1                  #Area of the wing [m2]
-bw = 48.63                  #Span of the wing [m]
+Aw = 150.8519904                  #Area of the wing [m2]
+bw = 50.64073298                  #Span of the wing [m]
 rho_inf = 1.225             #Rho at cruise [m3/kg]
 M = 0.2                     #Mach number [-]
 c = 340.3                   #Speed of sound [m/s]
 dynamic_visc = 1.84e-5      #Dynamic viscosity in the Netherlands at Schiphol[kg/(ms)]
-Af = 20                     #Total flap area [m2]
-bf = 30                     #Total flap span [m]
+flapped_area = 0.72 #percent
+Af = 0.1625*Aw                     #Total flap area [m2]
+bf = flapped_area*bw                       #Total flap span [m]
 df = HLD.TE_HLDs[TE_HLD][1] #Flap deflection angle [deg]
 d = 1                       #Wheel diameter [m]
 n_main = 4                  #Number of wheels [-]
