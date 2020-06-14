@@ -73,7 +73,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DSE.py" />
-    <Compile Include="GenericGlobal_module.py">
+    <Compile Include="PlottingModule.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Aerodynamics\Aerodynamics_module.py">
