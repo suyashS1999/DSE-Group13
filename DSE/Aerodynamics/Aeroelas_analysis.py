@@ -13,7 +13,7 @@ from Aero_tools import *
 
 
 
-c = inp.ave_chord      # Mean chord  
+c = inp.MAC[0]    # Mean chord  
 e = 0.25 # distance between ac line and elastic line
 half_span = inp.span/2  # half span
 half_area = inp.S*0.5
