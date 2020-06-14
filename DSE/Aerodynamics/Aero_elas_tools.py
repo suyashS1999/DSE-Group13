@@ -9,20 +9,31 @@ from matplotlib import pyplot as plt
 
 
 
-def diverg_q(K_th,K_phi,S,e,a,sweep_half,b):
+def diverg_q(K_th,K_phi,half_area,e,a,c,sweep_half,b):
 	"""Semi rigid wing model (including sweep)[from Weisshaar pg 110 of book]"""
 	
-	v1 = (K_th/S*e*a)
-	v2 = (np.cos(sweep_half)**2)*(1-((b/e)*(K_th/K_phi)*0.5*np.tan(sweep_half)))
+	v1 = (K_th/half_area*e*c*a)
+	v2 = (np.cos(sweep_half)**2)*(1-((b/e*c)*(K_th/K_phi)*0.5*np.tan(sweep_half)))
 	
 	q = v1/v2 
 	
 	return q
 
 
-def crit_sweep(e,c,b,K_th,K_phi):
+def diverg_q_v2(GJ,EI,l,e,a,c,sweep_half):
+ 	"""Semi rigid wing model (including sweep)[from New book Into to str dynamic and aeroelas]"""
+ 	
+ 	v1 = (GJ*(np.pi**2))
+ 	v2 = (4*e*c*c*a*(l**2)*(np.cos(sweep_half)**2))*(1-(((3*(np.pi**2)*l)/(76*e*c))*(GJ/EI)*np.tan(sweep_half)))
+ 	
+ 	q = v1/v2 
+ 	
+ 	return q
+
+
+def crit_sweep(EI,GJ,e,c,l):
 	
-	lmb = np.arctan(2*(e/c)*(c/b)*(K_phi/K_th))
+	lmb = np.arctan((76*EI*e*c)/(3*(np.pi**2)*GJ*l))
 	
 	return np.rad2deg(lmb)
 
@@ -38,19 +49,19 @@ def aileron_eff_full(rho,V_inf,a,q_d,K_th,cm_d,cl_d,c,S,sweep_half):
 	
 	return v1/v2
 
-def aileron_eff_act(lamb,half_span,y_a,ec,cl_a,cl_d,c,cm_d):
+def aileron_eff_act(lamb,half_span,y_a,e,cl_a,cl_d,c,cm_d):
 	
 	"""Using semi rigid wing model from book
 	lamb - see below fucntion
 	half_span
 	y_a - postion of aileron (starting) on half span
-	ec - see figure
+	e - see figure
 	cl_a - 2D lift coeff
 	cl_d - 2D aileron life coeff w.r.t aileron def
 	c - mean chord
 	cm_d - 2D change of moment wrt delta"""
 	
-	e = ec/c
+
 	
 	v1 = ((np.cos(lamb*y_a)/np.cos(lamb*half_span))-1)*(1/cl_a)*(cl_d)
 	
@@ -64,7 +75,7 @@ def aileron_eff_act(lamb,half_span,y_a,ec,cl_a,cl_d,c,cm_d):
 	
 	return eff
 	
-def lamb(rho,V,ec,cl_a,G,J):
+def lamb(rho,V,e,c,cl_a,GJ):
 	"""rho - density
 	V - free streamm vel
 	ec - distance between aero center and flexural axis
@@ -73,7 +84,7 @@ def lamb(rho,V,ec,cl_a,G,J):
 	J - """
 	
 	
-	res = np.sqrt((0.5*rho*(V**2)*(ec**2)*cl_a)/(G*J))
+	res = np.sqrt((0.5*rho*(V**2)*(e*c**2)*cl_a)/(GJ))
 	
 	return res
 
@@ -90,15 +101,22 @@ def cm_d(a0,E):
 	
 	return val
 
-def diverg_speed_straight(CL_alp,G,J,rho,ec,half_span):
+def diverg_speed_straight(a,GJ,rho,e,c,half_span):
 	
 	"""Diverg speed for straight wing (no sweep) from book"""
 	
-	vel = np.sqrt(((np.pi**2)*G*J)/(2*rho*(ec**2)*(half_span**2)*CL_alp))
+	q = ((np.pi**2)*GJ)/(4*(e*c**2)*(half_span**2)*a)
 	
-	return vel
+	return q
 
 
+def aileron_eff_new(lamb,l,c,cm_d,cl_d,e,a):
+	
+	v1 = lamb*l*((c*cm_d*(((lamb*l)**2) - (2*(1/np.cos(lamb*l))) +2)) - (2*e*c*cl_d*((1/np.cos(lamb*l)) -1)))
+	v2 = 2*a*e*c*((lamb*l) - np.tan(lamb*l))
+	
+	return v1/v2
+	
 def A_matrix(m,half_span,c,x_f):
 	
 	A = np.zeros((2,2))
