@@ -14,9 +14,9 @@ import matplotlib.pyplot as plt
 #Aircraft dimensions
 lmac = 1.543926788                            # MAC [m]
 l_fuse = 42.6                           # Fuselage length [m]
-xlemac = 0.46*l_fuse    # X position of LEMAC from nose (LEMAC at 50% of cabin)
-x_cg_wing = xlemac-0.294            # wing cg from nose, assumed same as average aerodynamic centre
-l_t = 42.6-6*0.75-1-x_cg_wing+1              # Tail moment arm [m], distance between 1/4 chords tail to xac (for now V_tail)
+xlemac = 0.44*l_fuse    # X position of LEMAC from nose (LEMAC at 50% of cabin)
+x_cg_wing = xlemac + 0.25*lmac            # wing cg from nose, assumed same as average aerodynamic centre
+#l_t = 42.6-6*0.75-1-x_cg_wing+1              # Tail moment arm [m], distance between 1/4 chords tail to xac (for now V_tail)
 W_wing = 9739.891244                        # Wing and strut mass combined
 W_engine = 1261.696815 + 6605.822891     # Engine + generator + nacelle
 x_cg_engine = xlemac - 6.639                # assumed to be same as pylons
