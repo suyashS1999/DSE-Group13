@@ -141,8 +141,8 @@ class ExtractData_OpenVSP():
 
 					ax1.legend(loc = "upper right");
 					ax2.legend(loc = "upper right");
-		#savetxt(write_dir, CL_w);
-		#savetxt(write_dir1, Cm_w);
+		savetxt(write_dir, CL_w);
+		savetxt(write_dir1, Cm_w);
 		return 0;
 
 
