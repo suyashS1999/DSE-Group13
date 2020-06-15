@@ -194,7 +194,7 @@ write_dir1 = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\troquedistribu
 #%% ------------------- Main -------------------
 vsp_data = ExtractData_OpenVSP(dir);
 AOA = 14;
-CD0 = 0.01172;
+CD0 = 0.01115;
 vsp_data.plot_Polars(CD0);
 vsp_data.plot_LoadDistribution(AOA, CD0, write_dir, write_dir1);
 vsp_data.Cm_CL_alpha_calc(CD0);
