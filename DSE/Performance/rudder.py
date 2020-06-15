@@ -10,7 +10,7 @@ import numpy as np
 
 b         = 50.61874255  # wing span [m]
 S         = 150.865002   # wing area [m2]
-Lv        = 20.7         # vertical tail arm length    [m] (average from ref.)
+Lv        = 18.4         # vertical tail arm length    [m] (average from ref.)
 ye        = 6.391838986
 Sr_Sv     = 0.4          # Roskam (page 425/2612)         ASSUMED
 Cr_Cv     = 0.3          # SEAD   (between 0.3 and 0.35)  ASSUMED
@@ -35,7 +35,7 @@ Te        = 95005.37*N_to_lb      # thrust one engine at VMCA
 x         = yeft*Te*CL_max_to/lv/(MTOW-MPW)
 
 
-y= 0.095    # from graph by using x  
+y= 0.138    # from graph by using x  
 
 Sv = y*S/(kv*kr*((Sr_Sv*AR*np.cos(np.radians(Sweep)))**(1/3)))
 print("x =" , x)
