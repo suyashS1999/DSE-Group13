@@ -29,15 +29,15 @@ B = np.array([[a1,a2],[a3,a4]])
 B = sym.Matrix(B)
 check = B.det()
 check = check.expand()
-coeff = check.as_expr().as_coefficients_dict()
-
-# b4 = check.as_expr().coeff(lmb**4)
-# b3 = check.coeff(lmb**3)
-# b2 = check.coeff(lmb**2)
-# b1 = check.coeff(lmb)
-# b0 = check.coeff(lmb**0)
-
-# result = (b4*(b1**2)) - (b1*b2*b3) + (b0*(b3**2))
 
 
-# sol = result.root()
+b4 = check.coeff(lmb**4)
+b3 = check.coeff(lmb**3)
+b2 = check.coeff(lmb**2) + check.coeff(x).coeff(lmb**2)
+b1 = check.coeff(lmb) + check.coeff(lmb).coeff(x)
+b0 = check.coeff(lmb**0) 
+
+result = (b4*(b1**2)) - (b1*b2*b3) + (b0*(b3**2))
+
+
+sol = sym.solve(result)
