@@ -119,12 +119,12 @@ HLD = HighLiftDevices();
 #plt.show();
 ori_CL_alpha = 0.08772433428;				# Original Clean CL-alpha
 ori_CL0 = 0.258847;							# Original Clean CL at zero aoa
-ori_CL_max = 1.753;							# Original Clean CL max
+ori_CL_max = 1.7536*0.9 - 0.15;					# Original Clean CL max
 LE_HLD = "KrugerFlap";						# Choose leading edge HLD. Choose between ["FixedSlot", "LEFlap", "KrugerFlap"]
-TE_HLD = "SingleFowlerFlap";				# Choose trailing edge HLD. Choose between ["PlainFlap", "SingleSlottedFlap", "SingleFowlerFlap", "DoubleFowlerFlap", "TripleFowlerFlap"]
+TE_HLD = "DoubleFowlerFlap";				# Choose trailing edge HLD. Choose between ["PlainFlap", "SingleSlottedFlap", "SingleFowlerFlap", "DoubleFowlerFlap", "TripleFowlerFlap"]
 c_f_c = 0.25;								# fraction of the chord that is the HLD
-Swf_S_TE = 0.6;								# Flapped (TE) area ratio
-Swf_S_LE = 0.75;							# Flapped (LE) area ratio
+Swf_S_TE = 0.5;								# Flapped (TE) area ratio
+Swf_S_LE = 0.8;								# Flapped (LE) area ratio
 lambda_hingeLn_LE = sweep_LE;				# Sweep of hinge line LE
 lambda_hingeLn_TE = sweep_TE;				# Sweep of hinge line TE
 HLD.Adjust_CL_alpha(ori_CL_alpha, ori_CL0, ori_CL_max, LE_HLD, TE_HLD, c_f_c, Swf_S_TE, Swf_S_LE, lambda_hingeLn_LE, lambda_hingeLn_TE);
