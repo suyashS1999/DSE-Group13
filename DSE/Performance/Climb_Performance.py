@@ -85,99 +85,6 @@ def Net_Thrust(V,h):
     return Tnet
 
 # STEADY FLIGHT CONDITIONS, PLOT POWER VS VELOCITY, sea level condition
-
-   # m/s
-
-def ROC_st_f(h):
-    V  = list(range(50,300,1))
-    Pa  = []
-    Pr  = []
-    Vr  = []
-    for i in range(len(V)):
-        
-        CL = 2*MTOW/((ISA_trop(h)[2])*S*(V[i]**2))
-        if CL >= CLmax_clean:
-            continue
-        
-        Ma = V[i]/(ISA_trop(h)[3])
-        if Ma >= 0.78:
-            continue
-        CD = CD0 + k1*(CL**2)
-        D  = 1/2*(ISA_trop(h)[2])*(V[i]**2)*CD*S
-        T  = Net_Thrust(V[i],h)
-        
-        Pa.append(T*V[i])
-        Pr.append(D*V[i])
-        Vr.append(V[i])
-    Pa = np.array(Pa)
-    Pr = np.array(Pr)
-    ROC_st = (Pa-Pr)/MTOW*196.85
-    plt.plot(Vr,ROC_st)
-    return ROC_st
-
-
-
-
-
-
-
-
-
-def ROC_unst_f(h):
-    V    = list(range(50,300,1))
-    Pa   = []
-    Pr   = []
-    Vr   = []
-    DVDH = []
-    for i in range(len(V)):
-        
-        CL = 2*MTOW/((ISA_trop(h)[2])*S*(V[i]**2))
-        # check CLmax_clean is respected
-        if CL >= CLmax_clean:
-            continue
-        Ma = V[i]/(ISA_trop(h)[3])
-        #check maximum mach number is respected
-        if Ma >= 0.78:
-            continue
-        CD = CD0 + k2*(CL**2)
-        D  = 1/2*(ISA_trop(h)[2])*(V[i]**2)*CD*S
-        T  = Net_Thrust(V[i],h)
-        # correction for unsteady flight
-        Veas = V[i]*np.sqrt((ISA_trop(h)[2])/rho0)
-        drhodH = (y/T0)*((g/(2*R*y))+1/2)*((1+y*h/T0)**(g/(2*R*y)-1/2))
-        dVdH = Veas*drhodH
-        #append values to list
-        Pa.append(T*V[i])
-        Pr.append(D*V[i])
-        Vr.append(V[i])
-        DVDH.append(dVdH)
-    Pa       = np.array(Pa)
-    Pr       = np.array(Pr)
-    Vr       = np.array(Vr)
-    DVDH     = np.array(DVDH)
-    ROC_st   = (Pa-Pr)/MTOW
-    ROC_unst = ROC_st/(1+Vr*DVDH/g)*196.85
-    plt.plot(Vr,ROC_unst)
-    return ROC_unst
-
-'''
-altitude = np.arange(0,40000,5000)
-
-
-for j in range(len(altitude)):
-    ROC_unst_f(0.3048*altitude[j])
-
-
-
-    
-plt.grid(True)
-plt.ylabel('ROC [ft/min]')
-plt.xlabel('Velocity [m/s]')    
-plt.show()
-'''
-
-
-
 # Thrust function with interpolation
 
 Altitude = np.arange(0,13000,1000)
@@ -196,7 +103,7 @@ Values   = 1*np.array([[130983.30,	93336.08,67645.75,	50789.30],
                      [44974.74,	33673.71	,26141.89,	21070.06],
                      [38392.90,	28740.28,	22306.38,	18085.59]])
 
-Thrustf = sp.interp2d(Mach,Altitude,Values,kind='cubic')
+Thrustf = sp.interp2d(Mach,Altitude,Values,kind='linear')
 # TSFC function with interpolation
 Altitude = np.arange(0,16000,4000)
 Mach     = np.arange(0,1,0.5)
@@ -207,7 +114,7 @@ Values   = (10**-6)*np.array([[5.1996, 10.07987],
 
 TSFCf    = sp.interp2d(Mach,Altitude,Values,kind='linear')
 
-step = 500*0.3048 #ft
+step = 1000*0.3048 #ft
 altitude = np.arange(0*0.3048,40000*0.3048,step)
 
 def ROC_st_true(h,MTOW):
@@ -280,12 +187,14 @@ def ROC_st_true(h,MTOW):
         # fuel weight reduction
         
         
-        Macr = Vr/ISA_trop(height)[3]
-        TSFC = TSFCf(Macr,h)[i]
-        FW2  = 9.81*TSFC[np.where(ROC_st == np.amax(ROC_st))[0]][0]*Tr[np.where(ROC_st == np.amax(ROC_st))[0]][0]*step/(np.amax(ROC_st)/196.85)
-        #FW   = 9.81*TSFc*Tr[np.where(ROC_st == np.amax(ROC_st))[0]][0]*step/(np.amax(ROC_st)/196.85)
+        Macr          = Vr/ISA_trop(height)[3]    # mach numbers for 
+        TSFC          = TSFCf(Macr,h)[i]
+        TSFCrocmax    = TSFC[np.where(ROC_st == np.amax(ROC_st))[0]][0]
+        Trocmax       = Tr[np.where(ROC_st == np.amax(ROC_st))[0]][0]
+        time_to_climb = step/(np.amax(ROC_st)/196.85)
+        FW  = 9.81*TSFCrocmax*Trocmax*time_to_climb
         
-        MTOW = MTOW - FW2
+        MTOW = MTOW - FW
         #print(Tr[np.where(ROC_st == np.amax(ROC_st))[0]][0] ,np.amax(ROC_st) )
         '''
         if height == 30000*0.3048:
