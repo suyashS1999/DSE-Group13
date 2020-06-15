@@ -6,17 +6,17 @@ Created on Thu Jun 11 15:15:46 2020
 @author: youssef
 """
 import numpy as np
-hscr = 50*0.3048    # screen height [m]
-G    = 9.81
-mu_free  = 0.03  # friction coefficient free rolling (0.03-0.05)
-mu_brake =  0.3  # friction coefficient braking (0.3-0.5)
+hscr       = 50*0.3048    # screen height [m]
+G          = 9.81
+mu_free    = 0.03  # friction coefficient free rolling (0.03-0.05)
+mu_brake   =  0.3  # friction coefficient braking (0.3-0.5)
 CLmaxland  = 2.4
-MTOW = 73593.64093*9.81        # maximum take off weight [N]
-MLW = 0.98*MTOW
-rho = 1.225 
-g   = 9.81
-S = 150.7210057
-CD0 = 0.02005                 # zero lift drag coefficient
+MTOW       = 79584.74877*9.81        # maximum take off weight [N]
+MLW        = 0.98*MTOW
+rho        = 1.225 
+g          = 9.81
+S          = 150.865002
+CD0clean = 0.019482                # zero lift drag coefficient
 # estimate drag contribution due to flap deflection
 
 Rf = 0.25   # flap chord/wing chord
@@ -32,7 +32,7 @@ deltaCDflap = delta1*delta2*Sflap_to_Sref
 
 # ground effect
 
-k    = 0.046881         # 1/(pi*AR*eto) from simulation
+k    = 0.044698         # 1/(pi*AR*eto) from simulation
 b    = 50.61874255      # wing span [m]
 df   = 4.2              # fuselage diameter [m]
 hlg  = 1.9              # clearance between surface and bottom fuselage due to landing gear [m]
@@ -62,7 +62,7 @@ Sa  = (hscr-hf)/np.tan(np.radians(theta_app))
 # FLARE DISTANCE
 Vfr = Vapp
 
-Sf  = 0.1512*(Vsland**2)*np.sin(np.radians(theta_app))
+Sf  = R*np.sin(np.radians(theta_app))
 # FREE-ROLL DISTANCE
 Vtd = 1.1*Vsland
 
@@ -77,14 +77,19 @@ CDiOGE = k*(CLbr**2)
 h      = df + hlg
 ge     = 1 - (1-1.32*h/b)/(1.05+7.4*h/b)
 CDiIGE = ge*CDiOGE
-CDbr  = CD0 + CDiIGE + deltaCDflap
+CDbr  = CD0clean + CDiIGE + deltaCDflap
 Lg     = 1/2*rho*(Vg**2)*CLbr*S
 Dg     = 1/2*rho*(Vg**2)*CDbr*S
-Tg     = 0  # thrust at Vbr/sqrt(2) assumed to be zero
-mugnd  = 0.05         # ground friction coefficient 0.03-0.05 brakes off, otherwise 0.3-0.5 with braking
+Tg     = 0            # thrust at Vbr/sqrt(2) assumed to be zero
+mugnd  = 0.3         # ground friction coefficient 0.03-0.05 brakes off, otherwise 0.3-0.5 with braking
 
 Sg     = -(Vbr**2)*MLW/(2*g*(Tg-Dg-mu_brake*(MLW-Lg)))
 
 
 Sland= Sg + Sfr + Sf + Sa
 
+print("Sa = ",Sa," m")
+print("Sf = ",Sf," m")
+print("Sfr = ",Sfr," m")
+print("Sg = ",Sg," m")
+print("Sland = ",Sland," m")
