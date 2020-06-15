@@ -39,7 +39,7 @@ class ExtractData_OpenVSP():
 		self.Sort_LoadDistribution();
 
 	# ------------------- Functions -------------------
-	def plot_Polars(self):
+	def plot_Polars(self, CD0):
 		""" Function to plot the polars from the data
 		Output:
 			fig = plot of the polars
@@ -49,14 +49,13 @@ class ExtractData_OpenVSP():
 			if name.startswith(self.file_types[0][1:]):
 				alpha = self.Polar_Dict[name]["AoA"];
 				CL = self.Polar_Dict[name]["CL"];
-				CDtot = self.Polar_Dict[name]["CDtot"];
-				L_D = self.Polar_Dict[name]["L/D"];
+				CDtot = self.Polar_Dict[name]["CDi"] + CD0;
 				Cm = self.Polar_Dict[name]["CMy"];
 				centre_press = Cm*self.C_ref/CL + self.X_cg;
 
 				label = name[len(self.file_types[0][1:]) :];
 				ax1 = plt.subplot(2, 2, 1);									ax2 = plt.subplot(2, 2, 2);
-				ax1.plot(alpha, CL, label = label);							ax2.plot(alpha, Cm, label = label);		ax2.plot(alpha, centre_press, label = "Centre of pressure");
+				ax1.plot(alpha, CL, label = label);							ax2.plot(alpha, Cm, label = label);
 				ax1.set_xlabel("alpha [degrees]");							ax2.set_xlabel("alpha [degrees]");
 				ax1.set_ylabel("CL [-]");									ax2.set_ylabel("Cm [-]");
 				ax1.grid(True);												ax2.grid(True);
@@ -101,7 +100,7 @@ class ExtractData_OpenVSP():
 		self.C_ref = self.subDict[secDict["AoA_"]]["Cref_"]; self.X_cg = self.subDict[secDict["AoA_"]]["Xcg_"];
 
 
-	def plot_LoadDistribution(self, AOA, write_dir, write_dir1):
+	def plot_LoadDistribution(self, AOA, CD0, write_dir, write_dir1):
 		""" Function to plot the Lift and Drag distribution over 
 		the wing from the data
 		Output:
@@ -115,11 +114,11 @@ class ExtractData_OpenVSP():
 				for i in range(len(self.subDict)):
 					alpha = float(list(self.subDict)[i]);
 					CL = asarray(self.subDict[alpha]["Cl"])*asarray(self.subDict[alpha]["Chord"])/asarray(self.subDict[alpha]["Cref_"]);
-					CD = asarray(self.subDict[alpha]["Cd"])*asarray(self.subDict[alpha]["Chord"])/asarray(self.subDict[alpha]["Cref_"]);
+					CD_i = asarray(self.subDict[alpha]["Cd"])*asarray(self.subDict[alpha]["Chord"])/asarray(self.subDict[alpha]["Cref_"]);
 					Cm = asarray(self.subDict[alpha]["Cmy"])*asarray(self.subDict[alpha]["Chord"])/asarray(self.subDict[alpha]["Cref_"]);
 					span = asarray(self.subDict[alpha]["Yavg"]);
 					sort_idx = argsort(span);
-					span = span[sort_idx];		CL = CL[sort_idx];		CD = CD[sort_idx];		Cm = Cm[sort_idx];
+					span = span[sort_idx];		CL = CL[sort_idx];		CD = CD_i[sort_idx] + CD0;		Cm = Cm[sort_idx];
 					Centre_pressure = self.subDict[alpha]["Xcg_"] - Cm/CL*self.subDict[alpha]["Chord"];
 					if alpha == AOA:
 						if c == 0: CL_w = span; Cm_w = span; c += 1;
@@ -146,7 +145,7 @@ class ExtractData_OpenVSP():
 		return 0;
 
 
-	def Cm_CL_alpha_calc(self):
+	def Cm_CL_alpha_calc(self, CD0):
 		""" Function to compute the Cm-alpha and CL-alpha curves.
 		It uses linear regression to compute the curves. The precision is input does
 		not need to be changed
@@ -157,7 +156,7 @@ class ExtractData_OpenVSP():
 			if name.startswith(self.file_types[0][1:]):
 				alpha = self.Polar_Dict[name]["AoA"];
 				CL = self.Polar_Dict[name]["CL"];
-				CD = self.Polar_Dict[name]["CDtot"];
+				CD = self.Polar_Dict[name]["CDi"] + CD0;
 				Cm = self.Polar_Dict[name]["CMy"];
 				idx = asarray(range(0, len(alpha), 1));
 				alpha_i = alpha[idx];
@@ -195,9 +194,10 @@ write_dir1 = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\troquedistribu
 #%% ------------------- Main -------------------
 vsp_data = ExtractData_OpenVSP(dir);
 AOA = 14;
-vsp_data.plot_Polars();
-vsp_data.plot_LoadDistribution(AOA, write_dir, write_dir1);
-vsp_data.Cm_CL_alpha_calc();
+CD0 = 0.01183;
+vsp_data.plot_Polars(CD0);
+vsp_data.plot_LoadDistribution(AOA, CD0, write_dir, write_dir1);
+vsp_data.Cm_CL_alpha_calc(CD0);
 plt.show();
 
 
