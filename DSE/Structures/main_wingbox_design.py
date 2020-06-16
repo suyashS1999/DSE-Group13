@@ -37,7 +37,7 @@ tau_allow = 200*10**6
 #wingbox dimensions
 wingbox_start = 0.15
 wingbox_end = 0.60
-wingbox_height = 0.685 #h/t_airfoil
+wingbox_height = 0.78 #h/t_airfoil
 n_stations = 10
 
 #design parameters
@@ -55,8 +55,8 @@ print("Design Inputs are:")
 print("stiffener configuration top",n_stif_top)
 print("stiffener configuration bot",n_stif_bot)
 
-A_stif = 0.002*0.05*0.04
-A_spar_cap = 0.002*0.07*0.05
+A_stif = 0.003*0.05*0.04
+A_spar_cap = 0.005*0.07*0.05
 
 #load case
 #Mx = np.array([500000,200000,10000])
@@ -174,7 +174,7 @@ t_arr[0,:] = t_top;
 t_arr[1,:] = t_bot;
 t_arr[2,:] = t_spar;
 tau_max = Compute_sect_maxShear(V, T, tau_allow, t_inboard, c, t_arr, n_stif_top, n_stif_bot, A_stif, A_spar_cap, iter = False);
-print(tau_max);
+#print(tau_max);
 
 #vonmises
 #vonmises_top = calc_vonmises(sigma_top,tau_max)
@@ -187,11 +187,11 @@ Fuelvolume = calc_fuelvolume(c,h,wingspan,airfoilchange)
 
 #print outputs
 print()
-#print("wingbox widths =",np.round(c,2))
-#print("spanwise station locations =",b)
-#print("centroid =", centroid)
-#print("Ixx, Izz =", Ixx, Izz)
-#print("Internal Moment =", Mx)
+print("wingbox widths =",np.round(c,2))
+print("spanwise station locations =",b)
+print("centroid =", centroid)
+print("Ixx, Izz =", Ixx, Izz)
+print("Internal Moment =", Mx)
 print("Normal Stress Top Skin [MPa]",np.round(sigma_top/10**6))
 print("Normal Stress Bottom Skin [MPa]",np.round(sigma_bot/10**6))
 print("Wingbox mass =",round(Mass_wingbox),"kg (halfwing)")
@@ -238,9 +238,9 @@ ax4 = plt.subplot(2, 2, 4)
 ax4.set_ylabel("Max Shear Stress [MPa]")
 ax4.set_xlabel("Span [m]")
 #ax4.plot(b, tau_max[:, 0]/10**6, "r", label = "Maximum Shear Stress")
-ax4.plot(b, tau_max[:, 1]/10**6, "r", label = "Maximum Shear Stress top skin")
-ax4.plot(b, tau_max[:, 2]/10**6, "g", label = "Maximum Shear Stress spar")
-ax4.plot(b, tau_max[:, 3]/10**6, "b", label = "Maximum Shear Stress bottom skin")
+ax4.plot(b, tau_max[:, 1]/10**6, "r", label = "Top Skin")
+ax4.plot(b, tau_max[:, 2]/10**6, "g", label = "Spar")
+ax4.plot(b, tau_max[:, 3]/10**6, "b", label = "Bottom Skin")
 ax4.grid()
 #ax4.set_yticks(arange(-500, 500, 100))
 ax4.tick_params(axis='y')
