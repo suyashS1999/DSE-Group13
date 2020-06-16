@@ -14,12 +14,13 @@ rho_inf = 1.225             #Rho at cruise [m3/kg]
 M = 0.2                     #Mach number [-]
 c = 340.3                   #Speed of sound [m/s]
 dynamic_visc = 1.84e-5      #Dynamic viscosity in the Netherlands at Schiphol[kg/(ms)]
-flapped_area = 0.72 #percent
-Af = 0.1625*Aw                     #Total flap area [m2]
-bf = flapped_area*bw                       #Total flap span [m]
+flapped_area = 0.50 #percent
+Af = 0.25*flapped_area*Aw                     #Total flap area [m2]
+bf = 23                       #Total flap span [m]
 df = HLD.TE_HLDs[TE_HLD][1] #Flap deflection angle [deg]
-d = 1                       #Wheel diameter [m]
-n_main = 4                  #Number of wheels [-]
+d_main = 1.1684                       #Wheel diameter [m]
+d_nose = 0.762                       #Wheel diameter [m]
+n_main = 2                  #Number of wheels [-]
 n_nose = 2                  #Number of wheels [-]
 
 phi = 0                         #Azimuthal directivity angle [deg]
@@ -33,17 +34,17 @@ for i in range(len(thetal)):
     theta = thetal[i]
     theta = np.array([theta])
 
-    G_cleanwing = geometry_func(Aw,bw,rho_inf,M,c,dynamic_visc,df,n_main,d,"Clean wing")
-    G_slats = geometry_func(Aw,bw,rho_inf,M,c,dynamic_visc,df,n_main,d,"Slats")
-    G_flaps = geometry_func(Af,bw,rho_inf,M,c,dynamic_visc,df,n_main,d,"Flaps")
-    G_mainlg = geometry_func(Aw,bw,rho_inf,M,c,dynamic_visc,df,n_main,d,"Main landing gear")
-    G_noselg = geometry_func(Aw,bw,rho_inf,M,c,dynamic_visc,df,n_nose,d,"Main landing gear")
+    G_cleanwing = geometry_func(Aw,bw,rho_inf,M,c,dynamic_visc,df,n_main,d_main,"Clean wing")
+    G_slats = geometry_func(Aw,bw,rho_inf,M,c,dynamic_visc,df,n_main,d_main,"Slats")
+    G_flaps = geometry_func(Af,bw,rho_inf,M,c,dynamic_visc,df,n_main,d_main,"Flaps")
+    G_mainlg = geometry_func(Aw,bw,rho_inf,M,c,dynamic_visc,df,n_main,d_main,"Main landing gear")
+    G_noselg = geometry_func(Aw,bw,rho_inf,M,c,dynamic_visc,df,n_nose,d_nose,"Main landing gear")
 
-    L_cleanwing = length_scale(G_cleanwing,bw,Aw,d,"Clean wing")
-    L_slats = length_scale(G_slats,bw,Aw,d,"Slats")
-    L_flaps = length_scale(G_flaps,bf,Af,d,"Flaps")
-    L_mainlg = length_scale(G_mainlg,bf,Af,d,"Main landing gear")
-    L_noselg = length_scale(G_noselg,bf,Af,d,"Main landing gear")
+    L_cleanwing = length_scale(G_cleanwing,bw,Aw,d_main,"Clean wing")
+    L_slats = length_scale(G_slats,bw,Aw,d_main,"Slats")
+    L_flaps = length_scale(G_flaps,bf,Af,d_main,"Flaps")
+    L_mainlg = length_scale(G_mainlg,bf,Af,d_main,"Main landing gear")
+    L_noselg = length_scale(G_noselg,bf,Af,d_nose,"Main landing gear")
 
     K_cleanwing = constants_Ka("Clean wing",n_main)[0]
     a_cleanwing = constants_Ka("Clean wing",n_main)[1]
@@ -87,7 +88,7 @@ for i in range(len(thetal)):
     pe_sq_mainlg = pe_squared(rho_inf,c,P_mainlg,D_mainlg,F_mainlg,r,M,theta)
     pe_sq_noselg = pe_squared(rho_inf,c,P_noselg,D_noselg,F_noselg,r,M,theta)
 
-    pe_sq[:,i] = (pe_sq_cleanwing + pe_sq_slats + pe_sq_flaps + 2*pe_sq_mainlg + pe_sq_noselg)[0]
+    pe_sq[:,i] = (pe_sq_cleanwing + pe_sq_slats + pe_sq_flaps + 2*pe_sq_mainlg + 3*pe_sq_noselg)[0]
 
 print(pe_sq)
 print(pe0**2)
