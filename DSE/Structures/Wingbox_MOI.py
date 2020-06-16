@@ -36,13 +36,13 @@ def calc_MOI(c, h, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_
 	# I_xx consists of 4 parts: spars (1), skin plates (2), stiffeners (3), spar caps (4)
 
 	I_xx1 = 2 * 1/12*t_spar*h**3
-	#print (I_xx1)
+	print ("MOI spars",I_xx1)
 	I_xx2 = 1/12*c*t_top**3 + c*t_top*(h/2-centroid)**2 + 1/12*c*t_bot**3 + c*t_bot*(-h/2-centroid)**2
-	#print (I_xx2)
+	print ("MOI skins",I_xx2)
 	I_xx3 = n_stif_top * A_stif*(h/2-centroid)**2 + n_stif_bot * A_stif*(-h/2-centroid)**2
-	#print (I_xx3)
+	print ("MOI stiffeners",I_xx3)
 	I_xx4 = 2 * A_spar_cap*(h/2-centroid)**2 + 2 * A_spar_cap*(-h/2-centroid)**2
-	#print (I_xx4)
+	print ("MOI sparcaps",I_xx4)
 
 	Ixx = I_xx1 + I_xx2 + I_xx3 + I_xx4
 

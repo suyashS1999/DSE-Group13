@@ -43,8 +43,8 @@ n_stations = 10
 #design parameters
 #/!\ make sure each array contains n_station values
 
-t_top = np.array([0.0005,0.0005,0.001,0.0015,0.002,0.0015,0.0005,0.0025,0.0015,0.0010])
-t_bot = np.array([0.001,0.0025,0.0025,0.0025,0.0025,0.0025,0.0015,0.0015,0.0005,0.0005])
+t_top = np.array([0.0005,0.001,0.002,0.003,0.004,0.003,0.0005,0.005,0.003,0.002])
+t_bot = np.array([0.001,0.005,0.005,0.005,0.005,0.005,0.0015,0.003,0.001,0.001])
 t_spar = np.array([0.002,0.003,0.004,0.005,0.005,0.004,0.003,0.002,0.001,0.001])
 
 n_stif_top = np.array([4,4,4,4,4,4,4,21,17,11])
@@ -90,6 +90,12 @@ def calc_sigma(Mx,Ixx,z):
 	"""
 	sigma = Mx*z/Ixx
 	return sigma
+
+def calc_torsionalstif(c,h,t_spar,t_top,t_bot):
+	t_skin = (t_top+t_bot)/2
+	J = 2*t_spar*t_skin*(c-t_spar)**2*(h-t_skin)**2/(c*t_spar+h*t_skin-t_spar**2-t_skin**2)
+	J_total = np.average(J)
+	return J_total
 
 def calc_buckling(n_stations, c, n_stif_top, n_stif_bot, t_top, t_bot, sigma_top, sigma_bot, E, v):
 	"""
@@ -182,6 +188,7 @@ tau_max = Compute_sect_maxShear(V, T, tau_allow, t_inboard, c, t_arr, n_stif_top
 
 #buckling,mass and volume
 buckling = calc_buckling(n_stations, c, n_stif_top, n_stif_bot, t_top, t_bot, sigma_top, sigma_bot, E, v)
+J = calc_torsionalstif(c,h,t_spar,t_top,t_bot)
 Mass_wingbox = calc_mass(c, h, wingspan, n_stations, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_cap, rho_material)
 Fuelvolume = calc_fuelvolume(c,h,wingspan,airfoilchange)
 
@@ -191,9 +198,10 @@ print("wingbox widths =",np.round(c,2))
 print("spanwise station locations =",b)
 print("centroid =", centroid)
 print("Ixx, Izz =", Ixx, Izz)
-print("Internal Moment =", Mx)
+#print("Internal Moment =", Mx)
 print("Normal Stress Top Skin [MPa]",np.round(sigma_top/10**6))
 print("Normal Stress Bottom Skin [MPa]",np.round(sigma_bot/10**6))
+print("Torsional Stiffness =",J,"[m^4]")
 print("Wingbox mass =",round(Mass_wingbox),"kg (halfwing)")
 print("Fuel Volume =",round(Fuelvolume,1),"m^3 (halfwing)")
 
