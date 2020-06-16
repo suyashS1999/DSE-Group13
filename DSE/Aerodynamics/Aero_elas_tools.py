@@ -132,7 +132,7 @@ def B_matrix(c,half_span,aw,e,M_theta_dot):
 	
 	B = np.zeros((2,2))
 	B[0,0] = (c*half_span*aw)/10
-	B[1,0] = -((c**2)*half_span*e*aw)/8
+	B[1,0] = -((c**2)*half_span*e*c*aw)/8
 	B[1,1] = -((c**3)*half_span*M_theta_dot)/24
 
 	return B
@@ -141,7 +141,7 @@ def C_matrix(c,half_span,aw,e):
 	C = np.zeros((2,2))	
 	
 	C[0,1] = (c*half_span*aw)/8
-	C[1,1] = -((c**2)*half_span*e*aw)/6
+	C[1,1] = -((c**2)*half_span*e*c*aw)/6
 	
 	return C
 
