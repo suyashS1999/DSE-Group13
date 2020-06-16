@@ -9,9 +9,9 @@ import numpy as np
 
 x = sym.Symbol("x")
 lmb = sym.Symbol("t")
-V = 10
+V = 80
 rho = 1.225
-s= aero.half_span
+s= 7.5  #aero.half_span
 
 mu = (aero.GJ* (s**2))/((s**2)*4*aero.EI)
 
@@ -31,13 +31,25 @@ check = B.det()
 check = check.expand()
 
 
-b4 = check.coeff(lmb**4)
-b3 = check.coeff(lmb**3)
-b2 = check.coeff(lmb**2) + check.coeff(x).coeff(lmb**2)
-b1 = check.coeff(lmb) + check.coeff(lmb).coeff(x)
-b0 = check.coeff(lmb**0) 
+b4 = check.coeff(lmb,n=4)
+b3 = check.coeff(lmb,n=3)
+b2 = check.coeff(lmb,n=2)#+ check.coeff(x).coeff(lmb**2)
+b1 = check.coeff(lmb,n =1)
+b0 = check.coeff(lmb,n=0)
 
 result = (b4*(b1**2)) - (b1*b2*b3) + (b0*(b3**2))
 
 
 sol = sym.solve(result)
+
+
+# E = aero.E_mat
+
+# tryy = E[0,0]/abs(sol[0])
+# V_crit_1 = sym.sqrt(tryy)
+
+# V_crit_2 = sym.sqrt(E[1,1]/(mu*np.absolute(sol[1])))
+
+# V_crit_3 = sym.sqrt(E[0,0]/abs(sol[1]))
+
+# V_crit_4 = sym.sqrt(E[1,1]/(mu*np.absolute(sol[0])))

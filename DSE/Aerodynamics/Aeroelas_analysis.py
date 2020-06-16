@@ -13,40 +13,40 @@ from Aero_tools import *
 
 
 
-c = inp.MAC[0]    # Mean chord  
+c = 2  #inp.MAC[0]    # Mean chord  
 e = 0.25 # distance between ac line and elastic line
-half_span = inp.span/2  # half span
-half_area = inp.S*0.5
-sweep_half = sweep_x(0.5,inp.sweep_LE,inp.C_r_m,inp.C_t_m,inp.span) # radians
-y_a = 16
-x_f = 0.5*c
+half_span = 7.5 #inp.span/2  # half span
+half_area = 15 #inp.S*0.5
+# sweep_half = sweep_x(0.5,inp.sweep_LE,inp.C_r_m,inp.C_t_m,inp.span) # radians
+# y_a = 16
+x_f = 0.48*c
 m = 200# mass/area
 M_theta_dot = -1.2
 
 
 
-CL_alp = CL_alpha_DATCOM(inp.AR,inp.M_cruise,inp.a0_full,sweep_half) #wing life slope
-GJ = 2e7
-EI = 2e7
+# CL_alp = CL_alpha_DATCOM(inp.AR,inp.M_cruise,inp.a0_full,sweep_half) #wing life slope
+GJ = 2e6#26e9 * 0.0004824464440907317 
+EI = 2e7#72e9 
 
 
-E_f = 0.3  #control_chord/total_chord
-rho = inp.rho_cruise
-cl_a = inp.a0_full
-cm_d = tool.cm_d(cl_a,E_f)
-cl_d = tool.cl_d(cl_a,E_f)
+# E_f = 0.3  #control_chord/total_chord
+rho = 1.225#inp.rho_cruise
+cl_a = 2*np.pi #inp.a0_full
+# cm_d = tool.cm_d(cl_a,E_f)
+# cl_d = tool.cl_d(cl_a,E_f)
 
 
 
-v_div_str = (tool.diverg_speed_straight(CL_alp,GJ,rho,e,c,half_span))
+# v_div_str = (tool.diverg_speed_straight(CL_alp,GJ,rho,e,c,half_span))
 
-q_d = tool.diverg_q_v2(GJ,EI,half_span,e,CL_alp,c,sweep_half)
+# q_d = tool.diverg_q_v2(GJ,EI,half_span,e,CL_alp,c,sweep_half)
 
-crit_sweep = tool.crit_sweep(EI,GJ,e,c,half_span)
+# crit_sweep = tool.crit_sweep(EI,GJ,e,c,half_span)
 
-verifi = v_div_str - tool.diverg_q_v2(GJ,EI,half_span,e,CL_alp,c,0)
+# verifi = v_div_str - tool.diverg_q_v2(GJ,EI,half_span,e,CL_alp,c,0)
 
-V_inf = np.linspace(1,370,1000)
+V_inf = np.linspace(1,100,1000)
 
 
 # ail_eff_full_s = tool.aileron_eff_full(rho,V_inf,CL_alp,q_d,K_th,cm_d,cl_d,c,half_area,sweep_half)
@@ -55,7 +55,7 @@ lamb = tool.lamb(rho,V_inf,e,c,cl_a,GJ)
 
 # ail_eff_str_wing = tool.aileron_eff_act(lamb,half_span,y_a,e,cl_a,cl_d,c,cm_d)
 
-ail_eff_v2 = tool.aileron_eff_new(lamb,half_span,c,cm_d,cl_d,e,cl_a)
+# ail_eff_v2 = tool.aileron_eff_new(lamb,half_span,c,cm_d,cl_d,e,cl_a)
 
 dummy_1 = np.zeros((2,2))
 I_dummy = np.eye(2)
@@ -108,15 +108,15 @@ for i in range(len(V_inf)):
 # plt.legend()
 # plt.grid()
 
-# plt.figure()
-# plt.subplot(2,1,1)
-# plt.plot(V_inf,damp,label="Okeii")
-# plt.xlabel("V_inf")
-# plt.ylabel("Damping Ratio [%]")
-# plt.legend()
-# plt.subplot(2,1,2)
-# plt.plot(V_inf,freq)
-# plt.xlabel("V_inf")
-# plt.ylabel("Frequency")
-# plt.title("Negative")
+plt.figure()
+plt.subplot(2,1,1)
+plt.plot(V_inf,damp,label="Okeii")
+plt.xlabel("V_inf")
+plt.ylabel("Damping Ratio [%]")
+plt.legend()
+plt.subplot(2,1,2)
+plt.plot(V_inf,freq)
+plt.xlabel("V_inf")
+plt.ylabel("Frequency")
+plt.title("Negative")
 
