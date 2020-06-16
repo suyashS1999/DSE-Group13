@@ -100,13 +100,12 @@ class ExtractData_OpenVSP():
 		self.C_ref = self.subDict[secDict["AoA_"]]["Cref_"]; self.X_cg = self.subDict[secDict["AoA_"]]["Xcg_"];
 
 
-	def plot_LoadDistribution(self, AOA, CD0, write_dir, write_dir1):
+	def plot_LoadDistribution(self, AOA, CD0, write_dir, write_dir1, write = False):
 		""" Function to plot the Lift and Drag distribution over 
 		the wing from the data
 		Output:
 			fig = plot of the distribution
 		"""
-		w_file = open(write_dir, mode = "w");
 		c = 0;
 		for name in (self.names):
 			if name.startswith(self.file_types[1][1:]):
@@ -140,8 +139,9 @@ class ExtractData_OpenVSP():
 
 					ax1.legend(loc = "upper right");
 					ax2.legend(loc = "upper right");
-		savetxt(write_dir, CL_w);
-		savetxt(write_dir1, Cm_w);
+		if write == True:
+			savetxt(write_dir, CL_w);
+			savetxt(write_dir1, Cm_w);
 		return 0;
 
 
@@ -194,7 +194,7 @@ write_dir1 = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\troquedistribu
 #%% ------------------- Main -------------------
 vsp_data = ExtractData_OpenVSP(dir);
 AOA = 14;
-CD0 = 0.01115;
+CD0 = 0.01111;
 vsp_data.plot_Polars(CD0);
 vsp_data.plot_LoadDistribution(AOA, CD0, write_dir, write_dir1);
 vsp_data.Cm_CL_alpha_calc(CD0);

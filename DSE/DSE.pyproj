@@ -161,6 +161,15 @@
     <Content Include="Aerodynamics\NASA SC%282%29-0410.dat" />
     <Content Include="Aerodynamics\NASA SC%282%29-0414.dat" />
     <Content Include="Aerodynamics\NASA SC%282%29-0606.dat" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_Cruise.adb" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_Cruise.adb.cases" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_Cruise.csv" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_Cruise.fem" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_Cruise.group.1" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_Cruise.history" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_Cruise.lod" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_Cruise.polar" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_Cruise.vspaero" />
     <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_Wing.adb" />
     <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_Wing.adb.cases" />
     <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_Wing.csv" />

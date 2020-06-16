@@ -173,7 +173,7 @@ t_arr = zeros((3, n_stations));
 t_arr[0,:] = t_top;
 t_arr[1,:] = t_bot;
 t_arr[2,:] = t_spar;
-tau_max = Compute_sect_maxShear(V, T, tau_allow, t_inboard, c, t_arr, n_stif_top, n_stif_bot, A_stif, A_spar_cap, iter = False);
+tau_max = Compute_sect_maxShear(V, T, tau_allow, h, c, t_arr, n_stif_top, n_stif_bot, A_stif, A_spar_cap, iter = False);
 #print(tau_max);
 
 #vonmises
