@@ -8,14 +8,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 #%% ---------------------- Constants ----------------------
-from Loading_diagram import cg_frw, cg_aft, xlemac, lmac
-cg_aft = cg_aft
-cg_frw = cg_frw
+from Loading_diagram import cg_frw, cg_aft, xlemac, lmac, cg_frw_mac, cg_aft_mac
+frw = cg_frw_mac
+aft = cg_aft_mac
 ymac = 11.01426343              #y position of mac from fuselage centre line [m]
 Lamda_LE = 0.5235987756         #sweep angle LE [rad]
 CL_cru = 0.4890523925               #CL during cruise [-]
 CL_app = 2.4               #CL during approach [-]
-S = 150.8519904                       #Surface area wing
+S = 150.7                       #Surface area wing
 
 #l_t = 42.6-6*0.75-1-xlemac+0.3 
 AR = 17
@@ -31,9 +31,9 @@ CL_alpha_Ah_app = 0.066582*180/np.pi    # lift coeff gradient of aircraft-lessta
 CL_alpha_Ah_cru = 0.089685*180/np.pi    # lift coeff gradient of aircraft-lesstail during cruise [/rad] VSP
 CL_alpha_h_app = 2.94719                # lift coeff gradient of horizontal tail during approach [/rad] DATCOM
 CL_alpha_h_cru = 3.28587154             # lift coeff gradient of horizontal tail during approach [/rad] DATCOM
-Vh_V = 0.95                                # efficiency factor of H tail (or 1 if we opt for T-tail) [-]
+Vh_V = np.sqrt(0.95)                             # efficiency factor of H tail (or 1 if we opt for T-tail) [-]
 
-Sh_S = 0.115
+Sh_S = 0.12
 mu1 = 0.213
 mu2 = 0.38
 mu3 = 0.048
@@ -47,7 +47,7 @@ l_fn = 1.212 + xlerc
 b_f = 3.9
 h_f = 4.27
 lamda = 0.44
-x_ac_w_app = 0.45
+x_ac_w_app = 0.3
 x_ac_w_cru = 0.4
 x_ac_f_app = (-1.8/CL_alpha_Ah_app)*b_f*h_f*l_fn/(S*lmac) + 0.273/(1+lamda)*b_f*S/b*(b-b_f)/(lmac**2*(b+2.15*b_f))*np.tan(Lamda_qc)
 x_ac_f_cru = (-1.8/CL_alpha_Ah_cru)*b_f*h_f*l_fn/(S*lmac) + 0.273/(1+lamda)*b_f*S/b*(b-b_f)/(lmac**2*(b+2.15*b_f))*np.tan(Lamda_qc)
@@ -115,23 +115,22 @@ def Cm_flaps():
 #Cm_ac_app = +0.177053 - Cm_flaps()                   # pitching moment coefficient at aero-centre during approach [-]
 #Cm_ac_cru = -0.278472                   # pitching moment coefficient at aero-centre during approach [-]
 #counter clockwise positive!
-Cm_ac_app = -0.0746*1.5 - 0.2457 + Cm_flaps()   #wing contribution + fuselage contribution + flaps contribution to Cm around ac during cruise
-Cm_ac_cru = -0.0746*1.5 - 0.1148                #wing contribution + fuselage contribution to Cm around ac during cruise
-#Cm_ac_cru = -
+Cm_ac_app = -0.0746 - 0.2457 + Cm_flaps()   #wing contribution + fuselage contribution + flaps contribution to Cm around ac during cruise
+Cm_ac_cru = -0.0746 - 0.1148                #wing contribution + fuselage contribution to Cm around ac during cruise
 
 
 downwash = downwash_tail(2.7)                            #No disturbance from wing downwash (d epsilon/ d alpha = 0) [-]
 #downwash = 0
 
-CL_h_app = -0.505
-CL_h_cru = req_CLh()[1][0]
+CL_h_app = -0.505 #maximum negative lift h tail can deliver (dependant on AR, from SEAD)
+CL_h_cru = -0.505
 #CL_h_app, CL_h_cru = max(CL_h_app, key=abs), max(CL_h_cru, key=abs)
 
 l_fn = 1.212 + xlerc
-b_f = 3.8
-h_f = 4.27
+b_f = 3.92
+h_f = 4.37
 lamda = 0.44
-x_ac_w_app = 0.45
+x_ac_w_app = 0.35
 x_ac_w_cru = 0.4
 x_ac_f_app = (-1.8/CL_alpha_Ah_app)*b_f*h_f*l_fn/(S*lmac) + 0.273/(1+lamda)*b_f*S/b*(b-b_f)/(lmac**2*(b+2.15*b_f))*np.tan(Lamda_qc)
 x_ac_f_cru = (-1.8/CL_alpha_Ah_cru)*b_f*h_f*l_fn/(S*lmac) + 0.273/(1+lamda)*b_f*S/b*(b-b_f)/(lmac**2*(b+2.15*b_f))*np.tan(Lamda_qc)
@@ -141,18 +140,21 @@ xac_cru = x_ac_w_cru + x_ac_f_cru - 0.411
 l_t_app = 42.6-6*0.75-1-(xlemac + xac_app*lmac)+1                # Moment arm of horizontal tail approach [m]
 l_t_cru = 42.6-6*0.75-1-(xlemac + xac_cru*lmac)+1   # Moment arm of horizontal tail cruise [m]
 
-CL_Ah_app = CL_app
-CL_Ah_cru = CL_cru-CL_h_cru
-
+CL_Ah_app = CL_app-CL_h_app
+CL_Ah_cru = CL_cru*1.1
+CL_h_cru_ave = np.average(req_CLh()[1])
 #Cm_a = CL_alpha_Ah_app * (frw - xac_app) - CL_alpha_h_app*Sh_S*l_t/lmac
 
 #Making the plot below
 ShS = np.linspace(0, 0.4, 2)
 stablimit(ShS)
 contlimit(ShS)
-plt.legend()
-frw = (cg_frw-xlemac)/lmac
-aft = (cg_aft-xlemac)/lmac
+plt.legend(fontsize = 12, loc = 'upper left')
+plt.grid()
+plt.xlabel("CG location in X direction [MAC]", fontsize = 16)
+plt.ylabel("Sh/S [-]", fontsize = 16)
 plt.vlines(x = frw, ymin = 0, ymax = ShS[-1], linestyles = "--")
 plt.vlines(x = aft, ymin = 0, ymax = ShS[-1], linestyles = "--")
 plt.hlines(y = Sh_S, xmin = frw, xmax = aft)
+plt.xlim(-1, 2.5)
+plt.ylim(0, 0.6)
