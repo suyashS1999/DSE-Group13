@@ -30,6 +30,7 @@
     <Compile Include="Aerodynamics\BL_velocity.py" />
     <Compile Include="Aerodynamics\critical_mach_calc.py" />
     <Compile Include="Aerodynamics\Crosssection_drawer.py" />
+    <Compile Include="Aerodynamics\flutter_speed.py" />
     <Compile Include="Aerodynamics\HLDsizing.py">
       <SubType>Code</SubType>
     </Compile>
@@ -73,6 +74,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DSE.py" />
+    <Compile Include="Performance\thrust function.py" />
     <Compile Include="PlottingModule.py">
       <SubType>Code</SubType>
     </Compile>
@@ -159,6 +161,15 @@
     <Content Include="Aerodynamics\NASA SC%282%29-0410.dat" />
     <Content Include="Aerodynamics\NASA SC%282%29-0414.dat" />
     <Content Include="Aerodynamics\NASA SC%282%29-0606.dat" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_Wing.adb" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_Wing.adb.cases" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_Wing.csv" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_Wing.fem" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_Wing.group.1" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_Wing.history" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_Wing.lod" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_Wing.polar" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_Wing.vspaero" />
     <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Baseline_Cruise.adb" />
     <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Baseline_Cruise.adb.cases" />
     <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Baseline_Cruise.csv" />
