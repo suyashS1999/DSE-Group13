@@ -78,8 +78,9 @@ def IsentropicRelation(gamma, ratio_value, P_or_T_ratio):
 	return M;
 
 #%% ------------------- Input data -------------------
-f_Polars = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Aerodynamics\Polars2.txt";
-f_X = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Aerodynamics\x_col.txt";
+f_Polars = r"C:\Users\miksw\Desktop\DSE\DSE-Group13\DSE\Aerodynamics\PolarsStrut sc.txt";
+f_X = r"C:\Users\miksw\Desktop\DSE\DSE-Group13\DSE\Aerodynamics\NASA SC(2)-0010.txt";
+
 M = 0.78;				# Freestream Mach 
 p_inf = 100000.;		# Freestream staic pressure
 gamma = 1.4;			# ratio of specific heats
@@ -94,27 +95,27 @@ Cd = data[:, 1];		Cd_comp = ApplyCompressibilityCorrection(M, Cd);
 Cm = data[:, 3];		Cm_comp = ApplyCompressibilityCorrection(M, Cm);
 
 CP_i = zeros((len(X), len(AOA)));
-CP_v = zeros((len(X), len(AOA)));
+#CP_v = zeros((len(X), len(AOA)));
 for i in range(len(AOA)):
 	idx = Cp_start_idx[i];
 	CP_i[:, i] = vstack(polars[idx: idx + len(X)])[:, 0];
-	CP_v[:, i] = vstack(polars[idx: idx + len(X)])[:, 1];
+	#CP_v[:, i] = vstack(polars[idx: idx + len(X)])[:, 1];
 
-CP = CP_v;
+CP = CP_i;
 
 #%%  ------------------- Plots -------------------
 fig = plt.figure(figsize = (16, 16));
 ax1 = plt.subplot(2, 2, 1);
-ax1.plot(AOA, Cl, label = "Incompressible");
-ax1.plot(AOA, Cl_comp, 'r', label = "Compressible M =" + str(M));
-ax1.set_xlabel("alpha [degrees]");
-ax1.set_ylabel("Cl [-]");
+ax1.plot(AOA, Cl, label = "NASA SC(2)-0010 Incompressible");
+#ax1.plot(AOA, Cl_comp, 'r', label = "NASA SC(2)-0010 Compressible M =" + str(M));
+ax1.set_xlabel(r"$\alpha$ [degrees]", fontsize=16);
+ax1.set_ylabel("Cl [-]", fontsize=16);
 
 ax2 = plt.subplot(2, 2, 2);
-ax2.plot(AOA, Cd, label = "Incompressible");
-ax2.plot(AOA, Cd_comp, 'r', label = "Compressible M =" + str(M));
-ax2.set_xlabel("alpha [degrees]");
-ax2.set_ylabel("Cd [-]");
+ax2.plot(AOA, Cd, label = "NASA SC(2)-0010 Incompressible");
+#ax2.plot(AOA, Cd_comp, 'r', label = "NASA SC(2)-0010 Compressible M =" + str(M));
+ax2.set_xlabel(r"$\alpha$ [degrees]", fontsize=16);
+ax2.set_ylabel("Cd [-]", fontsize=16);
 
 ax3 = plt.subplot(2, 2, 3);
 ax3.plot(AOA, Cm, label = "Incompressible");
@@ -142,18 +143,99 @@ cp_comp = ApplyCompressibilityCorrection(M, cp);
 P_local = ComputeLocalPressure(M, cp_comp, p_inf, gamma, True);
 M_local = IsentropicRelation(gamma, P_local, "Pressure");
 
-fig = plt.figure(figsize = (16, 8));
-ax1 = plt.subplot(1, 2, 1);
-ax1.plot(X, cp, 'bx-', label = "Incompressible");
-ax1.plot(X, cp_comp, 'rx-', label = "Compressible M =" + str(M));
-ax1.invert_yaxis();
-ax1.grid(True);
-ax1.set_xlabel("x/c [-]");
-ax1.set_ylabel("Cp [-]");
+# fig = plt.figure(figsize = (16, 8));
+# ax1 = plt.subplot(1, 2, 1);
+# ax1.plot(X, cp, 'bx-', label = "Incompressible");
+# ax1.plot(X, cp_comp, 'rx-', label = "Compressible M =" + str(M));
+# ax1.invert_yaxis();
+# ax1.grid(True);
+# ax1.set_xlabel("x/c [-]");
+# ax1.set_ylabel("Cp [-]");
 
-ax2 = plt.subplot(1, 2, 2);
-ax2.plot(X, M_local, 'r');
-ax2.set_xlabel("x/c [-]");
-ax2.set_ylabel("M [-]");
+# ax2 = plt.subplot(1, 2, 2);
+# ax2.plot(X, M_local, 'r');
+# ax2.set_xlabel("x/c [-]");
+# ax2.set_ylabel("M [-]");
+# ax2.grid(True);
+#plt.show();
+
+f_Polars = r"C:\Users\miksw\Desktop\DSE\DSE-Group13\DSE\Aerodynamics\PolarsStrut.txt";
+f_X = r"C:\Users\miksw\Desktop\DSE\DSE-Group13\DSE\Aerodynamics\NACA 0012.txt";
+
+M = 0.78;				# Freestream Mach 
+p_inf = 100000.;		# Freestream staic pressure
+gamma = 1.4;			# ratio of specific heats
+
+aoa = 2;				# Specify the aoa you want to analyse
+print("Specified Angle of attack: {} degrees".format(aoa));
+polars, X, Cp_start_idx = XFLR5PolarDataextraction(f_Polars, f_X);
+data = vstack((polars)[Cp_start_idx - 1]);
+AOA = data[:, 0];
+Cl = data[:, 2];		Cl_comp = ApplyCompressibilityCorrection(M, Cl);
+Cd = data[:, 1];		Cd_comp = ApplyCompressibilityCorrection(M, Cd);
+Cm = data[:, 3];		Cm_comp = ApplyCompressibilityCorrection(M, Cm);
+
+CP_i = zeros((len(X), len(AOA)));
+#CP_v = zeros((len(X), len(AOA)));
+for i in range(len(AOA)):
+	idx = Cp_start_idx[i];
+	CP_i[:, i] = vstack(polars[idx: idx + len(X)])[:, 0];
+	#CP_v[:, i] = vstack(polars[idx: idx + len(X)])[:, 1];
+
+CP = CP_i;
+
+#%%  ------------------- Plots -------------------
+#fig = plt.figure(figsize = (16, 16));
+#ax1 = plt.subplot(2, 2, 1);
+ax1.plot(AOA, Cl, label = "NACA 0012 Incompressible");
+#ax1.plot(AOA, Cl_comp,  label = "NACA 0012 Compressible M =" + str(M));
+ax1.set_xlabel(r"$\alpha$ [degrees]", fontsize=16);
+ax1.set_ylabel("Cl [-]", fontsize=16);
+
+#ax2 = plt.subplot(2, 2, 2);
+ax2.plot(AOA, Cd, label = "NACA 0012 Incompressible");
+#ax2.plot(AOA, Cd_comp, label = "NACA 0012 Compressible M =" + str(M));
+ax2.set_xlabel(r"$\alpha$ [degrees]", fontsize=16);
+ax2.set_ylabel("Cd [-]", fontsize=16);
+
+#ax3 = plt.subplot(2, 2, 3);
+ax3.plot(AOA, Cm, label = "Incompressible");
+ax3.plot(AOA, Cm_comp, 'r', label = "Compressible M =" + str(M));
+ax3.set_xlabel("alpha [degrees]");
+ax3.set_ylabel("Cm [-]");
+
+#ax4 = plt.subplot(2, 2, 4);
+ax4.plot(Cd, Cl, label = "Incompressible");
+ax4.plot(Cd_comp, Cl_comp, 'r', label = "Compressible M =" + str(M));
+ax4.set_xlabel("Cd [-]");
+ax4.set_ylabel("Cl [-]");
+ax1.grid(True);
 ax2.grid(True);
+ax3.grid(True);
+ax4.grid(True);
+ax1.legend();
+ax2.legend();
+ax3.legend();
+ax4.legend();
+
+req_idx = where(AOA == aoa);
+cp = CP[:, req_idx].reshape(1, -1)[0];
+cp_comp = ApplyCompressibilityCorrection(M, cp);
+P_local = ComputeLocalPressure(M, cp_comp, p_inf, gamma, True);
+M_local = IsentropicRelation(gamma, P_local, "Pressure");
+
+# fig = plt.figure(figsize = (16, 8));
+# ax1 = plt.subplot(1, 2, 1);
+# ax1.plot(X, cp, 'bx-', label = "Incompressible");
+# ax1.plot(X, cp_comp, 'rx-', label = "Compressible M =" + str(M));
+# ax1.invert_yaxis();
+# ax1.grid(True);
+# ax1.set_xlabel("x/c [-]");
+# ax1.set_ylabel("Cp [-]");
+
+# ax2 = plt.subplot(1, 2, 2);
+# ax2.plot(X, M_local, 'r');
+# ax2.set_xlabel("x/c [-]");
+# ax2.set_ylabel("M [-]");
+# ax2.grid(True);
 plt.show();
