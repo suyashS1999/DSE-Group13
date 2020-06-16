@@ -187,16 +187,16 @@ class ExtractData_OpenVSP():
 		return 0;
 
 #%% ------------------- Input data -------------------
-dir = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Aerodynamics\OpenVSPSimData";				# Path to directory, this is for my PC, you can use the lower one
+dir = r"C:\Users\miksw\Documents\VSP\STARTED FROM THE BOTTOM NOW WE HERE\Kei";				# Path to directory, this is for my PC, you can use the lower one
 #dir = r"\Aerodynamics\OpenVSPSimData";														# Path to directory, Comment the top line and use this one
-write_dir = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\liftdistribution.txt"		# Write directory
-write_dir1 = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\troquedistribution.txt"	# Write directory
+#write_dir = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\liftdistribution.txt"		# Write directory
+#write_dir1 = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\troquedistribution.txt"	# Write directory
 #%% ------------------- Main -------------------
 vsp_data = ExtractData_OpenVSP(dir);
 AOA = 14;
 CD0 = 0.01115;
 vsp_data.plot_Polars(CD0);
-vsp_data.plot_LoadDistribution(AOA, CD0, write_dir, write_dir1);
+#vsp_data.plot_LoadDistribution(AOA, CD0, write_dir, write_dir1);
 vsp_data.Cm_CL_alpha_calc(CD0);
 plt.show();
 
