@@ -12,23 +12,23 @@ import matplotlib.pyplot as plt
 
 
 #Aircraft dimensions
-lmac = 1.543926788                            # MAC [m]
+lmac = 1.544                          # MAC [m]
 l_fuse = 42.6                           # Fuselage length [m]
-xlemac = 0.44*l_fuse    # X position of LEMAC from nose (LEMAC at 50% of cabin)
+xlemac = 0.46*l_fuse    # X position of LEMAC from nose (LEMAC at 50% of cabin)
 x_cg_wing = xlemac + 0.25*lmac            # wing cg from nose, assumed same as average aerodynamic centre
 #l_t = 42.6-6*0.75-1-x_cg_wing+1              # Tail moment arm [m], distance between 1/4 chords tail to xac (for now V_tail)
-W_wing = 9739.891244                        # Wing and strut mass combined
-W_engine = 1261.696815 + 6605.822891     # Engine + generator + nacelle
-x_cg_engine = xlemac - 6.639                # assumed to be same as pylons
+W_wing = 9235.824024                        # Wing and strut mass combined
+W_engine = 983.4235289 + 4341.959989     # Engine + generator + nacelle
+x_cg_engine = xlemac - 6.167                # assumed to be same as pylons
 
 #CG locations in X direction from the nose (Assumptions/Justification in brackets)
 x_cargo_frw = 7                        # forward cargo [m] (from concept 3 midterm side view) 
 x_cargo_aft = 27                      # aft cargo [m] (from concept 3 midterm side view)
-x_cg_fuel = x_cg_wing                      # fuel [m] (approximated to be at the LEMAC, forward of approximate CG of wing since there will be no fuel at the tips)
+x_cg_fuel = xlemac                      # fuel [m] (approximated to be at the LEMAC, forward of approximate CG of wing since there will be no fuel at the tips)
 
 #From Class II weight estimation google sheet
-x_cg_oew_lesswing = 21.34070411 #[m] from nose
-OEW_lesswing = 28505.93405
+x_cg_oew_lesswing = 21.22121347 #[m] from nose
+OEW_lesswing = 26344.20657
 OEW = OEW_lesswing+W_wing+W_engine #[kg]
 x_cg_oew = (x_cg_oew_lesswing*OEW_lesswing + x_cg_wing*W_wing + x_cg_engine*W_engine)/OEW
 #Verify OEW matches
@@ -53,17 +53,17 @@ middle_row = 2
 aisle_row = 2
 total_row = window_row+middle_row+aisle_row
 pax_per_row = int(total_pax/total_row)
-seat_pitch = 812.8e-3                  # seating pitch [m] (from mid-term)
+seat_pitch = 812.8e-3*1.1                  # seating pitch [m] (from mid-term)
 l_cabin = 30.25                         # length of cabin [m] (from mid-term)
 l_cockpit = 4                           # length of cockpit [m] (from mid-term)
 x_seat_mostfrw = l_cockpit+(l_cabin-(seat_pitch*total_pax/(total_row)))/2 # Position of most forward seat from nose [m] (Assume all seat at the middle of cabin with the seating pitch)
-pax_weight = 95*194/192                 # weight per pax [kg] (assumed 95, but corrected to 192 pax from 194 pax)
+pax_weight = 75*194/192                 # weight per pax [kg] (assumed 95, but corrected to 192 pax from 194 pax)
 
 # Aircraft weights
 PL = 20000                                      # Payload mass [kg] (from req.)
 m_cargo_frw = (PL - total_pax*pax_weight)*4/7   # Frw cargo [kg]
 m_cargo_aft = (PL - total_pax*pax_weight)*3/7   # Aft cargo [kg]
-m_fuel = 12471.21232                            # Fuel weight [kg]
+m_fuel = 13765.99377                            # Fuel weight [kg]
 #Verified that PL mass indeed equals PAX+cargofrw+cargoaft
 #%% ---------------------- Main ----------------------
 #Compile CGs
@@ -163,10 +163,13 @@ def loading_diagram():
     plt.plot(middle_frw, middle_potato[2], label = "Middle", color = "red")
     plt.plot(middle_aft, middle_potato[2], color = "red")
     plt.plot(x_cg_shift_fuel, fuel_mass_shift, label = "Fuel", color = "orange")
-    plt.title("Loading diagram of Aircraft")
-    plt.legend()
-    plt.xlabel("x_cg [mac]")
-    plt.ylabel("Mass [kg]")
+#    plt.title("Loading diagram of Aircraft")
+    plt.legend(fontsize = 14, loc = 'upper left')
+    plt.xlabel("CG location of X direction [MAC]", fontsize = 14)
+    plt.ylabel("Mass [kg]", fontsize = 14)
+#    plt.xlim(-0.55, 0.45)
+    plt.ylim(OEW, 82000)
+    plt.grid()
     plt.show()
     return 
     

@@ -67,7 +67,7 @@ def aileron_eff_act(lamb,half_span,y_a,e,cl_a,cl_d,c,cm_d):
 	
 	v2 = ((np.cos(lamb*y_a)/np.cos(lamb*half_span))-1-(((lamb**2)*((half_span**2)-(y_a**2))*0.5)))
 	
-	v3 = (1/(e*cl_a))*cm_d
+	v3 = (1/(e*c*cl_a))*cm_d
 	
 	v4 = ((np.tan(lamb*half_span)/(lamb*half_span)) - 1)
 	
@@ -112,7 +112,7 @@ def diverg_speed_straight(a,GJ,rho,e,c,half_span):
 
 def aileron_eff_new(lamb,l,c,cm_d,cl_d,e,a):
 	
-	v1 = lamb*l*((c*cm_d*(((lamb*l)**2) - (2*(1/np.cos(lamb*l))) +2)) - (2*e*c*cl_d*((1/np.cos(lamb*l)) -1)))
+	v1 = lamb*l*((c*cm_d*(((lamb*l)**2) - (2*(1/(np.cos(lamb*l)))) +2)) - (2*e*c*cl_d*((1/(np.cos(lamb*l))) -1)))
 	v2 = 2*a*e*c*((lamb*l) - np.tan(lamb*l))
 	
 	return v1/v2
@@ -132,7 +132,7 @@ def B_matrix(c,half_span,aw,e,M_theta_dot):
 	
 	B = np.zeros((2,2))
 	B[0,0] = (c*half_span*aw)/10
-	B[1,0] = -((c**2)*half_span*e*aw)/8
+	B[1,0] = -((c**2)*half_span*e*c*aw)/8
 	B[1,1] = -((c**3)*half_span*M_theta_dot)/24
 
 	return B
@@ -141,7 +141,7 @@ def C_matrix(c,half_span,aw,e):
 	C = np.zeros((2,2))	
 	
 	C[0,1] = (c*half_span*aw)/8
-	C[1,1] = -((c**2)*half_span*e*aw)/6
+	C[1,1] = -((c**2)*half_span*e*c*aw)/6
 	
 	return C
 
@@ -154,6 +154,12 @@ def E_matrix(EI,GJ,half_span):
 	return E
 
 
+def aileron_eff_check(lambl,c,cm_d,cl_d,e,a):
+	
+	v1 = lambl*((c*cm_d*(((lambl)**2) - (2*(1/(np.cos(lambl)))) +2)) - (2*e*c*cl_d*((1/(np.cos(lambl))) -1)))
+	v2 = 2*a*e*c*((lambl) - np.tan(lambl))
+	
+	return v1/v2
 	
 		   
    

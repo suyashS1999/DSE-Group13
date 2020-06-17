@@ -7,7 +7,7 @@ from Input_parm import *
 naca = np.genfromtxt("NASA SC(2)-0414.dat", dtype=str, skip_header=102, skip_footer=0, delimiter="")
 naca = naca.astype(np.float)
 
-nasasc = np.genfromtxt("NASA SC(2)-0410.dat", dtype=str, skip_header=102, skip_footer=0, delimiter="")
+nasasc = np.genfromtxt("NASA SC(2)-0010.dat", dtype=str, skip_header=102, skip_footer=0, delimiter="")
 nasasc = nasasc.astype(np.float)
 
 #Sharpness factor---------------------------------------------
@@ -58,7 +58,7 @@ print(dy_wing,dy_strut)
 #-----------------------------------------------------
 #Determine chord lengths
 
-mach_area = 0.1110 #from aero textbook, M=0.59
+mach_area = 0.110 #from aero textbook, M=0.68
 pcw = 0.7 #percentage of span where the strut attaches
 y = pcw*span
 if y >= 36:

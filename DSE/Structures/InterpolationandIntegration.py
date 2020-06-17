@@ -196,12 +196,12 @@ M, V, y_m = Generate_MomentShear_Diagram_Dist_Lift(RBF_1DInterpol, [span_locatio
 #%% ------------------- FBD Solve -------------------
 V_lift, _ = RBF_1DInterpol(y_m, V, y_half);
 M_lift, _ = RBF_1DInterpol(y_m, M, y_half);
-T_e = 106000.;
-W_e = 2000*9.81;
+T_e = 165000.;
+W_e = 2171*9.81;
 LE_sweep = radians(30);
-y_e = 4.893;														# engine distance from fuselage
+y_e = 4.14;															# engine distance from fuselage
 z_e = 1.434;														# engine thrust location under wing
-y_s = 17.720;														# strut location
+y_s = 17.70;														# strut location
 z_s = 0.732;														# length of vertical part of strut
 degree_strut = radians(13.26);										# strut vertical angle
 V_new, M_new, V, M = Generate_MomentShear_Diagram_Engine_strut(M_lift, V_lift, y_half, T_e, W_e, LE_sweep, degree_strut, y_e, z_e, y_s, z_s);
@@ -210,7 +210,7 @@ V_new, M_new, V, M = Generate_MomentShear_Diagram_Engine_strut(M_lift, V_lift, y
 #%% ------------------ Plotting ------------------------
 #plt.figure(figsize = (18, 8));
 #plt.plot(span_location, Lift_dist, "x");
-#plt.plot(y, CL_lag, label = "Lagrange Interpolation");
+##plt.plot(y, CL_lag, label = "Lagrange Interpolation");
 #plt.plot(y, CL_rbf, label = "RBF Interpolation");
 #plt.ylabel("Distributed Lift Load [N/m]");
 #plt.xlabel("Span [m]");
