@@ -108,12 +108,12 @@ nu   = (Vtr/Vs)**2
 R    = (Vtr**2)/(g*(nu-1))
 CLtr = 2*MTOW/(rho*(Vtr**2)*S)
 CLv2 = CLto/(1.2**2)
-CDv2 = 0.08399
-CDtr = 0.0247 + (CLtr**2)/k
+CDv2 = CD0takeoff + k*CLv2**2
+CDtr = 0.0247 + (CLtr**2)*k
 Dtr  = MTOW*CDtr/CLtr
 Dv2  = 1/2*rho*(V2**2)*CDv2*S
 Tc   = 94049.13479*2    # thrust at V2  Tto*(1-2*V2/np.sqrt(1.4*287*288.15)*(1+BPR)/(3+2*BPR))
-thetaclimb = np.arcsin((Tc-Dtr)/MTOW)   # radians
+thetaclimb = np.arcsin((Tc-Dv2)/MTOW)   # radians
 htr        = R*(1-np.cos(thetaclimb))
 Str        = np.sqrt((R**2)-(R-htr)**2)
 
@@ -130,7 +130,11 @@ Sto = Sg + Sr + Sobst
 print("Sto = ",Sto," m")
 
 
+# second climb with one engine inoperative
 
+gammaOEI = np.arcsin((Tc/2-Dv2)/MTOW)
+
+print(gammaOEI*180/np.pi)
 
 
 
