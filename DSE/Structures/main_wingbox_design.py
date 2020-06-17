@@ -37,26 +37,34 @@ tau_allow = 200*10**6
 #wingbox dimensions
 wingbox_start = 0.15
 wingbox_end = 0.60
-wingbox_height = 0.685 #h/t_airfoil
+wingbox_height = 0.78 #h/t_airfoil
 n_stations = 10
 
 #design parameters
 #/!\ make sure each array contains n_station values
 
-t_top = np.array([0.0005,0.0005,0.001,0.0015,0.002,0.0015,0.0005,0.0025,0.0015,0.0010])
-t_bot = np.array([0.001,0.0025,0.0025,0.0025,0.0025,0.0025,0.0015,0.0015,0.0005,0.0005])
-t_spar = np.array([0.002,0.003,0.004,0.005,0.005,0.004,0.003,0.002,0.001,0.001])
+t_top = 1.5*np.array([0.002,0.002,0.0025,0.0035,0.0035,0.003,0.0025,0.0035,0.0025,0.003])
+t_bot = 1.5*np.array([0.002,0.003,0.003,0.0035,0.0035,0.003,0.0025,0.0035,0.002,0.003])
+t_spar = 2*np.array([0.002,0.002,0.002,0.002,0.002,0.002,0.003,0.003,0.002,0.003])
 
-n_stif_top = np.array([4,4,4,4,4,4,4,21,17,11])
-n_stif_bot = np.array([4,16,19,20,19,17,20,10,4,2])
+#needed to bring torsional stiffness up with 50% against flutter at cruise
+#t_spar = np.array([0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01])
+
+
+n_stif_top = np.array([5,5,8,8,13,13,5,12,12,5])
+n_stif_bot = np.array([5,15,19,16,16,16,10,5,5,5])
+
+A_stif = 0.01*0.07*0.05
+A_spar_cap = 0.015*0.1*0.08
 
 print()
 print("Design Inputs are:")
 print("stiffener configuration top",n_stif_top)
 print("stiffener configuration bot",n_stif_bot)
-
-A_stif = 0.002*0.05*0.04
-A_spar_cap = 0.002*0.07*0.05
+print("Skin thickness top",t_top)
+print("Skin thickness bot",t_bot)
+print("Spar thickness",t_spar)
+print("Stiffener Area =",round(A_stif*10**6),"mm^2, and spar cap area =",round(A_spar_cap*10**6),"mm^2")
 
 #load case
 #Mx = np.array([500000,200000,10000])
@@ -65,24 +73,26 @@ A_spar_cap = 0.002*0.07*0.05
 
 # ------------------------  FUNCTIONS   ------------------------
 
-def calc_geometry(wingspan,c_root,c_tip,t_inboard,t_outboard,n_stations):
+def calc_geometry(wingspan,c_root,c_tip,t_inboard,t_outboard,n_stations,wingbox_start,wingbox_end):
 	"""
 	Outputs an array of airfoil chord lengths for n spanwise stations
 	Outputs the spanwise y coordinate of n spanwise stations
 	Outputs the wingbox height
 	"""
 	c = np.zeros(n_stations)
+	c_airfoil = np.zeros(n_stations)
 	b = np.zeros(n_stations)
 	h = np.zeros(n_stations)
 	for i in range(n_stations):
 		b[i] = i*(wingspan/n_stations)
-		c[i] = c_root - (c_root-c_tip)/wingspan * b[i]
+		c_airfoil[i] = c_root - (c_root-c_tip)/wingspan * b[i]
+		c[i] = (wingbox_end-wingbox_start)*c_airfoil[i]
 		if b[i] < airfoilchange:
 			t_c = t_inboard
 		else:
 			t_c = t_outboard
-		h[i] = t_c * c[i]
-	return c, b, h
+		h[i] = t_c * c_airfoil[i]
+	return c, b, h, c_airfoil
 
 def calc_sigma(Mx,Ixx,z):
 	"""
@@ -90,6 +100,12 @@ def calc_sigma(Mx,Ixx,z):
 	"""
 	sigma = Mx*z/Ixx
 	return sigma
+
+def calc_torsionalstif(c,h,t_spar,t_top,t_bot):
+	t_skin = (t_top+t_bot)/2
+	J = 2*t_spar*t_skin*(c-t_spar)**2*(h-t_skin)**2/(c*t_spar+h*t_skin-t_spar**2-t_skin**2)
+	J_total = np.average(J)
+	return J_total
 
 def calc_buckling(n_stations, c, n_stif_top, n_stif_bot, t_top, t_bot, sigma_top, sigma_bot, E, v):
 	"""
@@ -148,8 +164,7 @@ def calc_fuelvolume(c,h,wingspan,airfoilchange):
 # ------------------------  MAIN   ------------------------
 
 #Compute wingbox geometry
-c_airfoil, b, h_airfoil = calc_geometry(wingspan,c_root,c_tip,t_inboard,t_outboard,n_stations)
-c = (wingbox_end-wingbox_start) * c_airfoil
+c, b, h_airfoil, c_airfoil = calc_geometry(wingspan,c_root,c_tip,t_inboard,t_outboard,n_stations,wingbox_start,wingbox_end)
 h = wingbox_height * h_airfoil
 centre_pressure = b*tan(LE_sweep) + 0.25*c_airfoil;								# Centre of pressure
 
@@ -173,8 +188,8 @@ t_arr = zeros((3, n_stations));
 t_arr[0,:] = t_top;
 t_arr[1,:] = t_bot;
 t_arr[2,:] = t_spar;
-tau_max = Compute_sect_maxShear(V, T, tau_allow, t_inboard, c, t_arr, n_stif_top, n_stif_bot, A_stif, A_spar_cap, iter = False);
-print(tau_max);
+tau_max = Compute_sect_maxShear(V, T, tau_allow, h, c, t_arr, n_stif_top, n_stif_bot, A_stif, A_spar_cap, iter = False);
+#print(tau_max);
 
 #vonmises
 #vonmises_top = calc_vonmises(sigma_top,tau_max)
@@ -182,18 +197,25 @@ print(tau_max);
 
 #buckling,mass and volume
 buckling = calc_buckling(n_stations, c, n_stif_top, n_stif_bot, t_top, t_bot, sigma_top, sigma_bot, E, v)
+J = calc_torsionalstif(c,h,t_spar,t_top,t_bot)
 Mass_wingbox = calc_mass(c, h, wingspan, n_stations, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_cap, rho_material)
 Fuelvolume = calc_fuelvolume(c,h,wingspan,airfoilchange)
 
 #print outputs
 print()
-#print("wingbox widths =",np.round(c,2))
+print("wingbox widths =",np.round(c,2))
 #print("spanwise station locations =",b)
+#print("wingbox height =",h)
 #print("centroid =", centroid)
 #print("Ixx, Izz =", Ixx, Izz)
 #print("Internal Moment =", Mx)
 print("Normal Stress Top Skin [MPa]",np.round(sigma_top/10**6))
-print("Normal Stress Bottom Skin [MPa]",np.round(sigma_bot/10**6))
+print("Normal Stress Bot Skin [MPa]",np.round(sigma_bot/10**6))
+print()
+print("Shear Stress Top Skin [MPa]", np.round(tau_max[:, 1]/10**6))
+print("Shear Stress Bot Skin [MPa]", np.round(tau_max[:, 3]/10**6))
+print("Shear Stress Spar [MPa]", np.round(tau_max[:, 2]/10**6))
+print("Torsional Stiffness =",J,"[m^4]")
 print("Wingbox mass =",round(Mass_wingbox),"kg (halfwing)")
 print("Fuel Volume =",round(Fuelvolume,1),"m^3 (halfwing)")
 
@@ -208,7 +230,7 @@ ax1.step(b, t_top*1000, "r", label = "Top skin")
 ax1.step(b, t_bot*1000, "b", label = "Bottom skin")
 ax1.step(b, t_spar*1000, "g", label = "Spar")
 ax1.grid()
-ax1.set_yticks(arange(0, 6, 1))
+ax1.set_yticks(arange(1.5, 5.5, 1))
 ax1.tick_params(axis='y')
 ax1.legend(loc='upper left')
 
@@ -238,12 +260,12 @@ ax4 = plt.subplot(2, 2, 4)
 ax4.set_ylabel("Max Shear Stress [MPa]")
 ax4.set_xlabel("Span [m]")
 #ax4.plot(b, tau_max[:, 0]/10**6, "r", label = "Maximum Shear Stress")
-ax4.plot(b, tau_max[:, 1]/10**6, "r", label = "Maximum Shear Stress top skin")
-ax4.plot(b, tau_max[:, 2]/10**6, "g", label = "Maximum Shear Stress spar")
-ax4.plot(b, tau_max[:, 3]/10**6, "b", label = "Maximum Shear Stress bottom skin")
+ax4.plot(b, tau_max[:, 1]/10**6, "r", label = "Top Skin")
+ax4.plot(b, tau_max[:, 2]/10**6, "g", label = "Spar")
+ax4.plot(b, tau_max[:, 3]/10**6, "b", label = "Bottom Skin")
 ax4.grid()
 #ax4.set_yticks(arange(-500, 500, 100))
 ax4.tick_params(axis='y')
 ax4.legend(loc='upper left')
 
-plt.show();
+#plt.show();

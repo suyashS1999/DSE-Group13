@@ -4,13 +4,13 @@ from Wingbox_MOI import*
 from Aerodynamics.Aero_tools import sweep_x
 from matplotlib import pyplot as plt
 
-def Compute_sect_maxShear(V, T, tau_allow, t_c, c_arr, t_arr, n_stif_top, n_stif_bot, A_stif, A_spar_cap, iter = False):
+def Compute_sect_maxShear(V, T, tau_allow, h_arr, c_arr, t_arr, n_stif_top, n_stif_bot, A_stif, A_spar_cap, iter = False):
 	if iter == True:
 		print("Itertating thickness");
 		thickness = t_arr;
 		t_min = zeros(len(c_arr));
 		for chord in range(len(c_arr)):
-			h = t_c*c_arr[chord];
+			h = h_arr[chord];
 			c = c_arr[chord];
 			t_sec = [];
 			tau = [];
@@ -39,7 +39,6 @@ def Compute_sect_maxShear(V, T, tau_allow, t_c, c_arr, t_arr, n_stif_top, n_stif
 		t_top = t_arr[0, :];
 		t_bot = t_arr[1, :];
 		t_spar = t_arr[2, :];
-		h_arr = t_c*c_arr;
 		centroid = calc_centroid(c_arr, h_arr, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_cap);
 		Ixx, _ = calc_MOI(c_arr, h_arr, t_top, t_bot, t_spar, n_stif_top, n_stif_bot, A_stif, A_spar_cap, centroid);
 		tau = zeros((len(c_arr), 4));
