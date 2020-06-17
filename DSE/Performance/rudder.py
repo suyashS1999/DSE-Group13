@@ -9,9 +9,9 @@ import numpy as np
 #            input values
 
 b         = 50.70223598  # wing span [m]
-S         = 151.2186314   # wing area [m2]
+S         = 151.2186314  # wing area [m2]
 Lv        = 18.1         # vertical tail arm length    [m] (average from ref.)
-ye        = 6.100633273
+ye        = 6.39
 Sr_Sv     = 0.4          # Roskam (page 425/2612)         ASSUMED
 Cr_Cv     = 0.3          # SEAD   (between 0.3 and 0.35)  ASSUMED
 Sweep     = 30           # degrees                        
@@ -31,7 +31,7 @@ kg_to_lb  = 2.2046226218488
 MTOW      = MTOWkg*kg_to_lb
 MPW       = 20000*kg_to_lb
 N_to_lb   = kg_to_lb/9.81
-Te        = 63025.31045*N_to_lb      # thrust one engine at VMCA
+Te        = 63341*N_to_lb      # thrust one engine at VMCA
 x         = yeft*Te*CL_max_to/lv/(MTOW-MPW)
 
 
