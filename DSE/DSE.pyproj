@@ -169,6 +169,7 @@
     <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_lowspeed.history" />
     <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_lowspeed.lod" />
     <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_lowspeed.polar" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_total.polar" />
     <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_lowspeed.vspaero" />
     <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_total.adb" />
     <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_total.adb.cases" />
@@ -177,7 +178,6 @@
     <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_total.group.1" />
     <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_total.history" />
     <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_total.lod" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_total.polar" />
     <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_total.vspaero" />
     <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Iteration5_Wing.adb" />
     <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Iteration5_Wing.adb.cases" />
