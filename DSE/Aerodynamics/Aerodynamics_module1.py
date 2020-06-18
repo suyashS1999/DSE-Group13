@@ -63,7 +63,7 @@ class ExtractData_OpenVSP():
 				ax3 = plt.subplot(2, 2, 3);									ax4 = plt.subplot(2, 2, 4);
 				ax3.plot(CDtot, CL, label = label);							ax4.plot(alpha, CL/CDtot, label = label);	#ax4.plot(alpha, CL/CDtot);
 				ax3.set_xlabel("CD [-]");									ax4.set_xlabel("alpha [degrees]");
-				ax3.set_ylabel("CL [-]");									ax4.set_ylabel("CL/CD [-]");
+				ax3.set_ylabel("CL [-]");									ax4.set_ylabel("L/D [-]");
 				ax3.grid(True);												ax4.grid(True);
 
 				ax1.legend();
@@ -137,8 +137,8 @@ class ExtractData_OpenVSP():
 					ax2.set_xlabel("span [m]");
 					ax2.grid(True);
 
-					ax1.legend(loc = "upper right");
-					ax2.legend(loc = "upper right");
+					ax1.legend(loc = "upper left");
+					ax2.legend(loc = "upper left");
 		if write == True:
 			savetxt(write_dir, CL_w);
 			savetxt(write_dir1, Cm_w);
@@ -194,7 +194,7 @@ write_dir1 = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\troquedistribu
 #%% ------------------- Main -------------------
 vsp_data = ExtractData_OpenVSP(dir);
 AOA = 14;
-CD0 = 0.01111;
+CD0 = 0.01111;			# 0.01204
 vsp_data.plot_Polars(CD0);
 vsp_data.plot_LoadDistribution(AOA, CD0, write_dir, write_dir1);
 vsp_data.Cm_CL_alpha_calc(CD0);

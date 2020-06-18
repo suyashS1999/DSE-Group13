@@ -10,21 +10,21 @@ import numpy as np
 # definition: runway distance required to reach V1 from stop and then hard brake until stop
 # inputs
 
-MTOW = 79584.74877*9.81     # maximum take off weight [N]
-S    = 150.865002           # wing surface area
+MTOW = 70337.48373*9.81     # maximum take off weight [N]
+S    = 151.2186314           # wing surface area
 rho  = 1.225                # air density [kg/m^3]
 g    = 9.81                 # gravitational acceleration [m/s^2]
 CLto = 2.1                  # Clmax at take off [-]
 hto  = 11                   # obstacle height [m], 35 ft for jetliners
-Tto  = 211576.8505          # thrust at take off [N]
+Tto  = 164912.561          # thrust at take off [N]
 y2m  = 0.024                # some weird parameter for 2 engines
 BPR  = 15                   # bypass ratio
-CD0takeoff = 0.019482       # drag coefficient at takeoff ASSUMED
+CD0takeoff = 0.01204       # drag coefficient at takeoff ASSUMED
 Sto  = 200                  # inertia distance
 rho0 = 1.225                # air density surface level [kg/m^3]
-CL0  = 0.182587             # lift coefficient at zero angle of attack
-k    = 0.044698             # 1/(pi*AR*eto) from simulation
-b   = 50.61874255           # wing span [m]
+CL0  = 0.280878             # lift coefficient at zero angle of attack
+k    = 0.039648             # 1/(pi*AR*eto) from simulation
+b   = 50.70223598           # wing span [m]
 df  = 4.37                  # fuselage diameter [m]
 
 
@@ -84,8 +84,8 @@ Vg     = Vlof/np.sqrt(2)
 Lg     = 1/2*rho*(Vg**2)*CL0*S
 CDg    = CD0takeoff + CDiIGE
 Dg     = 1/2*rho*(Vg**2)*CDg*S
-Tg     = 105013.7572*2   # thrust at VLOF/sqrt(2)
-mugnd  = 0.05         # ground friction coefficient 0.03-0.05 brakes off, otherwise 0.3-0.5 with braking
+Tg     = 70360*2   # thrust at VLOF/sqrt(2)
+mugnd  = 0.03         # ground friction coefficient 0.03-0.05 brakes off, otherwise 0.3-0.5 with braking
 
 
 Sg     = (Vlof**2)*MTOW/(2*g*(Tg-Dg-mugnd*(MTOW-Lg)))
@@ -107,13 +107,13 @@ Vtr  = (Vlof +V2)/2
 nu   = (Vtr/Vs)**2
 R    = (Vtr**2)/(g*(nu-1))
 CLtr = 2*MTOW/(rho*(Vtr**2)*S)
-CLv2 = CLto/(1.2**2)
-CDv2 = 0.08399
-CDtr = 0.0247 + (CLtr**2)/k
+CLv2 = CLto/((V2/Vs)**2)
+CDv2 = CD0takeoff + k*(CLv2**2)
+CDtr = 0.0247 + (CLtr**2)*k
 Dtr  = MTOW*CDtr/CLtr
 Dv2  = 1/2*rho*(V2**2)*CDv2*S
-Tc   = 94049.13479*2    # thrust at V2  Tto*(1-2*V2/np.sqrt(1.4*287*288.15)*(1+BPR)/(3+2*BPR))
-thetaclimb = np.arcsin((Tc-Dtr)/MTOW)   # radians
+Tc   = 61471*2    # thrust at V2  Tto*(1-2*V2/np.sqrt(1.4*287*288.15)*(1+BPR)/(3+2*BPR))
+thetaclimb = np.arcsin((Tc-Dv2)/MTOW)   # radians
 htr        = R*(1-np.cos(thetaclimb))
 Str        = np.sqrt((R**2)-(R-htr)**2)
 
@@ -130,7 +130,11 @@ Sto = Sg + Sr + Sobst
 print("Sto = ",Sto," m")
 
 
+# second climb with one engine inoperative
 
+gammaOEI = np.arcsin((Tc/2-Dv2)/(MTOW))
+
+print(gammaOEI*180/np.pi)
 
 
 
