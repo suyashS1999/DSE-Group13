@@ -79,8 +79,8 @@ if Pr >= P:
 else:
     print("Requirement satisfied? No  ")
 
-
-
+print(b1/(b))
+print(b2/b)
 
 
 

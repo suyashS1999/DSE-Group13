@@ -115,7 +115,7 @@ Values   = (10**-6)*np.array([[5.078422255,	7.199381363,	10.1043708,	13.13544401
 TSFCf    = sp.interp2d(Mach,Altitude,Values,kind='linear')
 
 step = 100*0.3048 #ft
-altitude = np.arange(0,40000*0.3048,step)
+altitude = np.arange(0,35000*0.3048,step)
 
 MRC_arr = []
 VMRC_arr = []
@@ -136,7 +136,6 @@ def ROC_st_true(h,MTOW):
     
     Thrust = Thrustf(Machs,h)   # rows=altitudes; columns= mach numbers
 
-    print (len(Thrust))
     
     for i in range(len(Thrust)):
         
@@ -147,11 +146,11 @@ def ROC_st_true(h,MTOW):
             V.append(Vm)
         
        
-        Pa=[]
-        Pr=[]
-        Vr=[]
-        Tr=[]
-        #DVDH = []
+        Pa   = []
+        Pr   = []
+        Vr   = []
+        Tr   = []
+        DVDH = []
         for k in range(len(V)):
         
             CL = 2*MTOW/((ISA_trop(height)[2])*S*(V[k]**2))
@@ -164,25 +163,25 @@ def ROC_st_true(h,MTOW):
             
             T  = 2*Thrust[i,k]
             # correction for unsteady flight
-            #Veas = V[k]*np.sqrt((ISA_trop(height)[2])/rho0)
-            #drhodH = (y/T0)*((g/(2*R*y))+1/2)*((1+y*height/T0)**(g/(2*R*y)-1/2))
-            #dVdH = Veas*drhodH
+            Veas = V[k]*np.sqrt((ISA_trop(height)[2])/rho0)
+            drhodH = ((np.sqrt(rho0/ISA_trop(height)[2]))-np.sqrt(rho0/ISA_trop(height+step)[2]))/step
+            dVdH = Veas*drhodH
             Pa.append(T*V[k])
             Pr.append(D*V[k])
             Vr.append(V[k])
             Tr.append(T)
-            #DVDH.append(dVdH)
+            DVDH.append(dVdH)
         Pa = np.array(Pa)
         Pr = np.array(Pr)
         Tr = np.array(Tr)
         Vr = np.array(Vr)
-        #DVDH = np.array(DVDH)
+        DVDH = np.array(DVDH)
         
         ROC_st = (Pa-Pr)/MTOW*196.85 #ft/min
-        #ROC_st = np.divide(ROC_st,(1+1/g*np.multiply(Vr,DVDH)))
+        ROC_st = np.divide(ROC_st,(1+1/g*np.multiply(Vr,DVDH)))
         
         if np.amax(ROC_st) < 500 and checked == 0:
-            plt.plot(Vr,ROC_st, 'o')
+            #plt.plot(Vr,ROC_st, 'o')
             print("The ceilling is - ", h[i]/0.3048, "ft")
             checked = 1
             continue
@@ -229,7 +228,7 @@ def ROC_st_true(h,MTOW):
             print(np.amax(ROC_st))
         '''
         
-        #plt.plot(Vr,ROC_st)
+        plt.plot(Vr,ROC_st)
     #plt.plot(VMRC_arr, MRC_arr)
     
     HD_Arr.append(HD_Arr[-1])
