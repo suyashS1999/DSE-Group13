@@ -24,7 +24,7 @@ class HighLiftDevices():
 			Delta_CL = 0.9*delta_Clmax*Swf_S*cos(lambda_hingeLn);
 		else:
 			Delta_CL = 0.9*delta_Clmax(*delta_Clmax_args)*Swf_S*cos(lambda_hingeLn);
-		delta_alpha0 = -15;
+		delta_alpha0 = -10;
 		Delta_alpha0 = delta_alpha0*Swf_S*cos(lambda_hingeLn);
 		return Delta_CL, Delta_alpha0;
 

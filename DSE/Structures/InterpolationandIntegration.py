@@ -169,8 +169,8 @@ def Generate_Torque_diagram(torque_dist_f, f_args, y0, y1, DOP):
 
 
 #%% ----------------- Main -----------------------
-dir_CL = r"liftdistribution.txt";			# Chnage to your path
-dir_Cm = r"troquedistribution.txt";
+dir_CL = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\liftdistribution.txt";			# Chnage to your path
+dir_Cm = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\troquedistribution.txt";
 data_CL = genfromtxt(dir_CL);
 data_Cm = genfromtxt(dir_Cm);
 CL = data_CL[1, :];													# CL values
@@ -220,7 +220,7 @@ plt.legend(loc = "upper left");
 plt.figure(figsize = (8, 5));
 plt.plot(y_half, M_lift, label = "Internal Moment due to lift [Nm]");
 plt.plot(y_half, V_lift, label = "Internal Shear due to lift [N]");
-plt.ylabel("Interal Load Distributed");
+plt.ylabel("Internal Load Distributed");
 plt.xlabel("y [m]");
 plt.grid(True);
 plt.legend();
@@ -229,7 +229,7 @@ plt.legend();
 plt.figure(figsize = (8, 5));
 plt.plot(y_half, M_new, label = "Internal Moment due to engine and strut [Nm]");
 plt.plot(y_half, V_new, label = "Internal Shear due to engine and strut [N]");
-plt.ylabel("Interal Load Distributed");
+plt.ylabel("Internal Load Distributed");
 plt.xlabel("y [m]");
 plt.grid(True);
 plt.legend();
@@ -238,7 +238,7 @@ plt.figure(figsize = (8, 4));
 ax = plt.axes();
 color = "g";
 ax.plot(y_half, M/1000, color = "g");
-ax.set_ylabel("Interal Moment Distribution [kNm/m]", color = color);
+ax.set_ylabel("Internal Moment Distribution [kNm]", color = color);
 ax.set_xlabel("span wise location [m]");
 ax.tick_params(axis = "y", labelcolor = color);
 

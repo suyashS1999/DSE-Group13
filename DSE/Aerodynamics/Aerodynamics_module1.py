@@ -193,7 +193,7 @@ write_dir = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\liftdistributio
 write_dir1 = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\troquedistribution.txt"	# Write directory
 #%% ------------------- Main -------------------
 vsp_data = ExtractData_OpenVSP(dir);
-AOA = 7;
+AOA = 14;
 CD0 = 0.01111;			# 0.01204
 vsp_data.plot_Polars(CD0);
 vsp_data.plot_LoadDistribution(AOA, CD0, write_dir, write_dir1);
