@@ -43,16 +43,17 @@ n_stations = 10
 #design parameters
 #/!\ make sure each array contains n_station values
 
-t_top = 1.5*np.array([0.002,0.002,0.0025,0.0035,0.0035,0.003,0.0025,0.0035,0.0025,0.003])
-t_bot = 1.5*np.array([0.002,0.003,0.003,0.0035,0.0035,0.003,0.0025,0.0035,0.002,0.003])
-t_spar = 2*np.array([0.002,0.002,0.002,0.002,0.002,0.002,0.003,0.003,0.002,0.003])
+t_top = 1.5*np.array([0.002,0.002,0.002,0.003,0.003,0.0025,0.0025,0.003,0.002,0.0025])
+t_bot = 1.5*np.array([0.002,0.0025,0.0025,0.0035,0.0035,0.0025,0.0025,0.003,0.0025,0.0025])
+t_spar = 2*np.array([0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.002,0.0025])
 
-#needed to bring torsional stiffness up with 50% against flutter at cruise
-#t_spar = np.array([0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01])
+# t_top = np.array([0.002,0.002,0.0025,0.0035,0.0035,0.003,0.0025,0.0035,0.0025,0.003])
+# t_bot = np.array([0.002,0.003,0.003,0.0035,0.0035,0.003,0.0025,0.0035,0.002,0.003])
+# t_spar = np.array([0.002,0.002,0.002,0.002,0.002,0.002,0.003,0.003,0.002,0.003])
 
 
-n_stif_top = np.array([5,5,8,8,13,13,5,12,12,5])
-n_stif_bot = np.array([5,15,19,16,16,16,10,5,5,5])
+n_stif_top = np.array([5,5,10,8,8,8,5,15,16,5])
+n_stif_bot = np.array([5,20,25,20,20,20,10,5,5,5])
 
 A_stif = 0.01*0.07*0.05
 A_spar_cap = 0.015*0.1*0.08
@@ -226,9 +227,9 @@ ax1 = plt.subplot(2, 2, 1)
 #ax1.set_title("Thickness Distribution")
 ax1.set_ylabel("Thickness [mm]")
 ax1.set_xlabel("Span [m]")
-ax1.step(b, t_top*1000, "r", label = "Top skin")
-ax1.step(b, t_bot*1000, "b", label = "Bottom skin")
-ax1.step(b, t_spar*1000, "g", label = "Spar")
+ax1.step(b, t_top*1000, "r", label = "Top skin", where='post')
+ax1.step(b, t_bot*1000, "b", label = "Bottom skin", where='post')
+ax1.step(b, t_spar*1000, "g", label = "Spar", where='post')
 ax1.grid()
 ax1.set_yticks(arange(1.5, 5.5, 1))
 ax1.tick_params(axis='y')
@@ -238,10 +239,10 @@ ax2 = plt.subplot(2, 2, 2)
 #ax2.set_title("Stiffener Distribution")
 ax2.set_ylabel("Number of stiffeners")
 ax2.set_xlabel("Span [m]")
-ax2.step(b, n_stif_top, "r", label = "Top skin")
-ax2.step(b, n_stif_bot, "b", label = "Bottom skin")
+ax2.step(b, n_stif_top, "r", label = "Top skin", where='post')
+ax2.step(b, n_stif_bot, "b", label = "Bottom skin", where='post')
 ax2.grid()
-ax2.set_yticks(arange(0, 30, 5))
+ax2.set_yticks(arange(0, 35, 5))
 ax2.tick_params(axis='y')
 ax2.legend(loc='upper left')
 
@@ -252,7 +253,7 @@ ax3.set_xlabel("Span [m]")
 ax3.plot(b, sigma_top/10**6, "r", label = "Top Skin")
 ax3.plot(b, sigma_bot/10**6, "b", label = "Bottom Skin")
 ax3.grid()
-#ax3.set_yticks(arange(-500, 500, 100))
+ax3.set_yticks(arange(-500, 700, 100))
 ax3.tick_params(axis='y')
 ax3.legend(loc='upper left')
 
