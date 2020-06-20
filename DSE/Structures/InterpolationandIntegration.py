@@ -169,8 +169,8 @@ def Generate_Torque_diagram(torque_dist_f, f_args, y0, y1, DOP):
 
 
 #%% ----------------- Main -----------------------
-dir_CL = r"liftdistribution.txt";			# Chnage to your path
-dir_Cm = r"troquedistribution.txt";
+dir_CL = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\liftdistribution.txt";			# Chnage to your path
+dir_Cm = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\troquedistribution.txt";
 data_CL = genfromtxt(dir_CL);
 data_Cm = genfromtxt(dir_Cm);
 CL = data_CL[1, :];													# CL values
@@ -183,14 +183,14 @@ Lift_dist = CL*0.5*rho_cruise*V_cruise**2;							# Distributed lift load in N/m
 Moment_dist = Cm*0.5*rho_cruise*V_cruise**2*ave_chord;				# Distributed pitching moment load in Nm/m
 
 
-y = linspace(span_location[0], span_location[-1], 100);				# plot_nodes
+y = linspace(span_location[0], span_location[-1], 1000);				# plot_nodes
 CL_lag, _ = Lagrange_Basis(span_location, Lift_dist, y);			# Interpolate Distributed lift with Lagrange basis functions
 CL_rbf, coeff = RBF_1DInterpol(span_location, Lift_dist, y);		# Interpolate Distributed lift with radial basis functions
 Cm_lag, _ = Lagrange_Basis(span_location, Moment_dist, y);			# Interpolate Distributed pitching moment with Lagrange basis functions
 Cm_rbf, _ = RBF_1DInterpol(span_location, Moment_dist, y);			# Interpolate Distributed pitching moment with radial basis functions
 centre_pressure, coeff_cp = RBF_1DInterpol(span_location, centre_pressure, y);
 
-y_half = linspace(0, span_location[-1], 100);
+y_half = linspace(0, span_location[-1], 1000);
 M, V, y_m = Generate_MomentShear_Diagram_Dist_Lift(RBF_1DInterpol, [span_location, Lift_dist, coeff], y_half[0], y_half[-1], 9);
 
 #%% ------------------- FBD Solve -------------------
@@ -208,38 +208,45 @@ V_new, M_new, V, M = Generate_MomentShear_Diagram_Engine_strut(M_lift, V_lift, y
 
 
 #%% ------------------ Plotting ------------------------
-#plt.figure(figsize = (18, 8));
-#plt.plot(span_location, Lift_dist, "x");
-##plt.plot(y, CL_lag, label = "Lagrange Interpolation");
-#plt.plot(y, CL_rbf, label = "RBF Interpolation");
-#plt.ylabel("Distributed Lift Load [N/m]");
-#plt.xlabel("Span [m]");
-#plt.grid(True);
-#plt.legend();
+plt.figure(figsize = (8, 4));
+plt.plot(span_location, Lift_dist/1000, "x");
+#plt.plot(y, CL_lag, label = "Lagrange Interpolation");
+plt.plot(y, CL_rbf/1000, label = "RBF Interpolation");
+plt.ylabel("Distributed Lift Load [kN/m]");
+plt.xlabel("span wise location [m]");
+plt.grid(True);
+plt.legend(loc = "upper left");
 
-#plt.figure(figsize = (8, 5));
-#plt.plot(y_half, M_lift, label = "Internal Moment due to lift [Nm]");
-#plt.plot(y_half, V_lift, label = "Internal Shear due to lift [N]");
-#plt.ylabel("Interal Load Distributed");
-#plt.xlabel("y [m]");
-#plt.grid(True);
-#plt.legend();
+plt.figure(figsize = (8, 5));
+plt.plot(y_half, M_lift, label = "Internal Moment due to lift [Nm]");
+plt.plot(y_half, V_lift, label = "Internal Shear due to lift [N]");
+plt.ylabel("Internal Load Distributed");
+plt.xlabel("y [m]");
+plt.grid(True);
+plt.legend();
 
 
-#plt.figure(figsize = (8, 5));
-#plt.plot(y_half, M_new, label = "Internal Moment due to engine and strut [Nm]");
-#plt.plot(y_half, V_new, label = "Internal Shear due to engine and strut [N]");
-#plt.ylabel("Interal Load Distributed");
-#plt.xlabel("y [m]");
-#plt.grid(True);
-#plt.legend();
+plt.figure(figsize = (8, 5));
+plt.plot(y_half, M_new, label = "Internal Moment due to engine and strut [Nm]");
+plt.plot(y_half, V_new, label = "Internal Shear due to engine and strut [N]");
+plt.ylabel("Internal Load Distributed");
+plt.xlabel("y [m]");
+plt.grid(True);
+plt.legend();
 
-#plt.figure(figsize = (18, 8));
-#plt.plot(y_half, M, label = "Internal Moment (total) [Nm]");
-#plt.plot(y_half, V, label = "Internal Shear (total) [N]");
-#plt.ylabel("Interal Load Distributed");
-#plt.xlabel("y [m]");
-#plt.grid(True);
-#plt.legend();
+plt.figure(figsize = (8, 4));
+ax = plt.axes();
+color = "g";
+ax.plot(y_half, M/1000, color = "g");
+ax.set_ylabel("Internal Moment Distribution [kNm]", color = color);
+ax.set_xlabel("span wise location [m]");
+ax.tick_params(axis = "y", labelcolor = color);
 
-#plt.show();
+color1 = "r";
+ax1 = ax.twinx();
+ax1.plot(y_half, V/1000, color = color1);
+ax1.set_ylabel("Internal Shear Distribution [kN]", color = color1);
+ax1.tick_params(axis = "y", labelcolor = color1);
+
+ax.grid(True);
+plt.show();
