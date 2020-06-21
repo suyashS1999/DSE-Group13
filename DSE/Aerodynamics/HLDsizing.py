@@ -89,7 +89,7 @@ class HighLiftDevices():
 		plt.plot(alpha, CL_new, label = "New Lift curve");
 		plt.plot(alpha, CL_ori, label = "Original Lift curve");
 		plt.grid(True);
-		plt.xlabel(r"$\alpha$ [deg]");
+		plt.xlabel(r"$\alpha [^\circ]$");
 		plt.ylabel(r"$C_L$ [-]");
 		plt.legend(loc = "upper left");
 		plt.xlim([-5, 24]);
