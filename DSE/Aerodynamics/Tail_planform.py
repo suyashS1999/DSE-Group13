@@ -14,7 +14,7 @@ M_cruise = 0.78
 
 a0_h = 0.1071233*180/np.pi   #1/rad4.49
 S_h = 18.1    #m^2
-CL_h_design = -0.115
+CL_h_design = -0.113
 M_crit_a_h = tl.bisection(tl.M_cr_calc_h,0.2,0.99,100)
 # print(M_crit_a_h)
 A_h =  3           # Design Choice
