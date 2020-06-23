@@ -36,7 +36,7 @@ k    =  0.039648         # 1/(pi*AR*eto) from simulation
 b    = 50.61874255      # wing span [m]
 df   = 4.2              # fuselage diameter [m]
 hlg  = 1.9              # clearance between surface and bottom fuselage due to landing gear [m]
-e    = 0.7              # oswald efficiency factor at takeoff [-]
+e    = 0.75              # oswald efficiency factor at takeoff [-]
 AR   = 17               # Aspect Ratio [-]
 
 #calculations

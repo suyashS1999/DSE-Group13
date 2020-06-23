@@ -10,7 +10,9 @@ import numpy as np
 # definition: runway distance required to reach V1 from stop and then hard brake until stop
 # inputs
 
-MTOW = 70337.48373*9.81     # maximum take off weight [N]
+Ftaxi    = 1402.13467358987000   # fuel taxi    [kg]
+Ftakeoff = 345.2844708           # fuel takeoff [kg]
+MTOW = (70459.02882 - Ftaxi - Ftakeoff)*9.81  # maximum take off weight [N]
 S    = 151.2186314           # wing surface area
 rho  = 1.225                # air density [kg/m^3]
 g    = 9.81                 # gravitational acceleration [m/s^2]
@@ -115,17 +117,18 @@ Dv2  = 1/2*rho*(V2**2)*CDv2*S
 Tc   = 61471*2    # thrust at V2  Tto*(1-2*V2/np.sqrt(1.4*287*288.15)*(1+BPR)/(3+2*BPR))
 thetaclimb = np.arcsin((Tc-Dv2)/MTOW)   # radians
 htr        = R*(1-np.cos(thetaclimb))
-Str        = np.sqrt((R**2)-(R-htr)**2)
 
-#print("Str = ",Str," m")
+Str = R*np.sin(thetaclimb)
+Sc = (hto-htr)/np.tan(thetaclimb)
 
-Sobst = np.sqrt((R**2)-(R-hto)**2)
 
-print("Sobst = ",Sobst," m")
+print("Str = ",Str," m")
+
+print("Sc = ",Sc," m")
 
 # overall takeoff distance
 
-Sto = Sg + Sr + Sobst 
+Sto = Sg + Sr + Str + Sc
 
 print("Sto = ",Sto," m")
 
@@ -139,7 +142,9 @@ print(gammaOEI*180/np.pi)
 
 
 
+dVdT = g/MTOW*(Tg-Dg-mu*(MTOW-Lg))
 
+print(dVdT)
 
 
 
