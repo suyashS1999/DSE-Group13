@@ -63,7 +63,7 @@ class ExtractData_OpenVSP():
 				ax3 = plt.subplot(2, 2, 3);									ax4 = plt.subplot(2, 2, 4);
 				ax3.plot(CDtot, CL, label = label);							ax4.plot(alpha, CL/CDtot, label = label);	#ax4.plot(alpha, CL/CDtot);
 				ax3.set_xlabel("CD [-]");									ax4.set_xlabel("alpha [degrees]");
-				ax3.set_ylabel("CL [-]");									ax4.set_ylabel("CL/CD [-]");
+				ax3.set_ylabel("CL [-]");									ax4.set_ylabel("L/D [-]");
 				ax3.grid(True);												ax4.grid(True);
 
 				ax1.legend();
@@ -123,22 +123,22 @@ class ExtractData_OpenVSP():
 						if c == 0: CL_w = span; Cm_w = span; c += 1;
 						CL_w = vstack((CL_w, CL));
 						Cm_w = vstack((Cm_w, Cm, Centre_pressure));
-					ax1 = plt.subplot(2, 1, 1);
-					ax1.title.set_text("Lift Distribution {}".format(name[len(self.file_types[1][1:]) :]));
-					ax1.plot(span, CL, "x-", label = "alpha = {}".format(alpha));
-					ax1.set_xlabel("span [m]");
-					ax1.set_ylabel("Cl [-]");
-					ax1.grid(True);
+						ax1 = plt.subplot(2, 1, 1);
+						ax1.title.set_text("Lift Distribution {}".format(name[len(self.file_types[1][1:]) :]));
+						ax1.plot(span, CL, "x-", label = "alpha = {}".format(alpha));
+						ax1.set_xlabel("span [m]");
+						ax1.set_ylabel("Cl [-]");
+						ax1.grid(True);
 
-					ax2 = plt.subplot(2, 1, 2);
-					ax2.title.set_text("Drag Distribution {}".format(name[len(self.file_types[1][1:]) :]));
-					ax2.plot(span, CD, "^-", label = "alpha = {}".format(alpha));
-					ax2.set_ylabel("Cd [-]");
-					ax2.set_xlabel("span [m]");
-					ax2.grid(True);
+						ax2 = plt.subplot(2, 1, 2);
+						ax2.title.set_text("Drag Distribution {}".format(name[len(self.file_types[1][1:]) :]));
+						ax2.plot(span, CD, "^-", label = "alpha = {}".format(alpha));
+						ax2.set_ylabel("Cd [-]");
+						ax2.set_xlabel("span [m]");
+						ax2.grid(True);
 
-					ax1.legend(loc = "upper right");
-					ax2.legend(loc = "upper right");
+						ax1.legend(loc = "upper left");
+						ax2.legend(loc = "upper left");
 		if write == True:
 			savetxt(write_dir, CL_w);
 			savetxt(write_dir1, Cm_w);
@@ -194,7 +194,7 @@ dir = r"C:\Users\miksw\Desktop\DSE\DSE-Group13\DSE\Aerodynamics\OpenVSPSimData";
 #%% ------------------- Main -------------------
 vsp_data = ExtractData_OpenVSP(dir);
 AOA = 14;
-CD0 = 0.01111;
+CD0 = 0.01111;			# 0.01204
 vsp_data.plot_Polars(CD0);
 #vsp_data.plot_LoadDistribution(AOA, CD0, write_dir, write_dir1);
 vsp_data.Cm_CL_alpha_calc(CD0);

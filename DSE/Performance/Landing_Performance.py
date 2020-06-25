@@ -16,7 +16,7 @@ MLW        = 0.98*MTOW
 rho        = 1.225 
 g          = 9.81
 S          = 150.865002
-CD0clean = 0.019482                # zero lift drag coefficient
+CD0clean   = 0.01204                # zero lift drag coefficient
 # estimate drag contribution due to flap deflection
 
 Rf = 0.25   # flap chord/wing chord
@@ -32,11 +32,11 @@ deltaCDflap = delta1*delta2*Sflap_to_Sref
 
 # ground effect
 
-k    = 0.044698         # 1/(pi*AR*eto) from simulation
+k    =  0.039648         # 1/(pi*AR*eto) from simulation
 b    = 50.61874255      # wing span [m]
 df   = 4.2              # fuselage diameter [m]
 hlg  = 1.9              # clearance between surface and bottom fuselage due to landing gear [m]
-e    = 0.7              # oswald efficiency factor at takeoff [-]
+e    = 0.75              # oswald efficiency factor at takeoff [-]
 AR   = 17               # Aspect Ratio [-]
 
 #calculations

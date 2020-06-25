@@ -8,11 +8,16 @@ Created on Tue Jun  9 10:58:13 2020
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.interpolate as sp
+from math import exp
 # INPUTS
-MTOW = (79584.74877 - 15)*9.81        # maximum take off weight [N]
+
+Ftaxi    = 1402.13467358987000   # fuel taxi    [kg]
+Ftakeoff = 345.2844708           # fuel takeoff [kg]
+Fclimb   = 1374.232194           # fuel for climb [kg]
+MTOW = (70459.02882 - Ftaxi - Ftakeoff)*9.81        # maximum take off weight [N]
 MTOWi = MTOW
 S    = 150.865002            # wing surface area [m^2]
-OEW  = 45818.75425*9.81
+OEW  = 41271.3770*9.81
 PW   = 20000*9.81
 mcruise = 76000*9.81
 g    = 9.81                   # gravitational acceleration [m/s^2]
@@ -20,6 +25,7 @@ y    = 1.4
 R    = 287 
 T0   = 288.15
 TSFc = 1.203380285E-05  # kg/Ns
+Vias = 150  #m/s
 
 Tto  = 211576.8505             # thrust at take off [N]
 
@@ -27,9 +33,12 @@ BPR  = 15                     # bypass ratio
 rho0 = 1.225                  # air density surface level [kg/m^3]
 AR   = 17
 e    = 0.7
-k1   = 0.044763
 k2   = 1/np.pi/AR/e
-CD0  = 0.017423
+
+k1   = 0.039648
+CD0  = 0.009312
+
+
 CLmax_clean = 1.7536
 # parameters 
 
@@ -53,86 +62,61 @@ def ISA_trop(h):
 	a = np.sqrt(1.4*287*T);
 	return T, p, rho, a;
 
-def Net_Thrust(V,h):
-    
-    """
+def find_nearest(array, value):
+    array = np.asarray(array)
+    idx = (np.abs(array - value)).argmin()
+    return array[idx]
 
-    Parameters
-    ----------
-    M : mach number [ - ]
-
-    Returns
-    -------
-    Tnet = net thrust [N]
-
-    """
-    M = V/(ISA_trop(h)[3])
-    n = 0.7
-    sigma = (ISA_trop(h)[2])/rho0
-    if M <= 0.4:
-        K1 = 1.0
-        K2 = 0.0
-        K3 = -0.595
-        K4 = -0.03
-    if M > 0.4:
-        K1 = 0.89
-        K2 = -0.014
-        K3 = -0.300
-        K4 = 0.005
-    
-
-    Tnet = Tto*((K1 + K2*BPR + (K3 +K4*BPR)*M)*(sigma**n))
-    return Tnet
 
 # STEADY FLIGHT CONDITIONS, PLOT POWER VS VELOCITY, sea level condition
 # Thrust function with interpolation
 
-Altitude = np.arange(0,13000,1000)
-Mach     = np.array([0,0.25,0.5,0.78])
-Values   = 1*np.array([[130983.30,	93336.08,67645.75,	50789.30],
-                     [122348.90,	87785.60,	64908.05	,44054.64],
-                     [112232.70,	79860.39,	57123.37,	43527.24],
-                     [101170.00,	72339.87,	55721.66,	41455.83],
-                     [91730.72,	        66149.63	,48671.44,	35633.27],
-                     [82740.84,	        60087.01,	44755.67	,33719.74],
-                     [74338.93,	        54325.67,	40861.95,	31365.01],
-                     [72199.00,	52709.15,	39372.54,	29609.87],
-                     [64465.65,	47372.79	, 35782.72,	27582.68],
-                     [57326.40,	42373.03,	32291.17,	25290.77],
-                     [50687.43,	37660.26	,29101.37,	23136.07],
-                     [44974.74,	33673.71	,26141.89,	21070.06],
-                     [38392.90,	28740.28,	22306.38,	18085.59]])
+Altitude = np.arange(0,15000,3000)
+Mach     = np.array([0,0.25,0.5,0.75])
+
+Values   = 1*np.array([[83846.38395,	58099.14016,	40336.57846,	30877.3181],
+                        [64975.86428,	46995.09957,	34718.0064,	25653.11629],
+                        [47418.72899,	34910.376,	26530.64582,	20692.9504],
+                        [37554.91053,	27962.75161,	21446.6353,	16886.62497],
+                        [26253.48281,	19691.85709,	15223.2655,	12116.85906]])
 
 Thrustf = sp.interp2d(Mach,Altitude,Values,kind='linear')
 # TSFC function with interpolation
-Altitude = np.arange(0,16000,4000)
-Mach     = np.array([0,0.5,0.75])
+Altitude = np.arange(0,15000,3000)
+Mach     = np.array([0,0.25,0.5,0.75])
 
 
-Values   = (10**-6)*np.array([[5.1996,          10.07987,    13.05523861 ],
-                             [5.53191581,	9.747087486, 12.04516892   ],
-                             [6.117945716,	10.29400869, 11.53850047   ],
-                             [6.655300979,	10.95611142, 11.71849754  ]])
+Values   = (10**-6)*np.array([[5.078422255,	7.199381363,	10.1043708,	13.13544401],
+                                [5.464774141,	7.444791219,	9.627267933,	12.01378245],
+                                [5.896717801,	7.909076521,	10.01071562,	11.98768685],
+                                [5.676529015,	7.542071193,	9.514016207,	11.40673502],
+                                [5.674835113,	7.49283021,	9.409177574,	11.22866788]])
+
 
 TSFCf    = sp.interp2d(Mach,Altitude,Values,kind='linear')
 
-step = 1000*0.3048 #ft
-altitude = np.arange(0,38000*0.3048,step)
+step = 100*0.3048 #ft
+altitude = np.arange(0,35000*0.3048,step)
 
 MRC_arr = []
-VMRC_arr = []
+V_arr = []
+Steps_arr = []
+HD_Arr = []
 
-def ROC_st_true(h,MTOW):
+def ROC_st_true(h,MTOWi,MTOW,plot):
     
     
     #h = array containing all altitudes
+
+    hdarr = 0
+
+    checked = 0
     
     HD = []
     Machs = np.arange(0.2,0.78,0.01)
     
     Thrust = Thrustf(Machs,h)   # rows=altitudes; columns= mach numbers
 
-    print (len(Thrust))
     
     for i in range(len(Thrust)):
         
@@ -143,11 +127,11 @@ def ROC_st_true(h,MTOW):
             V.append(Vm)
         
        
-        Pa=[]
-        Pr=[]
-        Vr=[]
-        Tr=[]
-        #DVDH = []
+        Pa   = []
+        Pr   = []
+        Vr   = []
+        Tr   = []
+        DVDH = []
         for k in range(len(V)):
         
             CL = 2*MTOW/((ISA_trop(height)[2])*S*(V[k]**2))
@@ -160,47 +144,88 @@ def ROC_st_true(h,MTOW):
             
             T  = 2*Thrust[i,k]
             # correction for unsteady flight
-            #Veas = V[k]*np.sqrt((ISA_trop(height)[2])/rho0)
-            #drhodH = (y/T0)*((g/(2*R*y))+1/2)*((1+y*height/T0)**(g/(2*R*y)-1/2))
-            #dVdH = Veas*drhodH
+            Veas = V[k]*np.sqrt((ISA_trop(height)[2])/rho0)
+            drhodH = ((np.sqrt(rho0/ISA_trop(height)[2]))-np.sqrt(rho0/ISA_trop(height+step)[2]))/step
+            dVdH = Veas*drhodH
             Pa.append(T*V[k])
             Pr.append(D*V[k])
             Vr.append(V[k])
             Tr.append(T)
-            #DVDH.append(dVdH)
+            DVDH.append(dVdH)
         Pa = np.array(Pa)
         Pr = np.array(Pr)
         Tr = np.array(Tr)
         Vr = np.array(Vr)
-        #DVDH = np.array(DVDH)
+        DVDH = np.array(DVDH)
         
         ROC_st = (Pa-Pr)/MTOW*196.85 #ft/min
-        #ROC_st = np.divide(ROC_st,(1+1/g*np.multiply(Vr,DVDH)))
+        ROC_st = np.divide(ROC_st,(1+1/g*np.multiply(Vr,DVDH)))
         
-        if np.amax(ROC_st) < 0:
-            plt.plot(Vr,ROC_st)
+        # find service ceiling
+        
+        if np.amax(ROC_st) < 500 and checked == 0:
+            #plt.plot(Vr,ROC_st, 'o')
+            service_ceiling = h[i]/0.3048
+            print("The ceilling is      =",service_ceiling , " ft")
+            
+            checked = 1
             continue
         
-        maxroc = np.argmax(ROC_st)
-
-        MAXROC = ROC_st[maxroc]
-
-        MRC_arr.append(MAXROC)
         
         
-        #horizontal distance
-        Vd   = Vr[maxroc]
-        VMRC_arr.append(Vd)
-        #print(Vd)
-        gamma = np.arcsin(np.amax(ROC_st)/196.85/Vd)
-
-        #V_hor = Vr[maxroc]*np.cos(gamma)
-
-
+        # identify true airspeed for contant IAS
+        
+        Vtas = Vias/np.sqrt((ISA_trop(height)[2])/rho0)
+        Mtas = Vtas/(ISA_trop(height)[3])
+        
+        if Mtas >= 0.78 :
+            Mtas = 0.78
+            Vtas = Mtas*(ISA_trop(height)[3])
+            
+            
+        # identify Vr value closest to Vtas
+            
+        Vd = find_nearest(Vr,Vtas)
+        
+        V_arr.append(Vd)   
+        
+        # calculate horizontal distance
+        
+        gamma = np.arcsin(ROC_st[np.where(Vr == Vd)[0]][0]/196.85/Vd)
         hd = (step/np.tan(gamma))*0.001
         
-        
+        hdarr+=hd
         HD.append(hd)
+        HD_Arr.append(hdarr)
+        
+        # fuel weight reduction
+
+        Macr          = Vr/ISA_trop(height)[3]    # mach numbers for
+        TSFC          = TSFCf(Macr,h)[i]
+        TSFCias       = TSFC[np.where(Vr == Vd)[0]][0]
+        Trias         = Tr[np.where(Vr == Vd)[0]][0]
+        time_to_climb = step/(ROC_st[np.where(Vr == Vd)[0]][0]/196.85)
+        FW  = 9.81*TSFCias*Trias*time_to_climb
+        MTOW = MTOW - FW
+        
+        '''      
+                         # STRATEGY : CLIMB FOR MAX ROC
+        # identify index of max roc
+        
+        maxroc = np.argmax(ROC_st)
+        MAXROC = ROC_st[maxroc]
+        MRC_arr.append(MAXROC)
+        
+        #horizontal distance
+       
+        Vd   = Vr[maxroc]
+        VMRC_arr.append(Vd)
+        gamma = np.arcsin(np.amax(ROC_st)/196.85/Vd)
+        hd = (step/np.tan(gamma))*0.001
+        
+        hdarr+=hd
+        HD.append(hd)
+        HD_Arr.append(hdarr)
     
         # fuel weight reduction
         
@@ -211,28 +236,68 @@ def ROC_st_true(h,MTOW):
         Trocmax       = Tr[maxroc]
         time_to_climb = step/(np.amax(ROC_st)/196.85)
         FW  = 9.81*TSFCrocmax*Trocmax*time_to_climb
-        
         MTOW = MTOW - FW
+        
         #print(Tr[np.where(ROC_st == np.amax(ROC_st))[0]][0] ,np.amax(ROC_st) )
         '''
-        if height == 30000*0.3048:
-            print(np.amax(ROC_st))
-        '''
         
-        plt.plot(Vr,ROC_st)
-    plt.plot(VMRC_arr, MRC_arr)
-    print("horizontal distance  =",sum(HD)-HD[-1],"km")
-    print("fuel consumed        =",(MTOWi - MTOW)/9.81, "kg")
+        
+        if plot == 1:
+            plt.plot(Vr,ROC_st)
+    #plt.plot(VMRC_arr, MRC_arr)
     
+    HD_Arr.append(HD_Arr[-1])
+    #print (len(HD_Arr), len(altitude))
+    #plt.plot(HD_Arr, altitude)
+    range_climb = sum(HD)-HD[-1]    # total range covered during flight
+    fuel_climb  = (MTOWi - MTOW)/9.81
+    
+    print("horizontal distance  =",range_climb,"km")
+    print("fuel consumed        =",fuel_climb, " kg")
+    
+    return range_climb, fuel_climb,service_ceiling
 
-ROC_st_true(altitude,MTOW)
+range_climb, fuel_climb, service_ceiling = ROC_st_true(altitude,MTOW,MTOW,0)
 
 plt.grid()
+#plt.xlabel("Velocity [km]")
+#plt.ylabel("Altitude [m]")
 plt.xlabel("Velocity [m/s]")
 plt.ylabel("ROC steady [ft/min]")
 plt.show()
 
 
+
+# check whether you can still do the range with the given amount of fuel you have
+
+
+# Assume you are climbing until 33900 ft, hence you need to reach 36000ft
+
+
+Fuel_cruise = 4059.407329 # fuel budgeted for cruise
+fuel_cruise = Fuel_cruise + Fclimb - fuel_climb    # actual fuel for cruise
+Wstart = MTOW - fuel_climb*9.81
+Wend   = Wstart - fuel_cruise*9.81
+FL339       = 33900*0.3048                         # cruise altitude [m]
+M_cruise     = 0.78
+V_cruise     = M_cruise*(ISA_trop(FL339)[3])
+cj_cruise    = TSFCf(0.78,FL339)
+LD           = 28.11111111
+
+
+R  = V_cruise/(cj_cruise*g)*LD*np.log(Wstart/Wend)/1000
+
+print("Range    =", R, "   km")
+
+
+# find actual range needed to climb at 36000ft
+
+altitude2 = np.arange(service_ceiling*0.3048,36000*0.3048,step)
+
+R2 = 100*1000   #range[m]
+W2 = Wstart/exp(R2*cj_cruise*g/(V_cruise*LD))
+
+range_climb2, fuel_climb2, service_ceiling2 = ROC_st_true(altitude2,W2,W2,1)
 
 
 
