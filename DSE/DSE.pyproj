@@ -161,24 +161,33 @@
     <Content Include="Aerodynamics\NASA SC%282%29-0410.dat" />
     <Content Include="Aerodynamics\NASA SC%282%29-0414.dat" />
     <Content Include="Aerodynamics\NASA SC%282%29-0606.dat" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_lowspeed.adb" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_lowspeed.adb.cases" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_lowspeed.csv" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_lowspeed.fem" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_lowspeed.group.1" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_lowspeed.history" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_lowspeed.lod" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_lowspeed.polar" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_total.polar" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_lowspeed.vspaero" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_total.adb" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_total.adb.cases" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_total.csv" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_total.fem" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_total.group.1" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_total.history" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_total.lod" />
-    <Content Include="Aerodynamics\OpenVSPSimData\Iteration5_total.vspaero" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Cruise Conditions M = 0.78.polar" />
+    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Iteration5_lowspeed.adb" />
+    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Iteration5_lowspeed.adb.cases" />
+    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Iteration5_lowspeed.csv" />
+    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Iteration5_lowspeed.fem" />
+    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Iteration5_lowspeed.group.1" />
+    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Iteration5_lowspeed.history" />
+    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Iteration5_lowspeed.lod" />
+    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Iteration5_lowspeed.polar" />
+    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Iteration5_total.polar" />
+    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Iteration5_lowspeed.vspaero" />
+    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Iteration5_total.adb" />
+    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Iteration5_total.adb.cases" />
+    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Iteration5_total.csv" />
+    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Iteration5_total.fem" />
+    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Iteration5_total.group.1" />
+    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Iteration5_total.history" />
+    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Iteration5_total.lod" />
+    <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Iteration5_total.vspaero" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Low-Speed Conditions M = 0.2.adb" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Low-Speed Conditions M = 0.2.adb.cases" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Low-Speed Conditions M = 0.2.csv" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Low-Speed Conditions M = 0.2.fem" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Low-Speed Conditions M = 0.2.group.1" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Low-Speed Conditions M = 0.2.history" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Low-Speed Conditions M = 0.2.lod" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Low-Speed Conditions M = 0.2.polar" />
     <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Iteration5_Wing.adb" />
     <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Iteration5_Wing.adb.cases" />
     <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Iteration5_Wing.csv" />
@@ -222,6 +231,13 @@
     <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Iteration4_Cruise.polar" />
     <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Iteration4_Cruise.vspaero" />
     <Content Include="Aerodynamics\OpenVSPSimData\NonTested\Iteration4_DragBuild.tsv" />
+    <Content Include="Aerodynamics\OpenVSPSimData\no_incedence.adb" />
+    <Content Include="Aerodynamics\OpenVSPSimData\no_incedence.adb.cases" />
+    <Content Include="Aerodynamics\OpenVSPSimData\no_incedence.csv" />
+    <Content Include="Aerodynamics\OpenVSPSimData\no_incedence.fem" />
+    <Content Include="Aerodynamics\OpenVSPSimData\no_incedence.group.1" />
+    <Content Include="Aerodynamics\OpenVSPSimData\no_incedence.history" />
+    <Content Include="Aerodynamics\OpenVSPSimData\Cruise Conditions M = 0.78.lod" />
     <Content Include="Aerodynamics\Polars.txt" />
     <Content Include="Aerodynamics\Polars2.txt" />
     <Content Include="Aerodynamics\x_col.txt" />

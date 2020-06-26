@@ -81,36 +81,36 @@ def Plot_2D(X, Y, Z, xlabel = "You forgot to label your axis", ylabel = "You for
 	return 0;
 
 
-#%% Example 1 - Simple 1D plot
-N = 50;
-x = linspace(0, 10, N);
-y = random.rand(N);
-label = "Random noise";
-Plot_1D(x, y, show = True, label = label, xlabel = "x [m]");
+##%% Example 1 - Simple 1D plot
+#N = 50;
+#x = linspace(0, 10, N);
+#y = random.rand(N);
+#label = "Random noise";
+#Plot_1D(x, y, show = True, label = label, xlabel = "x [m]");
 
-#%% Example 2 - Multiple curves in one plot
-N = 50;
-x = linspace(0, 10, N);
-M = 3;					# Number of curves
-X = zeros((M, N));
-X[::] = x;
-Y = random.rand(M, N);
-label = array(["Random noise1", "Random noise2", "Random noise3"]);
-Plot_1D(X, Y, label = label, show = True, xlabel = "x [m]", ylabel = "y [m]");
-# Change figure size
-size = (10, 5);
-Plot_1D(X, Y, label = label, show = True, xlabel = "x [m]", ylabel = "y [m]", figsize = size);
-# Change axis limits
-xlimit = [1, 5];
-Plot_1D(X, Y, label = label, show = True, xlabel = "x [m]", ylabel = "y [m]", figsize = size, xlim = xlimit);
+##%% Example 2 - Multiple curves in one plot
+#N = 50;
+#x = linspace(0, 10, N);
+#M = 3;					# Number of curves
+#X = zeros((M, N));
+#X[::] = x;
+#Y = random.rand(M, N);
+#label = array(["Random noise1", "Random noise2", "Random noise3"]);
+#Plot_1D(X, Y, label = label, show = True, xlabel = "x [m]", ylabel = "y [m]");
+## Change figure size
+#size = (10, 5);
+#Plot_1D(X, Y, label = label, show = True, xlabel = "x [m]", ylabel = "y [m]", figsize = size);
+## Change axis limits
+#xlimit = [1, 5];
+#Plot_1D(X, Y, label = label, show = True, xlabel = "x [m]", ylabel = "y [m]", figsize = size, xlim = xlimit);
 
-#%% Example 3 - 2D plot
-N = 50;
-x = linspace(-1, 1, N);
-y = linspace(-1, 1, N);
-X, Y = meshgrid(x, y);
-f = lambda x, y: (4*x**3 - 3*x)*(2*y**2 - 1);
-Z = f(X, Y);
-Plot_2D(X, Y, Z, xlabel = "x [m]", ylabel = "y [m]", zlabel = "z [m]", show = True);
+##%% Example 3 - 2D plot
+#N = 50;
+#x = linspace(-1, 1, N);
+#y = linspace(-1, 1, N);
+#X, Y = meshgrid(x, y);
+#f = lambda x, y: (4*x**3 - 3*x)*(2*y**2 - 1);
+#Z = f(X, Y);
+#Plot_2D(X, Y, Z, xlabel = "x [m]", ylabel = "y [m]", zlabel = "z [m]", show = True);
 
 
