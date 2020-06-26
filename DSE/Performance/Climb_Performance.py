@@ -8,8 +8,13 @@ Created on Tue Jun  9 10:58:13 2020
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.interpolate as sp
+from math import exp
 # INPUTS
-MTOW = (70459 - 1402 - 345)*9.81        # maximum take off weight [N]
+
+Ftaxi    = 1402.13467358987000   # fuel taxi    [kg]
+Ftakeoff = 345.2844708           # fuel takeoff [kg]
+Fclimb   = 1374.232194           # fuel for climb [kg]
+MTOW = (70459.02882 - Ftaxi - Ftakeoff)*9.81        # maximum take off weight [N]
 MTOWi = MTOW
 S    = 150.865002            # wing surface area [m^2]
 OEW  = 41271.3770*9.81
@@ -20,6 +25,7 @@ y    = 1.4
 R    = 287 
 T0   = 288.15
 TSFc = 1.203380285E-05  # kg/Ns
+Vias = 150  #m/s
 
 Tto  = 211576.8505             # thrust at take off [N]
 
@@ -56,36 +62,11 @@ def ISA_trop(h):
 	a = np.sqrt(1.4*287*T);
 	return T, p, rho, a;
 
-def Net_Thrust(V,h):
-    
-    """
+def find_nearest(array, value):
+    array = np.asarray(array)
+    idx = (np.abs(array - value)).argmin()
+    return array[idx]
 
-    Parameters
-    ----------
-    M : mach number [ - ]
-
-    Returns
-    -------
-    Tnet = net thrust [N]
-
-    """
-    M = V/(ISA_trop(h)[3])
-    n = 0.7
-    sigma = (ISA_trop(h)[2])/rho0
-    if M <= 0.4:
-        K1 = 1.0
-        K2 = 0.0
-        K3 = -0.595
-        K4 = -0.03
-    if M > 0.4:
-        K1 = 0.89
-        K2 = -0.014
-        K3 = -0.300
-        K4 = 0.005
-    
-
-    Tnet = Tto*((K1 + K2*BPR + (K3 +K4*BPR)*M)*(sigma**n))
-    return Tnet
 
 # STEADY FLIGHT CONDITIONS, PLOT POWER VS VELOCITY, sea level condition
 # Thrust function with interpolation
@@ -118,11 +99,11 @@ step = 100*0.3048 #ft
 altitude = np.arange(0,35000*0.3048,step)
 
 MRC_arr = []
-VMRC_arr = []
+V_arr = []
 Steps_arr = []
 HD_Arr = []
 
-def ROC_st_true(h,MTOW):
+def ROC_st_true(h,MTOWi,MTOW,plot):
     
     
     #h = array containing all altitudes
@@ -132,7 +113,7 @@ def ROC_st_true(h,MTOW):
     checked = 0
     
     HD = []
-    Machs = np.arange(0.2,0.75,0.01)
+    Machs = np.arange(0.2,0.78,0.01)
     
     Thrust = Thrustf(Machs,h)   # rows=altitudes; columns= mach numbers
 
@@ -180,35 +161,70 @@ def ROC_st_true(h,MTOW):
         ROC_st = (Pa-Pr)/MTOW*196.85 #ft/min
         ROC_st = np.divide(ROC_st,(1+1/g*np.multiply(Vr,DVDH)))
         
+        # find service ceiling
+        
         if np.amax(ROC_st) < 500 and checked == 0:
             #plt.plot(Vr,ROC_st, 'o')
-            print("The ceilling is - ", h[i]/0.3048, "ft")
+            service_ceiling = h[i]/0.3048
+            print("The ceilling is      =",service_ceiling , " ft")
+            
             checked = 1
             continue
         
+        
+        
+        # identify true airspeed for contant IAS
+        
+        Vtas = Vias/np.sqrt((ISA_trop(height)[2])/rho0)
+        Mtas = Vtas/(ISA_trop(height)[3])
+        
+        if Mtas >= 0.78 :
+            Mtas = 0.78
+            Vtas = Mtas*(ISA_trop(height)[3])
+            
+            
+        # identify Vr value closest to Vtas
+            
+        Vd = find_nearest(Vr,Vtas)
+        
+        V_arr.append(Vd)   
+        
+        # calculate horizontal distance
+        
+        gamma = np.arcsin(ROC_st[np.where(Vr == Vd)[0]][0]/196.85/Vd)
+        hd = (step/np.tan(gamma))*0.001
+        
+        hdarr+=hd
+        HD.append(hd)
+        HD_Arr.append(hdarr)
+        
+        # fuel weight reduction
+
+        Macr          = Vr/ISA_trop(height)[3]    # mach numbers for
+        TSFC          = TSFCf(Macr,h)[i]
+        TSFCias       = TSFC[np.where(Vr == Vd)[0]][0]
+        Trias         = Tr[np.where(Vr == Vd)[0]][0]
+        time_to_climb = step/(ROC_st[np.where(Vr == Vd)[0]][0]/196.85)
+        FW  = 9.81*TSFCias*Trias*time_to_climb
+        MTOW = MTOW - FW
+        
+        '''      
+                         # STRATEGY : CLIMB FOR MAX ROC
+        # identify index of max roc
+        
         maxroc = np.argmax(ROC_st)
-
         MAXROC = ROC_st[maxroc]
-
         MRC_arr.append(MAXROC)
         
-        
         #horizontal distance
+       
         Vd   = Vr[maxroc]
         VMRC_arr.append(Vd)
-        #print(Vd)
         gamma = np.arcsin(np.amax(ROC_st)/196.85/Vd)
-
-        #V_hor = Vr[maxroc]*np.cos(gamma)
-
-
         hd = (step/np.tan(gamma))*0.001
-
+        
         hdarr+=hd
-        
-        
         HD.append(hd)
-
         HD_Arr.append(hdarr)
     
         # fuel weight reduction
@@ -220,34 +236,68 @@ def ROC_st_true(h,MTOW):
         Trocmax       = Tr[maxroc]
         time_to_climb = step/(np.amax(ROC_st)/196.85)
         FW  = 9.81*TSFCrocmax*Trocmax*time_to_climb
-        
         MTOW = MTOW - FW
+        
         #print(Tr[np.where(ROC_st == np.amax(ROC_st))[0]][0] ,np.amax(ROC_st) )
         '''
-        if height == 30000*0.3048:
-            print(np.amax(ROC_st))
-        '''
         
-        plt.plot(Vr,ROC_st)
+        
+        if plot == 1:
+            plt.plot(Vr,ROC_st)
     #plt.plot(VMRC_arr, MRC_arr)
     
     HD_Arr.append(HD_Arr[-1])
-    print (len(HD_Arr), len(altitude))
-    plt.plot(HD_Arr, altitude)
-    print("horizontal distance  =",sum(HD)-HD[-1],"km")
-    print("fuel consumed        =",(MTOWi - MTOW)/9.81, "kg")
+    #print (len(HD_Arr), len(altitude))
+    #plt.plot(HD_Arr, altitude)
+    range_climb = sum(HD)-HD[-1]    # total range covered during flight
+    fuel_climb  = (MTOWi - MTOW)/9.81
     
+    print("horizontal distance  =",range_climb,"km")
+    print("fuel consumed        =",fuel_climb, " kg")
+    
+    return range_climb, fuel_climb,service_ceiling
 
-ROC_st_true(altitude,MTOW)
+range_climb, fuel_climb, service_ceiling = ROC_st_true(altitude,MTOW,MTOW,0)
 
 plt.grid()
-plt.xlabel("Distance [km]")
-plt.ylabel("Altitude [m]")
-#plt.xlabel("Velocity [m/s]")
-#plt.ylabel("ROC steady [ft/min]")
+#plt.xlabel("Velocity [km]")
+#plt.ylabel("Altitude [m]")
+plt.xlabel("Velocity [m/s]")
+plt.ylabel("ROC steady [ft/min]")
 plt.show()
 
 
+
+# check whether you can still do the range with the given amount of fuel you have
+
+
+# Assume you are climbing until 33900 ft, hence you need to reach 36000ft
+
+
+Fuel_cruise = 4059.407329 # fuel budgeted for cruise
+fuel_cruise = Fuel_cruise + Fclimb - fuel_climb    # actual fuel for cruise
+Wstart = MTOW - fuel_climb*9.81
+Wend   = Wstart - fuel_cruise*9.81
+FL339       = 33900*0.3048                         # cruise altitude [m]
+M_cruise     = 0.78
+V_cruise     = M_cruise*(ISA_trop(FL339)[3])
+cj_cruise    = TSFCf(0.78,FL339)
+LD           = 28.11111111
+
+
+R  = V_cruise/(cj_cruise*g)*LD*np.log(Wstart/Wend)/1000
+
+print("Range    =", R, "   km")
+
+
+# find actual range needed to climb at 36000ft
+
+altitude2 = np.arange(service_ceiling*0.3048,36000*0.3048,step)
+
+R2 = 100*1000   #range[m]
+W2 = Wstart/exp(R2*cj_cruise*g/(V_cruise*LD))
+
+range_climb2, fuel_climb2, service_ceiling2 = ROC_st_true(altitude2,W2,W2,1)
 
 
 
