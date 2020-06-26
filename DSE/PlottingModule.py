@@ -67,7 +67,7 @@ def Plot_2D(X, Y, Z, xlabel = "You forgot to label your axis", ylabel = "You for
 	if figure == None:
 		fig = plt.figure(figsize = figsize);
 	else:
-		fig = figure;		plt.gcf;
+		fig = plt.figure(figure.number);		plt.gcf;
 	ax = plt.axes(projection = "3d");
 	ax.plot_surface(X, Y, Z, rstride = 1, cstride = 1, cmap = "jet", edgecolor = "none");
 	ax.set_xlabel(xlabel);
