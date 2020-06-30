@@ -45,19 +45,20 @@ class ExtractData_OpenVSP():
 			fig = plot of the polars
 		"""
 		fig = plt.figure(figsize = (12, 8));
+		c = 0;
 		for name in (self.names):
 			if name.startswith(self.file_types[0][1:]):
 				alpha = self.Polar_Dict[name]["AoA"];
 				CL = self.Polar_Dict[name]["CL"];
-				CDtot = self.Polar_Dict[name]["CDi"] + CD0;
+				CDtot = self.Polar_Dict[name]["CDi"] + CD0[c];		c += 1;
 				Cm = self.Polar_Dict[name]["CMy"];
 				centre_press = Cm*self.C_ref/CL + self.X_cg;
 
 				label = name[len(self.file_types[0][1:]) :];
 				ax1 = plt.subplot(2, 2, 1);									ax2 = plt.subplot(2, 2, 2);
 				ax1.plot(alpha, CL, label = label);							ax2.plot(CL, CL/CDtot, label = label);
-				ax1.set_xlabel("alpha [degrees]");							ax2.set_xlabel("CL [-]");
-				ax1.set_ylabel("CL [-]");									ax2.set_ylabel("L/D [-]");
+				ax1.set_xlabel(r"$\alpha [^\circ]$");						ax2.set_xlabel(r"$C_L$ [-]");
+				ax1.set_ylabel(r"$C_L$ [-]");								ax2.set_ylabel(r"$\frac{L}{D}$ [-]");		ax2.set_ylim([min(CL/CDtot)*0.9, max(CL/CDtot)*1.25]);
 				ax1.grid(True);												ax2.grid(True);
 
 				ax3 = plt.subplot(2, 2, 3);									ax4 = plt.subplot(2, 2, 4);
@@ -67,7 +68,7 @@ class ExtractData_OpenVSP():
 				ax3.grid(True);												ax4.grid(True);
 
 				ax1.legend();
-				ax2.legend();
+				ax2.legend(loc = "upper left");
 				ax3.legend();
 				ax4.legend();
 				#print("Centre of Pressure Position for {}: {}".format(name[len(self.file_types[0][1:]) :], mean(centre_press)*self.C_ref), "m from LE root");
@@ -117,7 +118,7 @@ class ExtractData_OpenVSP():
 					Cm = asarray(self.subDict[alpha]["Cmy"])*asarray(self.subDict[alpha]["Chord"])/asarray(self.subDict[alpha]["Cref_"]);
 					span = asarray(self.subDict[alpha]["Yavg"]);
 					sort_idx = argsort(span);
-					span = span[sort_idx];		CL = CL[sort_idx];		CD = CD_i[sort_idx] + CD0;		Cm = Cm[sort_idx];
+					span = span[sort_idx];		CL = CL[sort_idx];		CD = CD_i[sort_idx] + CD0[0];		Cm = Cm[sort_idx];
 					Centre_pressure = self.subDict[alpha]["Xcg_"] - Cm/CL*self.subDict[alpha]["Chord"];
 					if alpha == AOA:
 						if c == 0: CL_w = span; Cm_w = span; c += 1;
@@ -156,7 +157,7 @@ class ExtractData_OpenVSP():
 			if name.startswith(self.file_types[0][1:]):
 				alpha = self.Polar_Dict[name]["AoA"];
 				CL = self.Polar_Dict[name]["CL"];
-				CD = self.Polar_Dict[name]["CDi"] + CD0;
+				CD = self.Polar_Dict[name]["CDi"] + CD0[0];
 				Cm = self.Polar_Dict[name]["CMy"];
 				idx = asarray(range(0, len(alpha), 1));
 				alpha_i = alpha[idx];
@@ -187,16 +188,16 @@ class ExtractData_OpenVSP():
 		return 0;
 
 #%% ------------------- Input data -------------------
-dir = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Aerodynamics\OpenVSPSimData";				# Path to directory, this is for my PC, you can use the lower one
+dir = r"C:\Users\miksw\Desktop\DSE\DSE-Group13\DSE\Aerodynamics\OpenVSPSimData";				# Path to directory, this is for my PC, you can use the lower one
 #dir = r"\Aerodynamics\OpenVSPSimData";														# Path to directory, Comment the top line and use this one
-write_dir = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\liftdistribution.txt"		# Write directory
-write_dir1 = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\troquedistribution.txt"	# Write directory
+#write_dir = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\liftdistribution.txt"		# Write directory
+#write_dir1 = r"C:\Users\Gebruiker\source\repos\DSE\DSE\Structures\troquedistribution.txt"	# Write directory
 #%% ------------------- Main -------------------
 vsp_data = ExtractData_OpenVSP(dir);
-AOA = 14;
-CD0 = 0.01111;			# 0.01204
+AOA = 1;
+CD0 = [0.01111, 0.01204];
 vsp_data.plot_Polars(CD0);
-vsp_data.plot_LoadDistribution(AOA, CD0, write_dir, write_dir1);
+#vsp_data.plot_LoadDistribution(AOA, CD0, write_dir, write_dir1);
 vsp_data.Cm_CL_alpha_calc(CD0);
 plt.show();
 

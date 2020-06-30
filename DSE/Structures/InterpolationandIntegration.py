@@ -217,14 +217,20 @@ plt.xlabel("span wise location [m]");
 plt.grid(True);
 plt.legend(loc = "upper left");
 
-plt.figure(figsize = (8, 5));
-plt.plot(y_half, M_lift, label = "Internal Moment due to lift [Nm]");
-plt.plot(y_half, V_lift, label = "Internal Shear due to lift [N]");
-plt.ylabel("Internal Load Distributed");
-plt.xlabel("y [m]");
-plt.grid(True);
-plt.legend();
+plt.figure(figsize = (8, 4));
+ax = plt.axes();
+color = "g";
+ax.plot(y_half, M_lift/1000, color = color);
+ax.set_ylabel("Internal Moment Distribution [kNm]", color = color);
+ax.set_xlabel("span wise location [m]");
+ax.tick_params(axis = "y", labelcolor = color);
 
+color1 = "b";
+ax1 = ax.twinx();
+ax1.plot(y_half, V_lift/1000, color = color1);
+ax1.set_ylabel("Internal Shear Distribution [kN]", color = color1);
+ax1.tick_params(axis = "y", labelcolor = color1);
+ax.grid(True);
 
 plt.figure(figsize = (8, 5));
 plt.plot(y_half, M_new, label = "Internal Moment due to engine and strut [Nm]");
@@ -237,7 +243,7 @@ plt.legend();
 plt.figure(figsize = (8, 4));
 ax = plt.axes();
 color = "g";
-ax.plot(y_half, M/1000, color = "g");
+ax.plot(y_half, M/1000, color = color);
 ax.set_ylabel("Internal Moment Distribution [kNm]", color = color);
 ax.set_xlabel("span wise location [m]");
 ax.tick_params(axis = "y", labelcolor = color);
