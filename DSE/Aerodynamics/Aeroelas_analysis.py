@@ -26,7 +26,7 @@ M_theta_dot = -1.2
 
 
 CL_alp = CL_alpha_DATCOM(inp.AR,inp.M_cruise,inp.a0_full,sweep_half) #wing life slope
-GJ = 28e9 *0.001166181409646969 #  0.0007449479615522029 #0.001166181409646969 # # 
+GJ = 28e9 *0.001366181409646969 #  0.0007449479615522029 #0.001166181409646969 # # 
 EI = 72e9 * 0.00029890223261558427 
  
 
@@ -99,11 +99,11 @@ print("Diverg Speed (q_d) (Straight Wing)", v_div_str,"\n")
 print("Critical Sweep", crit_sweep,"\n")
 print("Verification =",verifi)
 
-plt.rcParams.update({'font.size': 20})
+plt.rcParams.update({'font.size': 30})
 
-plt.figure()
+plt.figure(num=None, figsize=(15, 12), dpi=80)
 # plt.plot(V_inf,ail_eff_v2,label="Actual aileron (no sweep and 2D coeff)")
-plt.plot(V_inf,ail_eff_str_wing,label="Actual aileron (v2)")
+plt.plot(V_inf,ail_eff_str_wing,label="Actual aileron (v2)",color="red",linewidth=2.0)
 plt.xlabel("$V_{\infty}$ [m/s]")
 plt.ylabel("Aileron effectiveness [" +"$pb_{1/2}/V_{\infty} \beta $" +"]")
 # plt.ylim((0.7,1.1))
@@ -111,23 +111,25 @@ plt.ylabel("Aileron effectiveness [" +"$pb_{1/2}/V_{\infty} \beta $" +"]")
 plt.grid()
 plt.show()
 
-plt.figure()
-plt.subplot(2,1,1)
-plt.plot(V_inf,damp[:,1],label="Bending Mode")
-plt.plot(V_inf,damp[:,2],label="Torsion Mode")
-plt.axvline(285,linestyle="dashed", color='black',label="Critical Flutter Speed")
-# plt.xlabel("$V_{\infty}$")
+plt.figure(num=None, figsize=(12, 11), dpi=80)
+# plt.figure()
+plt.plot(V_inf,damp[:,1],label="Bending Mode",color="red",linewidth=2.0)
+plt.plot(V_inf,damp[:,2],label="Torsion Mode",color="blue",linewidth=2.0)
+plt.axvline(290,linestyle="dashed", color='black',label="Critical Flutter Speed",linewidth=2.0)
+plt.xlabel("$V_{\infty} [m/s]$")
 plt.ylabel("Damping Ratio [%]")
+plt.ylim((-5,105))
 plt.legend()
 plt.grid()
-plt.subplot(2,1,2)
-plt.plot(V_inf,freq[:,1],label="Bending Mode")
-plt.plot(V_inf,freq[:,2], label="Torsion Mode")
-plt.axvline(285,linestyle="dashed",color='black', label="Critical Flutter Speed")
-plt.xlabel("$V_{\infty}$")
+
+plt.figure(num=None, figsize=(12, 11), dpi=80)
+# plt.figure()
+plt.plot(V_inf,freq[:,1],label="Bending Mode",color="red",linewidth=2.0)
+plt.plot(V_inf,freq[:,2], label="Torsion Mode",color="blue",linewidth=2.0)
+plt.axvline(290,linestyle="dashed",color='black', label="Critical Flutter Speed",linewidth=2.0)
+plt.xlabel("$V_{\infty} [m/s]$")
 plt.ylabel("Frequency [Hz]")
-# plt.title("Negative")
-# plt.tight_layout()
+plt.ylim((0,23))
 plt.grid()
-# plt.legend()
+plt.legend(loc="upper left")
 plt.show()
